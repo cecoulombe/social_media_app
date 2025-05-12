@@ -1,5 +1,5 @@
 from fastapi import Body, FastAPI, Response, status, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 from random import randrange
 import psycopg2;
@@ -8,12 +8,20 @@ from psycopg2.extras import RealDictCursor;
 # Create a FastAPI application
 app = FastAPI()
 
-# schema used to manage input data types
+# ----------------------- SCHEMA -----------------------
+# schema used to manage post data 
 class Post(BaseModel):  #this will expand the basemodel from pydantic
     title: str
     content: str
     published: bool = True     # this gives a default value if the user doesn't enter a value (makes it optional)
 
+# schema used to manage user data
+class User(BaseModel):
+    email: EmailStr
+    password: str
+
+    
+# ----------------------- DATABASE CONNECTION -----------------------
 # connection to the database using psycopg2. Connections can fail so use the try statement. Need to pass all of these values, including cursor_factory=RealDictCursor in order to have it actually give the column name properly
 try:
     conn = psycopg2.connect(host='localhost', 
@@ -28,6 +36,8 @@ except Exception as error:
     print("Error: ", error)
     exit(0)
 
+
+# ----------------------- POSTS LOGIC -----------------------
 # Get all of the posts from the database
 @app.get("/posts")
 def get_posts():
@@ -74,3 +84,12 @@ def update_post(id: int, post: Post):
                             detail=f"post with id: {id} was not found")
     conn.commit()
     return {"data": updated}
+
+# ----------------------- USERS LOGIC -----------------------
+# Create a new user
+@app.post("/users", status_code=status.HTTP_201_CREATED)
+def create_user(user: User):
+    cursor.execute("""INSERT INTO users (email, password) VALUES (%s, %s) RETURNING *""", (user.email, user.password))
+    new_user = cursor.fetchone()
+    conn.commit()  
+    return {"data": new_user}
