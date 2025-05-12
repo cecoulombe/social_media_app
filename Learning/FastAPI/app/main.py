@@ -46,9 +46,20 @@ def create_posts(post: Post):
 # Get a single post based on the passed id
 @app.get("/posts/{id}")
 def get_post(id: int):
-    cursor.execute("""SELECT * FROM posts WHERE id = %s""", (str(id)))
+    cursor.execute("""SELECT * FROM posts WHERE id = %s""", (str(id),))
     post = cursor.fetchone()
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"post with id: {id} was not found")
     return {"data": post}
+
+# Delete a post based on the passed id
+@app.delete("/posts/{id}")
+def delete_post(id:int):
+    cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING *""", (str(id),))
+    deleted = cursor.fetchone()
+    if not deleted:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"post with id: {id} was not found")
+    conn.commit()   # deletion changes the database so it needs to be committed
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
