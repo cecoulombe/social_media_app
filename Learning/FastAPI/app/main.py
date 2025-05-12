@@ -63,3 +63,14 @@ def delete_post(id:int):
                             detail=f"post with id: {id} was not found")
     conn.commit()   # deletion changes the database so it needs to be committed
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+# Update a post based on id
+@app.put("/posts/{id}")
+def update_post(id: int, post: Post):
+    cursor.execute("""UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *""", (post.title, post.content, post.published, str(id),))
+    updated = cursor.fetchone()
+    if not updated:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"post with id: {id} was not found")
+    conn.commit()
+    return {"data": updated}
