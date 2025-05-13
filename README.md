@@ -1,6 +1,6 @@
 # Social Media Web Application
 
-A small social media web application for users to interact with each other. This project is focused on learning datanase management and APIs while creating a platform for users to post content, comment, and connect with friends.
+A small social media web application for users to interact with each other. This project is focused on deepening my understanding of database management and APIs while creating a platform for users to post content, comment, and connect with friends.
 
 ### **Table of Contents**
 - [Project Overview](#project-overview)
