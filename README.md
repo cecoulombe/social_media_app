@@ -60,14 +60,27 @@ The backend exposes several endpoints to manage posts and users. Other functiona
 http://127.0.0.1:8000
 
 # Endpoints:
-* Posts
+- Posts
    1. GET /posts
+      * Fetches a list of all posts
    2. POST / posts
+      * Creates a new post. Requires a JSON payload with post content
    3. GET /posts/{id}
+      * Fetches a specific post by its ID
    4. DELETE /posts/{id}
+      * Deletes a specific post by its ID
    5. PUT /posts/{id}
-* Users
+      * Updates a single post by its ID. Uses PUT functionality and replaces the entire database entry with a new entry
+- Users
   1. POST /users
-  2. GET /users/{id}
+      * Creates a new user. Requires a JSON payload with user content. Hashes the password before inserting it into the database 
+  3. GET /users/{id}
+      * Fetches a single user by its ID, retutning all fields except the password
+    
+---
 
+## **Technologies Used**
+- Frontend: (to be added)
+- Backend: FastAPI, Uvicorn
+- Database: PostgreSQL
  
