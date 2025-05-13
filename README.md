@@ -56,10 +56,10 @@ You can test the backend API by using Postman or by visiting the interactive API
 ## **API Documentation**
 The backend exposes several endpoints to manage posts and users. Other functionality will be added in the future (i.e. commentting on posts, liking posts, friendships with other users)
 
-# Base URL:
+### Base URL:
 http://127.0.0.1:8000
 
-# Endpoints:
+### Endpoints:
 - Posts
    1. GET /posts
       * Fetches a list of all posts
