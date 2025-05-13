@@ -42,7 +42,6 @@ To get started with this project, follow the steps below:
    ```bash
    uvicorn app.main:app --reload
 6. The API will be available at
-   ```bash
    http://127.0.0.1:8000
 
 ---
@@ -51,7 +50,24 @@ To get started with this project, follow the steps below:
 You can test the backend API by using Postman or by visiting the interactive API docs provided by FastAPI:
 * Swagger UI: http://127.0.0.1:8000/docs
 * ReDoc: http://127.0.0.1:8000/redoc
-   
-   
+
+---
+
+## **API Documentation**
+The backend exposes several endpoints to manage posts and users. Other functionality will be added in the future (i.e. commentting on posts, liking posts, friendships with other users)
+
+# Base URL:
+http://127.0.0.1:8000
+
+# Endpoints:
+* Posts
+   1. GET /posts
+   2. POST / posts
+   3. GET /posts/{id}
+   4. DELETE /posts/{id}
+   5. PUT /posts/{id}
+* Users
+  1. POST /users
+  2. GET /users/{id}
 
  
