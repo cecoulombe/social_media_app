@@ -5,10 +5,13 @@ from app import utils;
 from app.database import get_db;
 import psycopg2;
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/users",
+    tags=['Users']
+)
 
 # Create a new user
-@router.post("/users", status_code=status.HTTP_201_CREATED)
+@router.post("/", status_code=status.HTTP_201_CREATED)
 def create_user(user: sch.UserCreate):
     conn, cursor = get_db()
     try:
@@ -29,7 +32,7 @@ def create_user(user: sch.UserCreate):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail = f"Unexpected error: {str(e)}")
     
 # Retreive the information from a specific user based on id
-@router.get("/users/{id}")
+@router.get("/{id}")
 def get_user(id: int):
     conn, cursor = get_db()
     cursor.execute("""SELECT * FROM users WHERE id = %s""", (str(id),))

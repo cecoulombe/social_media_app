@@ -3,11 +3,14 @@ from fastapi import Body, FastAPI, Response, status, HTTPException, APIRouter
 from app import schema as sch;
 from app.database import get_db;
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/posts",
+    tags=['Posts']
+)
 
 
 # Get all of the posts from the database
-@router.get("/posts")
+@router.get("/")
 def get_posts():
     conn, cursor = get_db()
 
@@ -16,7 +19,7 @@ def get_posts():
     return {"data": posts}
 
 # Create a brand new post
-@router.post("/posts", status_code=status.HTTP_201_CREATED)
+@router.post("/", status_code=status.HTTP_201_CREATED)
 def create_posts(post: sch.Post):
     conn, cursor = get_db()
 
@@ -26,7 +29,7 @@ def create_posts(post: sch.Post):
     return {"data": new_post}
 
 # Get a single post based on the passed id
-@router.get("/posts/{id}")
+@router.get("/{id}")
 def get_post(id: int):
     conn, cursor = get_db()
 
@@ -38,7 +41,7 @@ def get_post(id: int):
     return {"data": post}
 
 # Delete a post based on the passed id
-@router.delete("/posts/{id}")
+@router.delete("/{id}")
 def delete_post(id:int):
     conn, cursor = get_db()
 
@@ -51,7 +54,7 @@ def delete_post(id:int):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 # Update a post based on id
-@router.put("/posts/{id}")
+@router.put("/{id}")
 def update_post(id: int, post: sch.Post):
     conn, cursor = get_db()
     
