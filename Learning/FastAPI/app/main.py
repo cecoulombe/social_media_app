@@ -1,5 +1,5 @@
 from fastapi import Body, FastAPI, Response, status, HTTPException
-from app.routers import post, user, auth;
+from app.routers import post, user, auth
 
 
 # Create a FastAPI application

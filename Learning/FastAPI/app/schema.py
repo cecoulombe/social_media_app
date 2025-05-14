@@ -1,5 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel, EmailStr
+from typing import Optional
 
 # ----------------------- SCHEMA -----------------------
 # schema used to manage post data 
@@ -23,3 +24,12 @@ class UserOut(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
+# schema used to verify token format
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+# schema used to format the incoming token's data
+class TokenData(BaseModel):
+    id: Optional[int] = None

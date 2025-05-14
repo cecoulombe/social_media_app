@@ -1,6 +1,5 @@
 # Includes utility functions such as hashing
-
-from passlib.context import CryptContext;
+from passlib.context import CryptContext
 
 # defining the setting for hashing passwords
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
