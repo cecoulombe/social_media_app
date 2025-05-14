@@ -1,7 +1,8 @@
 # Path operations converning posts
-from fastapi import Body, FastAPI, Response, status, HTTPException, APIRouter
-from app import schema as sch;
-from app.database import get_db;
+from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter
+from app import schema as sch
+from app import oauth2
+from app.database import get_db
 
 router = APIRouter(
     prefix="/posts",
@@ -11,16 +12,16 @@ router = APIRouter(
 
 # Get all of the posts from the database
 @router.get("/")
-def get_posts():
+def get_posts(current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
 
     cursor.execute("""SELECT * FROM posts""")
     posts = cursor.fetchall()
     return {"data": posts}
 
-# Create a brand new post
+# Create a brand new post with a dependency on having a valid log in token
 @router.post("/", status_code=status.HTTP_201_CREATED)
-def create_posts(post: sch.Post):
+def create_posts(post: sch.Post, current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
 
     cursor.execute("""INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING *""", (post.title, post.content, post.published))
@@ -30,7 +31,7 @@ def create_posts(post: sch.Post):
 
 # Get a single post based on the passed id
 @router.get("/{id}")
-def get_post(id: int):
+def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
 
     cursor.execute("""SELECT * FROM posts WHERE id = %s""", (str(id),))
@@ -42,7 +43,7 @@ def get_post(id: int):
 
 # Delete a post based on the passed id
 @router.delete("/{id}")
-def delete_post(id:int):
+def delete_post(id:int, current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
 
     cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING *""", (str(id),))
@@ -55,7 +56,7 @@ def delete_post(id:int):
 
 # Update a post based on id
 @router.put("/{id}")
-def update_post(id: int, post: sch.Post):
+def update_post(id: int, post: sch.Post, current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
     
     cursor.execute("""UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *""", (post.title, post.content, post.published, str(id),))

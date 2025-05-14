@@ -1,9 +1,9 @@
 # Path operations converning users
 from fastapi import Body, FastAPI, Response, status, HTTPException, APIRouter
-from app import schema as sch;
-from app import utils;
-from app.database import get_db;
-import psycopg2;
+from app import schema as sch
+from app import utils
+from app.database import get_db
+import psycopg2
 
 router = APIRouter(
     prefix="/users",
