@@ -47,6 +47,11 @@ def delete_post(id:int, current_user: int = Depends(oauth2.get_current_user)):
 
     cursor.execute("""SELECT user_id FROM posts WHERE id = %s""", (str(id),))
     user_id = cursor.fetchone()
+    if not user_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"post with id: {id} was not found")
+
+
     if user_id["user_id"] != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
 
@@ -65,6 +70,10 @@ def update_post(id: int, post: sch.PostCreate, current_user: int = Depends(oauth
 
     cursor.execute("""SELECT user_id FROM posts WHERE id = %s""", (str(id),))
     user_id = cursor.fetchone()
+    if not user_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"post with id: {id} was not found")
+
     if user_id["user_id"] != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
     
