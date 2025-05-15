@@ -8,9 +8,8 @@ def get_db():
         conn = psycopg2.connect(host='localhost', 
                                 database='fastapi', 
                                 user='postgres', 
-                                password='12345678', 
-                                cursor_factory=RealDictCursor)
-        cursor = conn.cursor()
+                                password='12345678') 
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
         print("Database connection was successful")
         return conn, cursor
     except Exception as error:

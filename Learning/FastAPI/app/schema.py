@@ -3,11 +3,21 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 # ----------------------- SCHEMA -----------------------
-# schema used to manage post data 
-class Post(BaseModel):  #this will expand the basemodel from pydantic
+# schema for generic posts
+class PostBase(BaseModel):
     title: str
     content: str
-    published: bool = True     # this gives a default value if the user doesn't enter a value (makes it optional)
+    published: bool = True
+
+# schema for creating a post
+class PostCreate(PostBase):
+    pass
+
+# schema used to manage post data 
+class Post(PostBase): 
+    id: int
+    created_at: datetime
+    user_id: int
 
 # schema used to create user data
 class UserCreate(BaseModel):
