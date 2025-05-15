@@ -45,6 +45,11 @@ def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
 def delete_post(id:int, current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
 
+    cursor.execute("""SELECT user_id FROM posts WHERE id = %s""", (str(id),))
+    user_id = cursor.fetchone()
+    if user_id["user_id"] != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
+
     cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING *""", (str(id),))
     deleted = cursor.fetchone()
     if not deleted:
@@ -57,6 +62,11 @@ def delete_post(id:int, current_user: int = Depends(oauth2.get_current_user)):
 @router.put("/{id}")
 def update_post(id: int, post: sch.PostCreate, current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
+
+    cursor.execute("""SELECT user_id FROM posts WHERE id = %s""", (str(id),))
+    user_id = cursor.fetchone()
+    if user_id["user_id"] != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
     
     cursor.execute("""UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *""", (post.title, post.content, post.published, str(id),))
     updated = cursor.fetchone()
