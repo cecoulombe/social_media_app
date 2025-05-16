@@ -2,23 +2,9 @@ from datetime import datetime
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 
-# ----------------------- SCHEMA -----------------------
-# schema for generic posts
-class PostBase(BaseModel):
-    title: str
-    content: str
-    published: bool = True
+#  TODO after completing the tutorial, drop the title field and add an optional mixed media field
 
-# schema for creating a post
-class PostCreate(PostBase):
-    pass
-
-# schema used to manage post data 
-class Post(PostBase): 
-    id: int
-    created_at: datetime
-    user_id: int
-
+# ----------------------- USER SCHEMA -----------------------
 # schema used to create user data
 class UserCreate(BaseModel):
     email: EmailStr
@@ -35,6 +21,25 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
+# ----------------------- POST SCHEMA -----------------------
+# schema for generic posts
+class PostBase(BaseModel):
+    title: str
+    content: str
+    published: bool = True
+
+# schema for creating a post
+class PostCreate(PostBase):
+    pass
+
+# schema used to manage post data 
+class Post(PostBase): 
+    id: int
+    created_at: datetime
+    user_id: int
+    author: UserOut
+
+# ----------------------- TOKEN SCHEMA -----------------------
 # schema used to verify token format
 class Token(BaseModel):
     access_token: str

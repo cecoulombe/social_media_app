@@ -9,14 +9,42 @@ router = APIRouter(
     tags=['Posts']
 )
 
-# Get all of the posts from the database
+# TODO currently returning the email of the post creator but change that to the user/display name instead
+
+# Get all of the posts from the database and return the username for the creator of the post
+# Note: because this is a social media, posts are public and therefore getting posts will return everyone's posts; however, this would be changed for a private app such as a note taking app.
 @router.get("/")
 def get_posts(current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
 
-    cursor.execute("""SELECT * FROM posts""")
+    cursor.execute("""SELECT posts.*,
+                   users.id AS author_id,
+                   users.email AS author_email,
+                   users.created_at AS author_created_at
+                   FROM posts 
+                   JOIN users ON posts.user_id = users.id""")
     posts = cursor.fetchall()
-    return {"data": [sch.Post(**post) for post in posts]}
+
+    result = []
+    for post in posts:
+        post_dict = dict(post)
+
+        # Create nested author object that is expected by sch.Post
+        author_data = {
+            "id": post_dict["author_id"],
+            "email": post_dict["author_email"],
+            "created_at": post_dict["author_created_at"]
+        }
+        post_dict["author"] = author_data
+
+        # remove the flattened author fields to avoid conflict
+        del post_dict["author_id"]
+        del post_dict["author_email"]
+        del post_dict["author_created_at"]
+
+        result.append(sch.Post(**post_dict))
+
+    return {"data": result}
 
 # Create a brand new post with a dependency on having a valid log in token
 @router.post("/", status_code=status.HTTP_201_CREATED)
@@ -28,7 +56,7 @@ def create_posts(post: sch.PostCreate, current_user: int = Depends(oauth2.get_cu
     conn.commit()   # changes made to the database must be committed deliberately
     return {"data": sch.Post(**new_post)}
 
-# Get a single post based on the passed id
+# Get a single post based on the passed id and return the username for the creator of the post
 @router.get("/{id}")
 def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
