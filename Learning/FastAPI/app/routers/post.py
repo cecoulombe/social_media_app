@@ -61,12 +61,32 @@ def create_posts(post: sch.PostCreate, current_user: int = Depends(oauth2.get_cu
 def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
 
-    cursor.execute("""SELECT * FROM posts WHERE id = %s""", (str(id),))
+    cursor.execute("""SELECT posts.*,
+                   users.id AS author_id,
+                   users.email AS author_email,
+                   users.created_at AS author_created_at
+                   FROM posts
+                   JOIN users on posts.user_id = users.id
+                   WHERE posts.id = %s""", (str(id),))
     post = cursor.fetchone()
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"post with id: {id} was not found")
-    return {"data": sch.Post(**post)}
+    
+    post_dict = dict(post)
+    author_data = {
+        "id": post_dict["author_id"],
+        "email": post_dict["author_email"],
+        "created_at": post_dict["author_created_at"]
+    }
+    post_dict["author"] = author_data
+
+    # remove the flattened author fields to avoid conflict
+    del post_dict["author_id"]
+    del post_dict["author_email"]
+    del post_dict["author_created_at"]
+
+    return {"data": sch.Post(**post_dict)}
 
 # Delete a post based on the passed id
 @router.delete("/{id}")
