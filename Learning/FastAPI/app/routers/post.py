@@ -17,6 +17,7 @@ router = APIRouter(
 def get_posts(current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
 
+    # create a relationship between the post and the author of the post
     cursor.execute("""SELECT posts.*,
                    users.id AS author_id,
                    users.email AS author_email,
@@ -61,6 +62,7 @@ def create_posts(post: sch.PostCreate, current_user: int = Depends(oauth2.get_cu
 def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
 
+    # create a relationship between the post and the author of the post
     cursor.execute("""SELECT posts.*,
                    users.id AS author_id,
                    users.email AS author_email,
