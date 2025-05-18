@@ -4,13 +4,14 @@ from app import schema as sch
 from fastapi import Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from app.database import get_db
+from app.config import settings
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 # Secret key created by running "openssl rand -hex 32" in the terminal
-SECRET_KEY = "413dff673db70dd2e7cc4b1145fc308f8b3d1c8fcaf2ee50829b27029c1cec5c"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+SECRET_KEY = settings.secret_key
+ALGORITHM = settings.algorithm
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
 
 # Create and return a new access token
 def create_access_token(data: dict):

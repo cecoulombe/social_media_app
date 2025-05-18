@@ -1,4 +1,5 @@
 # Path operations converning posts
+from typing import Optional
 from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter
 from app import schema as sch
 from app import oauth2
@@ -10,20 +11,36 @@ router = APIRouter(
 )
 
 # TODO currently returning the email of the post creator but change that to the user/display name instead
+# TODO the title field will be dropped from the schema so the title search needs to be changed to searching content
 
 # Get all of the posts from the database and return the username for the creator of the post
 # Note: because this is a social media, posts are public and therefore getting posts will return everyone's posts; however, this would be changed for a private app such as a note taking app.
+# Query parameters: specify the number of posts they want to retrieve, the number of posts to skip (for pagenation), and content search
 @router.get("/")
-def get_posts(current_user: int = Depends(oauth2.get_current_user)):
+def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int = 10, skip: int = 0, search: Optional[str] = None):
     conn, cursor = get_db()
 
-    # create a relationship between the post and the author of the post
-    cursor.execute("""SELECT posts.*,
-                   users.id AS author_id,
-                   users.email AS author_email,
-                   users.created_at AS author_created_at
-                   FROM posts 
-                   JOIN users ON posts.user_id = users.id""")
+    if search:
+        # create a relationship between the post and the author of the post
+        cursor.execute("""SELECT posts.*,
+                    users.id AS author_id,
+                    users.email AS author_email,
+                    users.created_at AS author_created_at
+                    FROM posts 
+                    JOIN users ON posts.user_id = users.id
+                    WHERE posts.title ILIKE %s
+                    ORDER BY posts.created_at DESC
+                    LIMIT %s OFFSET %s""", (f"%{search}%", limit, skip,))
+    else:
+        cursor.execute("""SELECT posts.*,
+                    users.id AS author_id,
+                    users.email AS author_email,
+                    users.created_at AS author_created_at
+                    FROM posts 
+                    JOIN users ON posts.user_id = users.id
+                    ORDER BY posts.id ASC
+                    LIMIT %s OFFSET %s""", (limit, skip,))
+        
     posts = cursor.fetchall()
 
     result = []
@@ -55,7 +72,7 @@ def create_posts(post: sch.PostCreate, current_user: int = Depends(oauth2.get_cu
     cursor.execute("""INSERT INTO posts (title, content, published, user_id) VALUES (%s, %s, %s, %s) RETURNING *""", (post.title, post.content, post.published, current_user.id))
     new_post = cursor.fetchone()
     conn.commit()   # changes made to the database must be committed deliberately
-    return {"data": sch.Post(**new_post)}
+    return {"data": sch.PostCreate(**new_post)}
 
 # Get a single post based on the passed id and return the username for the creator of the post
 @router.get("/{id}")
