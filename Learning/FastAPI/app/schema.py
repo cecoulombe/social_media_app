@@ -40,6 +40,10 @@ class Post(PostBase):
     user_id: int
     author: UserOut
 
+# schema used to manage post data 
+class PostOut(Post): 
+    like_count: int
+
 # ----------------------- TOKEN SCHEMA -----------------------
 # schema used to verify token format
 class Token(BaseModel):
