@@ -1,5 +1,6 @@
 from datetime import datetime
-from pydantic import BaseModel, EmailStr
+from enum import Enum
+from pydantic import BaseModel, EmailStr, conint
 from typing import Optional
 
 #  TODO after completing the tutorial, drop the title field and add an optional mixed media field
@@ -48,3 +49,12 @@ class Token(BaseModel):
 # schema used to format the incoming token's data
 class TokenData(BaseModel):
     id: Optional[int] = None
+
+# ----------------------- LIKE SCHEMA -----------------------
+class VoteDirection(int, Enum):
+    down = 0
+    up = 1
+
+class Like(BaseModel):
+    post_id: int
+    dir: VoteDirection
