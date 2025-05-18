@@ -1,6 +1,6 @@
-from fastapi import Body, FastAPI, Response, status, HTTPException
+from fastapi import Body, FastAPI, Response, HTTPException
 from app.routers import post, user, auth
-
+from app.config import settings
 
 # Create a FastAPI application
 app = FastAPI()
