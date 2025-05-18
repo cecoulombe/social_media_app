@@ -85,7 +85,7 @@ def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
                    users.email AS author_email,
                    users.created_at AS author_created_at
                    FROM posts
-                   JOIN users on posts.user_id = users.id
+                   LEFT JOIN users ON posts.user_id = users.id
                    WHERE posts.id = %s""", (str(id),))
     post = cursor.fetchone()
     if not post:
