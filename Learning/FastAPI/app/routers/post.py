@@ -25,19 +25,25 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
         cursor.execute("""SELECT posts.*,
                     users.id AS author_id,
                     users.email AS author_email,
-                    users.created_at AS author_created_at
+                    users.created_at AS author_created_at,
+                    COUNT(likes.post_id) AS like_count
                     FROM posts 
-                    JOIN users ON posts.user_id = users.id
+                    LEFT JOIN users ON posts.user_id = users.id
+                    LEFT JOIN likes ON posts.id = likes.post_id
                     WHERE posts.title ILIKE %s
+                    GROUP BY posts.id, users.id, users.email, users.created_at
                     ORDER BY posts.created_at DESC
                     LIMIT %s OFFSET %s""", (f"%{search}%", limit, skip,))
     else:
         cursor.execute("""SELECT posts.*,
                     users.id AS author_id,
                     users.email AS author_email,
-                    users.created_at AS author_created_at
+                    users.created_at AS author_created_at,
+                    COUNT(likes.post_id) AS like_count
                     FROM posts 
                     JOIN users ON posts.user_id = users.id
+                    LEFT JOIN likes ON posts.id = likes.post_id
+                    GROUP BY posts.id, users.id, users.email, users.created_at
                     ORDER BY posts.id ASC
                     LIMIT %s OFFSET %s""", (limit, skip,))
         
@@ -60,7 +66,7 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
         del post_dict["author_email"]
         del post_dict["author_created_at"]
 
-        result.append(sch.Post(**post_dict))
+        result.append(sch.PostOut(**post_dict))
 
     return {"data": result}
 
@@ -83,10 +89,14 @@ def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
     cursor.execute("""SELECT posts.*,
                    users.id AS author_id,
                    users.email AS author_email,
-                   users.created_at AS author_created_at
+                   users.created_at AS author_created_at,
+                   COUNT(likes.post_id) AS like_count
                    FROM posts
                    LEFT JOIN users ON posts.user_id = users.id
-                   WHERE posts.id = %s""", (str(id),))
+                   LEFT JOIN likes ON posts.id = likes.post_id
+                   WHERE posts.id = %s
+                   GROUP BY posts.id, users.id, users.email, users.created_at
+""", (str(id),))
     post = cursor.fetchone()
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -104,8 +114,9 @@ def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
     del post_dict["author_id"]
     del post_dict["author_email"]
     del post_dict["author_created_at"]
+    print(post_dict)
 
-    return {"data": sch.Post(**post_dict)}
+    return {"data": sch.PostOut(**post_dict)}
 
 # Delete a post based on the passed id
 @router.delete("/{id}")
@@ -150,4 +161,4 @@ def update_post(id: int, post: sch.PostCreate, current_user: int = Depends(oauth
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"post with id: {id} was not found")
     conn.commit()
-    return {"data": sch.Post(**updated)}
+    return {"data": sch.PostCreate(**updated)}
