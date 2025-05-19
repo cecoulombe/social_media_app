@@ -30,7 +30,7 @@ To get started with this project, follow the steps below:
    git clone https://github.com/cecoulombe/social-media-web-app.git
 2. Navigate to the project directory:
    ```bash
-   cd social_media_app/Learning/FastAPI
+   cd social_media_app
 3. (If needed) Create and activate a virtual environment:
    ```bash
    python3 -m venv .venv
@@ -76,6 +76,12 @@ http://127.0.0.1:8000
       * Creates a new user. Requires a JSON payload with user content. Hashes the password before inserting it into the database 
   3. GET /users/{id}
       * Fetches a single user by its ID, retutning all fields except the password
+- Auth
+  1. POST /login
+      * Verifies the attempted username and password and generates a JWT token on a successful attempt, granting the user access.
+- Like
+  1. POST /like
+      * Allows the user to add a like to a post they have not previously liked or to remove a like from a post they have already liked.
     
 ---
 
