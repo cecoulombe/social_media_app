@@ -16,8 +16,9 @@ router = APIRouter(
 # Get all of the posts from the database and return the username for the creator of the post
 # Note: because this is a social media, posts are public and therefore getting posts will return everyone's posts; however, this would be changed for a private app such as a note taking app.
 # Query parameters: specify the number of posts they want to retrieve, the number of posts to skip (for pagenation), and content search
+# TODO: right now the limit is set to 100, but you'll want to keep that a bit lower out of developement and then use pagination to get more posts
 @router.get("/")
-def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int = 10, skip: int = 0, search: Optional[str] = None):
+def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int = 100, skip: int = 0, search: Optional[str] = None):
     conn, cursor = get_db()
 
     if search:
