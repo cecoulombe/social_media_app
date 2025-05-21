@@ -1,6 +1,6 @@
 /**
- * File: posts.js
- * Description: Handles post path operations including retrieving all posts, retrieving one post, creating a new post, editing an existing post, and deleting an existing post
+ * File: users.js
+ * Description: Handles user path operations including creating a new user and retrieving the information of a single user
  * Author: Caitlin Coulombe
  * Created: 2025-05-19
  * Last Updated: 2025-05-19
@@ -18,14 +18,13 @@ const userPrefix = "http://localhost:8000/users"
  *
  * @async
  * @function newUser
- * @returns {Promise<void>} Resolves when user is created and login is complete and token is stored.
  * @throws {Error} If the network request fails or response is not OK.
  */
 async function newUser() {
     event.preventDefault();
     // hardcoded username/password for testing: replace with input from text fields for both
-    let username = "johndoe@gmail.com"
-    let password = "password12345"
+    const username = "johndoe@gmail.com"
+    const password = "password12345"
     
     try {
         const created = await createUser(username, password);

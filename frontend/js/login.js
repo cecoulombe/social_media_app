@@ -4,11 +4,6 @@
  * Author: Caitlin Coulombe
  * Created: 2025-05-19
  * Last Updated: 2025-05-19
- *
- * Usage:
- * - Called when the login form is submitted
- * - Sends a POST request to the /login endpoint with username/password
- * - Stores the JWT token for use in authenticated requests
  */
 
 "use strict";

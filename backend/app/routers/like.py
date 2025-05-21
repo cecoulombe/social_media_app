@@ -8,6 +8,7 @@ router = APIRouter(
     tags=['Like']
 )
 
+# add or remove a like based on the direction flag
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def like(like: sch.Like, current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
@@ -34,3 +35,20 @@ def like(like: sch.Like, current_user: int = Depends(oauth2.get_current_user)):
         cursor.execute("""DELETE FROM likes WHERE user_id = %s AND post_id = %s""", (current_user.id, like.post_id))
         conn.commit()
         return {"message": "successfully removed like"}
+
+
+# returns 1 is the user has liked the passed post
+@router.get("/{id}", status_code=status.HTTP_201_CREATED)
+def check_like(id:int, current_user: int = Depends(oauth2.get_current_user)):
+    conn, cursor = get_db()
+
+    # check that the targetted vote exists
+    cursor.execute("""SELECT 1 FROM posts WHERE id = %s""", (str(id),))
+    post_exists = cursor.fetchone()
+    if not post_exists:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
+    
+    # return if the post was liked by the user or not
+    cursor.execute("""SELECT 1 FROM likes WHERE user_id = %s AND post_id = %s""", (current_user.id, str(id),))
+    isLiked = cursor.fetchone()
+    return 0 if isLiked else 1
