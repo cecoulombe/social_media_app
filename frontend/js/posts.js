@@ -96,13 +96,14 @@ async function getPost() {
  * @throws {Error} If the network request fails or response is not OK.
  */
 async function createPost() {
+    event.preventDefault();
     const url = postPrefix;
 
     // TODO: get title and content from form fields
-    let title = "NEW POST FROM JS"
-    let content = "this is the content for the post created via JS"
+    const title = document.getElementById("titleInput").value;
+    const content = document.getElementById("contentInput").value;
 
-    // console.log(JSON.stringify({title, content}));
+    console.log(JSON.stringify({title, content}));
 
     try {
         const response = await fetch(url, {
