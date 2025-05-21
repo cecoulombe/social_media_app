@@ -3,7 +3,7 @@
  * Description: Handles user login and retrieves a JWT token from the backend.
  * Author: Caitlin Coulombe
  * Created: 2025-05-19
- * Last Updated: 2025-05-19
+ * Last Updated: 2025-05-20
  */
 
 "use strict";

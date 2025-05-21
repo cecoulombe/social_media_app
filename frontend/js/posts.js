@@ -3,7 +3,7 @@
  * Description: Handles post path operations including retrieving all posts, retrieving one post, creating a new post, editing an existing post, and deleting an existing post
  * Author: Caitlin Coulombe
  * Created: 2025-05-19
- * Last Updated: 2025-05-19
+ * Last Updated: 2025-05-20
  */
 
 
@@ -42,8 +42,8 @@ async function getPosts() {
         }
 
         const json = await response.json();
-        document.getElementById("displayDiv").innerHTML = JSON.stringify(json);
-        console.log(json);
+        const posts = json.data;
+        renderMultiplePosts(posts);
     }
     catch (error) {
         console.error(error.message);
@@ -78,8 +78,8 @@ async function getPost() {
         }
 
         const json = await response.json();
-        document.getElementById("displayDiv").innerHTML = JSON.stringify(json);
-        console.log(json);
+        const post = json.data;
+        renderSinglePost(post);
     }
     catch (error) {
         console.error(error.message);

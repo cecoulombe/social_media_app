@@ -3,7 +3,7 @@
  * Description: Handles user path operations including creating a new user and retrieving the information of a single user
  * Author: Caitlin Coulombe
  * Created: 2025-05-19
- * Last Updated: 2025-05-19
+ * Last Updated: 2025-05-20
  */
 
 "use strict";
