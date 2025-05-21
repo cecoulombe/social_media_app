@@ -22,9 +22,11 @@ const userPrefix = "http://localhost:8000/users"
  */
 async function newUser() {
     event.preventDefault();
-    // hardcoded username/password for testing: replace with input from text fields for both
-    const username = "johndoe@gmail.com"
-    const password = "password12345"
+
+    const username = document.getElementById("emailInput").value;
+    const password = document.getElementById("passwordInput").value;
+
+    // console.log(username, password);
     
     try {
         const created = await createUser(username, password);
@@ -70,6 +72,7 @@ async function createUser(email, password) {
         return 1;
     }
     catch (error) {
+        window.alert("Sign in attempt unsuccessful.");
         console.error(error.message);
         return 0;
     }

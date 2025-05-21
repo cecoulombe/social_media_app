@@ -20,6 +20,7 @@
     <body>
         <div class="loginButtons">
             <button id="login" onclick="loginUser()">Login</button>
+            <button id="logout" onclick="logoutUser()">Logout</button>
         </div>
         <div class="postButtons">
             <button id="getAll" onclick="getPosts()">Get posts</button>
@@ -32,12 +33,22 @@
             <button id="createUser" onclick="newUser()">Create user</button>
             <button id="getUser" onclick="getUser()">Get user</button>
         </div>
-        <div class="likeButtons">
+        <!-- <div class="likeButtons">
             <button id="likePost" onclick="likePost()">Like post</button>
-        </div>
+        </div> -->
         <div class="display">
             <p id="displayDiv"></p>
         </div>
+
+        <!-- form to create a new post -->
+         <form id="createUserForm" onsubmit="newUser()">
+            <label for="emailInput">Email</label>
+            <input type="email" id="emailInput" name="emailInput" placeholder="JaneDoe@domain.com">
+            <label for="passwordInput">Password</label>
+            <input type="password" id="passwordInput" name="passwordInput">
+
+            <input type="submit" value="Create new account">
+         </form>
 
         <!-- templates for all posts -->
          <template id="postTemplate">
@@ -57,6 +68,7 @@
          <div id="postContainer"></div>
 
         <!-- scripts -->
+         <script src="../js/onLoad.js"></script>
          <script src="../js/login.js"></script>
          <script src="../js/posts.js"></script>
          <script src="../js/users.js"></script>

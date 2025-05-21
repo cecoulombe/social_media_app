@@ -10,9 +10,6 @@
 
 const loginPrefix = "http://localhost:8000/login"
 
-let access_token;
-const token_type = "bearer";
-
 /**
  * Handles login form submission.
  * Sends a POST request to the /login endpoint using form-encoded credentials.
@@ -50,6 +47,7 @@ async function loginUser() {
 
         const json = await response.json();
         access_token = json.token.access_token;
+        localStorage.setItem("access_token", json.token.access_token);  // stores is so it can be called on refresh
 
         document.getElementById("displayDiv").innerHTML = JSON.stringify(json);
         console.log(json, access_token);
@@ -101,4 +99,15 @@ async function loginNewUser(username, password) {
     catch (error) {
         console.error(error.message)
     }
+}
+
+/**
+ * Handles logout button press.
+ * Removes the access token from local storage and refreshes the page.
+ *
+ * @function logoutUser
+ */
+function logoutUser() {
+    localStorage.removeItem("access_token");
+    window.location.href="../src/index.html"
 }
