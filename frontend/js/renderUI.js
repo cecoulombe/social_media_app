@@ -33,6 +33,11 @@ function renderMultiplePosts(posts) {
             likePost(post.id);
         });
 
+        // add an event listener to the update button
+        clone.querySelector(".updateButton").addEventListener("click", () => {
+            createUpdateForm(post.id);
+        });
+
         // add the clone to the container
         container.appendChild(clone);
 
@@ -40,7 +45,7 @@ function renderMultiplePosts(posts) {
 }
 
 // renders a single post
-function renderSinglePost(post) {
+function renderPost(post) {
     const container = document.getElementById("postContainer");
     const template = document.getElementById("postTemplate");
 
@@ -61,6 +66,11 @@ function renderSinglePost(post) {
     // add an event listener to the like button
     clone.querySelector(".likeButton").addEventListener("click", () => {
         likePost(post.id);
+    });
+
+    // add an event listener to the update button
+    clone.querySelector(".updateButton").addEventListener("click", () => {
+        createUpdateForm(post.id);
     });
 
     // add the clone to the container

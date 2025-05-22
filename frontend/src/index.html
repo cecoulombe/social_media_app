@@ -60,6 +60,17 @@
             <input type="submit" value="Create new post">
          </form>
 
+        <!-- TODO: when opening the update form, fill the values with the actual values from the post -->
+        <!-- form to update a post -->
+         <form id="updatePostForm" onsubmit="updatePost()">
+            <label form="updateTitle">Title</label>
+            <input type="text" id="updateTitle" name="updateTitle" required>
+            <label form="updateContent">Content</label>
+            <input type="text" id="updateContent" name="updateContent" required>
+
+            <input type="submit" value="Create new post">
+         </form>
+
         <!-- templates for all posts -->
          <template id="postTemplate">
             <div class="post">
@@ -72,6 +83,7 @@
                     <button class="likeButton">&lt;3</button>
                     <p class="likeCounter"></p>
                 </div>
+                <button class="updateButton">Update</button>
             </div>
          </template>
 
@@ -79,10 +91,10 @@
 
         <!-- scripts -->
          <script src="../js/onLoad.js"></script>
+         <script src="../js/renderUI.js"></script>
          <script src="../js/login.js"></script>
          <script src="../js/posts.js"></script>
          <script src="../js/users.js"></script>
          <script src="../js/like.js"></script>
-         <script src="../js/renderUI.js"></script>
         </body>
 </html>

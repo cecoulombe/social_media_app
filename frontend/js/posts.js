@@ -9,6 +9,8 @@
 
 "use strict";
 
+console.log("Posts.js loaded");
+
 const postPrefix = "http://localhost:8000/posts"
 
 /**
@@ -43,7 +45,8 @@ async function getPosts() {
 
         const json = await response.json();
         const posts = json.data;
-        renderMultiplePosts(posts);
+        // render posts - probably move this somewhere else?
+        renderMultiplePosts(posts)
     }
     catch (error) {
         console.error(error.message);
@@ -56,13 +59,10 @@ async function getPosts() {
  *
  * @async
  * @function getPost
- * @returns {Promise<void>} Resolves when post is retrieved and displayed on page.
+ * @returns {Promise<void>} Resolves when post is retrieved and returned to the caller.
  * @throws {Error} If the network request fails or response is not OK.
  */
-async function getPost() {
-    // TODO: Update id to be a form value
-    const post_id = 51;
-
+async function getPost(post_id) {
     const url = postPrefix + "/" + post_id;
 
     try {
@@ -79,7 +79,8 @@ async function getPost() {
 
         const json = await response.json();
         const post = json.data;
-        renderSinglePost(post);
+        renderPost(post);
+        return post;
     }
     catch (error) {
         console.error(error.message);
@@ -137,15 +138,12 @@ async function createPost() {
  * @returns {Promise<void>} Resolves when post is updated in the database, and displayed on page.
  * @throws {Error} If the network request fails or response is not OK.
  */
-async function updatePost() {
-    // TODO: Update id to be a form value
-    const post_id = 51;
-
+async function updatePost(post_id) {
     const url = postPrefix + "/" + post_id;
     
     // TODO: the user can change either the title and/or the content so you will need to first get the post using getPost then store the existing title and content, then let the user overwrite it (probably make the existing data into the default value and then when the form submits you'll get both the title and content without extra work back here?)
-    let title = "UPDATED POST FROM JS"
-    let content = "updated content"
+    const title = document.getElementById("updateTitle").value;
+    const content = document.getElementById("updateContent").value;
 
     // console.log(JSON.stringify({title, content}));
 
@@ -207,4 +205,27 @@ async function deletePost() {
     catch (error) {
         console.error(error.message);
     }
+}
+
+/**
+ * Fills in the existing value for the title and content and makes the form visible.
+ *
+ * @async
+ * @function createUpdateForm
+ */
+async function createUpdateForm(post_id){
+    const post = await getPost(post_id);    // show the post to be updated and get the data from the post
+    console.log(post);
+
+    document.getElementById("updateTitle").value = post.title;
+    document.getElementById("updateContent").value = post.content;
+
+    document.getElementById("updatePostForm").style.display = "block";
+
+    document.getElementById("updatePostForm").onsubmit = async (event) => {
+        event.preventDefault();
+        await updatePost(post_id);
+        getPost(post_id);   // show the updated post
+    };
+
 }
