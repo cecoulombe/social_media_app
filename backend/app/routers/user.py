@@ -1,4 +1,4 @@
-# Path operations converning users
+# Path operations concerning users
 from fastapi import Body, FastAPI, Response, status, HTTPException, APIRouter
 from app import schema as sch
 from app import utils
@@ -23,6 +23,10 @@ def create_user(user: sch.UserCreate):
         cursor.execute("""INSERT INTO users (email, password) VALUES (%s, %s) RETURNING *""", (user.email, user.password))
         new_user = cursor.fetchone()
         conn.commit()  
+
+        cursor.close()
+        conn.close()
+        
         return {"data": sch.UserOut(**new_user)}
     except psycopg2.errors.UniqueViolation:
         conn.rollback()
@@ -39,4 +43,8 @@ def get_user(id: int):
     user = cursor.fetchone()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id: {id} does not exist")
+    
+    cursor.close()
+    conn.close()
+    
     return {"data": sch.UserOut(**user)}

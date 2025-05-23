@@ -88,6 +88,48 @@ async function getPost(post_id) {
 }
 
 /**
+ * Handles logic for retrieving all posts created by the specified user.
+ * Sends a GET request to the /posts/user_id endpoint, receiving all posts from the database that match the query parameters.
+ *
+ * @async
+ * @function getUsersPosts
+ * @returns {Promise<void>} Resolves when user's posts are retrieved and displayed on page.
+ * @throws {Error} If the network request fails or response is not OK.
+ */
+async function getUserPosts() {
+    // TODO make this a parameter that is passed by the calling function
+    const user_id = 43;
+
+    // query parameters
+    // TODO: Update limit/skip to support pagination dynamically
+    const limit = 100;  
+    const skip = 0;
+
+    const url = postPrefix + "/get-user/" + user_id + "?limit=" + limit + "&skip=" + skip;
+
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${access_token}`
+            }
+        });
+
+        if(!response.ok) {
+            throw new Error('Reponse status: ${response.status}');
+        }
+
+        const json = await response.json();
+        const posts = json.data;
+        // render posts - probably move this somewhere else?
+        renderMultiplePosts(posts)
+    }
+    catch (error) {
+        console.error(error.message);
+    }
+}
+
+/**
  * Handles logic for creating and storing a new post.
  * Sends a POST request to the /posts endpoint containing the title and content for a new post.
  *

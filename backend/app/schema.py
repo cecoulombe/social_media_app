@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import Enum
 from pydantic import BaseModel, EmailStr, conint
-from typing import Optional
+from typing import List, Optional
 
 #  TODO after completing the tutorial, drop the title field and add an optional mixed media field
 
@@ -21,6 +21,11 @@ class UserOut(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
+# ----------------------- MEDIA SCHEMA -----------------------
+class MediaOut(BaseModel):
+    filename: str
+    url: str
 
 # ----------------------- POST SCHEMA -----------------------
 # schema for generic posts
@@ -43,6 +48,7 @@ class Post(PostBase):
 # schema used to manage post data 
 class PostOut(Post): 
     like_count: int
+    media: List[MediaOut]
 
 # ----------------------- TOKEN SCHEMA -----------------------
 # schema used to verify token format

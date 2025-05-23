@@ -28,12 +28,20 @@ def like(like: sch.Like, current_user: int = Depends(oauth2.get_current_user)):
             # already liked the post
         cursor.execute("""INSERT INTO likes (post_id, user_id) VALUES (%s, %s)""", (like.post_id, current_user.id))
         conn.commit()   # changes made to the database must be committed deliberately
+        
+        cursor.close()
+        conn.close()
+        
         return {"message": "successfully added like"}
     else:
         if not isLiked:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Like does not exist")
         cursor.execute("""DELETE FROM likes WHERE user_id = %s AND post_id = %s""", (current_user.id, like.post_id))
         conn.commit()
+        
+        cursor.close()
+        conn.close()
+
         return {"message": "successfully removed like"}
 
 
@@ -51,4 +59,8 @@ def check_like(id:int, current_user: int = Depends(oauth2.get_current_user)):
     # return if the post was liked by the user or not
     cursor.execute("""SELECT 1 FROM likes WHERE user_id = %s AND post_id = %s""", (current_user.id, str(id),))
     isLiked = cursor.fetchone()
+    
+    cursor.close()
+    conn.close()
+    
     return 0 if isLiked else 1
