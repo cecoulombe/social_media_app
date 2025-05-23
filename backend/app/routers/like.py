@@ -4,7 +4,6 @@ from app import oauth2
 from app.database import get_db
 
 router = APIRouter(
-    prefix="/like",
     tags=['Like']
 )
 

@@ -11,7 +11,7 @@
 
 console.log("Posts.js loaded");
 
-const postPrefix = "http://localhost:8000/posts"
+const postPrefix = "http://localhost:9000/api/posts"
 
 /**
  * Handles logic for retrieving all posts.

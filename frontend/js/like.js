@@ -9,7 +9,7 @@
 
 "use strict";
 
-const likePrefix = "http://localhost:8000/like"
+const likePrefix = "http://localhost:9000/api/likes"
 
 /**
  * Determines if a like is to be added to or removed from the post.

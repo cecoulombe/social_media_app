@@ -10,14 +10,13 @@ from app import oauth2
 from app.database import get_db
 
 router = APIRouter(
-    prefix="/api/media", 
     tags=["media"]
 )
 
 UPLOAD_DIR = "media"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-ALLOWED_CONTENT_TYPES = {"image/png", "image/jpeg", "image/gif", "video/mp4"}
+ALLOWED_CONTENT_TYPES = {"image/png", "image/jpg", "image/jpeg", "image/gif"}   # for now just allowing still images, not mov or mp4 (big and expensive)
 
 # for uploading a media file: 
 @router.post("/upload/{post_id}", status_code=status.HTTP_201_CREATED)

@@ -6,7 +6,6 @@ from app.database import get_db
 import psycopg2
 
 router = APIRouter(
-    prefix="/users",
     tags=['Users']
 )
 

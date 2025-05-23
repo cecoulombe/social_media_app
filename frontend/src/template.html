@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Author: Caitlin Coulombe, caitlincoulombe@gmail.com -->
+        <!-- Date: 2025/23/05 -->
+    </head>
+
+    <body>
+        <!-- templates for all posts -->
+         <template id="postTemplate">
+            <div class="post">
+                <div class="headerDiv">
+                    <h2 class="postTitle"></h2>
+                    <p class="postAuthor"></p>
+                </div>
+                <div class="contentDiv">
+                    <div class="media"></div>
+                    <p class="content"></p>
+                </div>
+                <div class="likeDiv">
+                    <button class="likeButton">&lt;3</button>
+                    <p class="likeCounter"></p>
+                </div>
+                <button class="updateButton">Update</button>
+            </div>
+         </template>
+
+         <div id="postContainer"></div>
+
+        <!-- scripts -->
+         <script src="../js/renderUI.js"></script>
+        </body>
+</html>

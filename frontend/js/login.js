@@ -8,7 +8,7 @@
 
 "use strict";
 
-const loginPrefix = "http://localhost:8000/login"
+const loginPrefix = "http://localhost:9000/api/login"
 
 /**
  * Handles login form submission.

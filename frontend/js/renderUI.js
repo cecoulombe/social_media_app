@@ -8,10 +8,24 @@
 
 "use strict";
 
+let postTemplate = null;
+
+// load the template from template.html
+async function loadTemplate() {
+    if(!postTemplate) {
+        const res = await fetch("../src/template.html");
+        const html = await res.text();
+        const container = document.createElement('div');
+        container.innerHTML = html;
+        postTemplate = container.querySelector("#postTemplate");
+    }
+}
+
 // renders multiple posts
-function renderMultiplePosts(posts) {
+async function renderMultiplePosts(posts) {
+    await loadTemplate();
+
     const container = document.getElementById("postContainer");
-    const template = document.getElementById("postTemplate");
 
     // clear any old posts
     container.innerHTML = "";
@@ -27,6 +41,21 @@ function renderMultiplePosts(posts) {
         clone.querySelector(".postAuthor").textContent = post.author.email; // change this to be the display name
         clone.querySelector(".content").textContent = post.content;
         clone.querySelector(".likeCounter").textContent = post.like_count;
+
+        // if there is media, add it
+        if(post.media && post.media.length > 0) {
+            // add images to the post (no movies/videos allowed as of right now)
+            post.media.forEach((mediaItem) => {
+                const img = document.createElement("img");
+                img.src = "../../backend/" + mediaItem.url;
+                img.alt = mediaItem.filename;
+                img.style.maxWidth = '200px';   // get rid of this after creating the css
+                clone.querySelector(".media").appendChild(img);
+            });
+
+        } else {
+            console.log("No media for post: " + post.id)
+        }
 
         // add an event listener to the like button
         clone.querySelector(".likeButton").addEventListener("click", () => {
@@ -45,7 +74,9 @@ function renderMultiplePosts(posts) {
 }
 
 // renders a single post
-function renderPost(post) {
+async function renderPost(post) {
+    await loadTemplate();
+
     const container = document.getElementById("postContainer");
     const template = document.getElementById("postTemplate");
 
@@ -62,6 +93,14 @@ function renderPost(post) {
     clone.querySelector(".postAuthor").textContent = post.author.email; // change this to be the display name
     clone.querySelector(".content").textContent = post.content;
     clone.querySelector(".likeCounter").textContent = post.like_count;
+
+    // if there is media, add it
+    if(post.media && post.media.length > 0)
+    {
+        clone.querySelector(".media").textContent = "There is media";
+    } else {
+        clone.querySelector(".media").textContent = "No media";
+    }
 
     // add an event listener to the like button
     clone.querySelector(".likeButton").addEventListener("click", () => {
