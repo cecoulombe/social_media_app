@@ -65,6 +65,14 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
         del post_dict["author_email"]
         del post_dict["author_created_at"]
 
+        # get all of the media for the post and then attach it to the output
+        cursor.execute("""SELECT filename, filepath FROM files WHERE post_id = %s""", (post_dict["id"],))
+        media_rows = cursor.fetchall()
+        media_list = [{"filename": row["filename"], "url": row["filepath"]} for row in media_rows]
+        # media_list = [{"filename": row[0], "url": row[1]} for row in media_rows]
+        
+        post_dict["media"] = media_list
+
         result.append(sch.PostOut(**post_dict))
 
     cursor.close()
@@ -115,6 +123,14 @@ def get_posts(user_id: int, current_user: int = Depends(oauth2.get_current_user)
         del post_dict["author_id"]
         del post_dict["author_email"]
         del post_dict["author_created_at"]
+
+        # get all of the media for the post and then attach it to the output
+        cursor.execute("""SELECT filename, filepath FROM files WHERE post_id = %s""", (post_dict["id"],))
+        media_rows = cursor.fetchall()
+        media_list = [{"filename": row["filename"], "url": row["filepath"]} for row in media_rows]
+        # media_list = [{"filename": row[0], "url": row[1]} for row in media_rows]
+        
+        post_dict["media"] = media_list
 
         result.append(sch.PostOut(**post_dict))
 
