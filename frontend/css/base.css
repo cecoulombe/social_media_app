@@ -12,6 +12,8 @@ body {
     line-height: 1.6;
     background-color: var(--colour-background);
     color: var(--colour-text);
+    width: 100%;
+    height: 100%;
 }
 
 /* ------------------------ VARIABLES ------------------------ */
@@ -49,6 +51,11 @@ body {
     --radius-sm: 5px;
     --radius-base: 10px;
     --radius-lg: 15px;
+
+    /* BORDER SIZE */
+    --border-thin: 1px;
+    --border-base: 2px;
+    --border-thick: 4px;
 }
 
 /* ------------------------ GLOBAL ELEMENT STYLES ------------------------ */
@@ -71,12 +78,21 @@ button:hover {
     background-color: var(--colour-primary-dark)
 }
 
-input, textarea, select {
+input:not(.submit), 
+textarea, 
+select {
     font: inherit;
     padding: var(--spacing-sm);
-    border: 1px solid #cccccc;
+    border: var(--border-thin) solid #cccccc;
     border-radius: var(--radius-sm);
     width: 100%;
+}
+
+input.submit {
+    font: inherit;
+    padding: var(--spacing-sm);
+    border: var(--border-thin) solid #cccccc;
+    border-radius: var(--radius-sm);
 }
 
 input:not(:placeholder-shown):invalid {

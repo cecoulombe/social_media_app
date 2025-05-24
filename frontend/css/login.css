@@ -1,17 +1,66 @@
-/* ------------------ CONTENT DIV ------------------ */
+/* ------------------ FLEX CONTAINER ------------------ */
 .content {
     display: flex;
     flex-direction: column;
+    height: 100vh;
+}
+
+.flex-container {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .flex-item {
     flex: 1;
+    padding: var(--spacing-xl);
+    margin: var(--spacing-xl) 0;
 }
 
-/* -------------- LOGIN -------------- */
+/* -------------- FORMS -------------- */
+#login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: var(--border-thin) solid #000000;
+}
 
-/* -------- CREATE NEW ACCOUNT ------- */
+#createNewAccount {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
+#loginForm,
+#newAccountForm {
+    max-width: 80%; 
+}
 
+input {
+    margin: auto auto var(--spacing-md) auto;
+}
+
+label {
+    width: 100%;
+}
+
+.matchingLabel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.matching {
+    display: none;
+    color: red;
+    justify-self: end;
+}
 
 /* later on - add media queries for mobile? as or right now, everything is for desktop */
