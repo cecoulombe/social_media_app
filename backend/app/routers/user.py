@@ -34,7 +34,22 @@ def create_user(user: sch.UserCreate):
         conn.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail = f"Unexpected error: {str(e)}")
     
+
 # Retreive the information from a specific user based on id
+@router.get("/get-user/{email}")
+def get_user(email: str):
+    conn, cursor = get_db()
+    cursor.execute("""SELECT 1 FROM users WHERE email = %s""", (email,))
+    user = cursor.fetchone()
+    if not user:
+        return 0
+
+    cursor.close()
+    conn.close()
+    
+    return 1
+
+# Retreive the information from a specific user based on email
 @router.get("/{id}")
 def get_user(id: int):
     conn, cursor = get_db()

@@ -13,7 +13,7 @@ let postTemplate = null;
 // load the template from template.html
 async function loadTemplate() {
     if(!postTemplate) {
-        const res = await fetch("../src/template.html");
+        const res = await fetch("/src/template.html");
         const html = await res.text();
         const container = document.createElement('div');
         container.innerHTML = html;
@@ -32,7 +32,7 @@ async function renderMultiplePosts(posts) {
 
     posts.forEach(post => {
         // clone the template
-        const clone = template.content.cloneNode(true);
+        const clone = postTemplate.content.cloneNode(true);
         clone.id = post.id;
         console.log(post.id);
 
@@ -47,7 +47,9 @@ async function renderMultiplePosts(posts) {
             // add images to the post (no movies/videos allowed as of right now)
             post.media.forEach((mediaItem) => {
                 const img = document.createElement("img");
-                img.src = "../../backend/" + mediaItem.url;
+                console.log(mediaItem.url);
+                img.src = "http://localhost:9000/" + mediaItem.url;
+                console.log(img.src);
                 img.alt = mediaItem.filename;
                 img.style.maxWidth = '200px';   // get rid of this after creating the css
                 clone.querySelector(".media").appendChild(img);

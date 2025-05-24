@@ -10,6 +10,8 @@ app = FastAPI()
 
 frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../frontend"))
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MEDIA_DIR = os.path.join(BASE_DIR, "media")
 
 # Include API routers first
 app.include_router(post.router, prefix="/api/posts")
