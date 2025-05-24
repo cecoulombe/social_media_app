@@ -14,36 +14,37 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- stylesheets -->
-        
+        <link rel="stylesheet" href="../css/base.css">
+        <link rel="stylesheet" href="../css/login.css">
     </head>
 
     <body>
-        <div id="login">
-            <form id="loginForm">
-                <label for="loginEmail">Enter your email below</label>
-                <input type="email" id="loginEmail" name="loginEmail" required>
-                <label for="loginPassword">Enter your password below</label>
-                <input type="password" id="loginPassword" name="loginPassword">
-                <input type="submit" value="LOGIN">
-            </form>
-        </div>
+        <div class="content">
+            <div id="login" class="flex-item">
+                <form id="loginForm">
+                    <label for="loginEmail">Enter your email below</label>
+                    <input type="email" id="loginEmail" name="loginEmail" required>
+                    <label for="loginPassword">Enter your password below</label>
+                    <input type="password" id="loginPassword" name="loginPassword">
+                    <input type="submit" value="LOGIN">
+                </form>
+            </div>
 
-        <p>   </p>
-
-        <div id="createNewAccount">
-            <form id="newAccountForm">
-                <label for="createDisplayName">Enter a display name</label>
-                <input type="text" id="createDisplayName" name="createDisplayName">
-                <label for="createEmail">Enter your email below</label>
-                <input type="email" id="createEmail" name="createEmail" required>
-                <label for="confirmEmail">Confirm your email address</label>
-                <input type="email" id="confirmEmail" name="confirmEmail" required>
-                <label for="createPassword">Enter your password below</label>
-                <input type="password" id="createPassword" name="createPassword">
-                <label for="confirmPassword">Confirm your password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword">
-                <input type="submit" value="CREATE ACCOUNT">
-            </form>
+            <div id="createNewAccount" class="flex-item">
+                <form id="newAccountForm">
+                    <label for="createDisplayName">Enter a display name</label>
+                    <input type="text" id="createDisplayName" name="createDisplayName">
+                    <label for="createEmail">Enter your email below</label>
+                    <input type="email" id="createEmail" name="createEmail" required>
+                    <label for="confirmEmail">Confirm your email address</label>
+                    <input type="email" id="confirmEmail" name="confirmEmail" required>
+                    <label for="createPassword">Enter your password below</label>
+                    <input type="password" id="createPassword" name="createPassword">
+                    <label for="confirmPassword">Confirm your password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword">
+                    <input type="submit" value="CREATE ACCOUNT">
+                </form>
+            </div>
         </div>
         <!-- scripts -->
          <script src="../js/login.js"></script>

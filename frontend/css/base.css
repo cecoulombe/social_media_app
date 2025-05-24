@@ -1,0 +1,99 @@
+/* ------------------------ CSS RESET ------------------------ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family:'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
+    line-height: 1.6;
+    background-color: var(--colour-background);
+    color: var(--colour-text);
+}
+
+/* ------------------------ VARIABLES ------------------------ */
+:root {
+    /* COLOURS */
+    --colour-background: #FFFFFF;
+    --colour-background-alt: #000000;
+    --colour-text: #000000;
+    --colour-txt-alt: #ffffff;
+    --colour-primary: #1600e0;
+    --colour-primary-dark: #0c0078;
+    --colour-primary-light: #978cff;
+    --colour-secondary: #00e068;
+    --colour-secondary-dark: #007866;
+    --colour-secondary-light: #8cffe4;
+    --colour-invalid: #ff000050;
+    --colour-invalid-border: #98000050;
+
+    /* FONT SIZES */
+    --font-xs: 0.75rem;
+    --font-s: 0.875rem;
+    --font-base: 1rem;
+    --font-large: 1.25rem;
+    --font-xl: 1.5rem;
+    --font-xxl: 2rem;
+
+    /* SPACING */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* BORDER RADIUS */
+    --radius-sm: 5px;
+    --radius-base: 10px;
+    --radius-lg: 15px;
+}
+
+/* ------------------------ GLOBAL ELEMENT STYLES ------------------------ */
+a {
+    color: var(--colour-text);
+    text-decoration: none;
+}
+
+button {
+    font: inherit;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: var(--colour-primary);
+    color: var(--colour-text);
+    border: none;
+    border-radius: var(--radius-base);
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--colour-primary-dark)
+}
+
+input, textarea, select {
+    font: inherit;
+    padding: var(--spacing-sm);
+    border: 1px solid #cccccc;
+    border-radius: var(--radius-sm);
+    width: 100%;
+}
+
+input:not(:placeholder-shown):invalid {
+    background-color: var(--colour-invalid);
+    border-color: var(--colour-invalid-border);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: var(--colour-text);
+}
+
+p {
+    color: var(--colour-text);
+}
+
+/* ------------------------ GLOBAL ELEMENT STYLES ------------------------ */
+.text-center {
+    text-align: center;
+}

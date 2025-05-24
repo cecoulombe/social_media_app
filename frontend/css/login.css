@@ -1,0 +1,17 @@
+/* ------------------ CONTENT DIV ------------------ */
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-item {
+    flex: 1;
+}
+
+/* -------------- LOGIN -------------- */
+
+/* -------- CREATE NEW ACCOUNT ------- */
+
+
+
+/* later on - add media queries for mobile? as or right now, everything is for desktop */
