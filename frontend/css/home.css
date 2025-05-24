@@ -1,0 +1,67 @@
+/* ------------------ CONTENT ------------------ */
+.content {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* ----------- NAVIGATION ----------- */
+#navBanner {
+    /* flex: 1; */
+    height: auto;
+    width: 100%;
+    align-items: center;
+    background-color: blue;
+    position: sticky;
+}
+
+#navList {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    /* justify-content: space-around; */
+    align-items: center;
+}
+
+.navItem {
+    flex: 1;
+    width: auto;
+    margin: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background-color: yellow;
+    font-size: var(--font-xl);
+    border-radius: var(--radius-sm);
+}
+
+#searchBarContainer {
+    flex: 3;
+    padding: 0;
+}
+
+#searchForm {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+#searchBar {
+    font: inherit;
+    padding: var(--spacing-sm);
+    margin: 0 var(--spacing-sm) 0 0;
+    border: var(--border-thin) solid #cccccc;
+    border-radius: var(--radius-sm);
+}
+
+#submit {
+    max-width: 20%;
+    padding: 0;
+}
+
+/* -------------- FEED -------------- */
+#postsContainer {
+    flex: 1;
+    background-color: green;
+}
+
+/* later on - add media queries for mobile? as or right now, everything is for desktop */

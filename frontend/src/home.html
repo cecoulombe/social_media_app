@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Author: Caitlin Coulombe, caitlincoulombe@gmail.com -->
+        <!-- Date: 2025/19/05 -->
+        <meta name="author" content="Caitlin Coulombe">
+        <title>Social Media App</title>
+
+        <meta charset="UTF-8">
+
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- stylesheets -->
+        <link rel="stylesheet" href="../css/base.css">
+        <link rel="stylesheet" href="../css/home.css">
+    </head>
+
+    <body>
+        <div class="content">
+            <nav id="navBanner">
+                <ul id="navList">
+                    <a href="#home.html" id="home" class="navItem text-center"><li>Home</li></a>
+                    <!-- TODO search bar is visible but not implemented - add it in to retrieve users -->
+                    <a href="#home.html" id="searchBarContainer" class="navItem text-center">
+                        <li>
+                            <form id="searchForm">
+                                <input type="text" name="searchBar" id="searchBar" placeholder="Search">
+                                <input type="submit" id="submit">
+                            </form>
+                        </li>
+                    </a>
+                    <a href="#home.html" id="createPost" class="navItem text-center"><li>Create Post</li></a>
+                    <a href="#home.html" id="myAccount" class="navItem text-center"><li>My Account</li></a>
+                </ul>
+            </nav>
+            <div id="postsContainer">
+
+            </div>
+
+        </div>
+
+        <!-- scripts -->
+         <script src="../js/onLoad.js"></script>
+         <script src="../js/renderUI.js"></script>
+         <script src="../js/logout.js"></script>
+         <script src="../js/posts.js"></script>
+         <script src="../js/users.js"></script>
+         <script src="../js/like.js"></script> 
+        </body>
+</html>

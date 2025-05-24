@@ -65,14 +65,3 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     const password = document.getElementById("loginPassword").value;
     loginUser(username, password);
 });
-
-/**
- * Handles logout button press.
- * Removes the access token from local storage and refreshes the page.
- *
- * @function logoutUser
- */
-function logoutUser() {
-    localStorage.removeItem("access_token");
-    window.location.href="../src/index.html"
-}

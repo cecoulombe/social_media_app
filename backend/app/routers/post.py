@@ -24,6 +24,7 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
                     users.id AS author_id,
                     users.email AS author_email,
                     users.created_at AS author_created_at,
+                    users.display_name AS author_display_name,
                     COUNT(likes.post_id) AS like_count
                     FROM posts 
                     LEFT JOIN users ON posts.user_id = users.id
@@ -37,6 +38,7 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
                     users.id AS author_id,
                     users.email AS author_email,
                     users.created_at AS author_created_at,
+                    users.display_name AS author_display_name,
                     COUNT(likes.post_id) AS like_count
                     FROM posts 
                     JOIN users ON posts.user_id = users.id
@@ -55,7 +57,8 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
         author_data = {
             "id": post_dict["author_id"],
             "email": post_dict["author_email"],
-            "created_at": post_dict["author_created_at"]
+            "created_at": post_dict["author_created_at"],
+            "display_name": post_dict["author_display_name"]
         }
         post_dict["author"] = author_data
 
@@ -63,6 +66,7 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
         del post_dict["author_id"]
         del post_dict["author_email"]
         del post_dict["author_created_at"]
+        del post_dict["author_display_name"]
 
         # get all of the media for the post and then attach it to the output
         cursor.execute("""SELECT filename, filepath FROM files WHERE post_id = %s""", (post_dict["id"],))
@@ -95,6 +99,7 @@ def get_posts(user_id: int, current_user: int = Depends(oauth2.get_current_user)
                 users.id AS author_id,
                 users.email AS author_email,
                 users.created_at AS author_created_at,
+                users.display_name AS author_display_name,
                 COUNT(likes.post_id) AS like_count
                 FROM posts 
                 JOIN users ON posts.user_id = users.id
@@ -114,7 +119,8 @@ def get_posts(user_id: int, current_user: int = Depends(oauth2.get_current_user)
         author_data = {
             "id": post_dict["author_id"],
             "email": post_dict["author_email"],
-            "created_at": post_dict["author_created_at"]
+            "created_at": post_dict["author_created_at"],
+            "display_name": post_dict["author_display_name"]
         }
         post_dict["author"] = author_data
 
@@ -122,6 +128,7 @@ def get_posts(user_id: int, current_user: int = Depends(oauth2.get_current_user)
         del post_dict["author_id"]
         del post_dict["author_email"]
         del post_dict["author_created_at"]
+        del post_dict["author_display_name"]
 
         # get all of the media for the post and then attach it to the output
         cursor.execute("""SELECT filename, filepath FROM files WHERE post_id = %s""", (post_dict["id"],))
@@ -148,6 +155,7 @@ def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
                    users.id AS author_id,
                    users.email AS author_email,
                    users.created_at AS author_created_at,
+                   users.display_name AS author_display_name,
                    COUNT(likes.post_id) AS like_count
                    FROM posts
                    LEFT JOIN users ON posts.user_id = users.id
@@ -165,7 +173,8 @@ def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
     author_data = {
         "id": post_dict["author_id"],
         "email": post_dict["author_email"],
-        "created_at": post_dict["author_created_at"]
+        "created_at": post_dict["author_created_at"],
+        "display_name": post_dict["author_display_name"]
     }
     post_dict["author"] = author_data
 
@@ -173,6 +182,8 @@ def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
     del post_dict["author_id"]
     del post_dict["author_email"]
     del post_dict["author_created_at"]
+    del post_dict["author_display_name"]
+
 
     # get all of the media for the post and then attach it to the output
     cursor.execute("""SELECT filename, filepath FROM files WHERE post_id = %s""", (str(id),))

@@ -19,7 +19,7 @@ def create_user(user: sch.UserCreate):
         user.password = hashed_password
 
         # Adding the pydantic model of the user to the table
-        cursor.execute("""INSERT INTO users (email, password) VALUES (%s, %s) RETURNING *""", (user.email, user.password))
+        cursor.execute("""INSERT INTO users (email, password, display_name) VALUES (%s, %s, %s) RETURNING *""", (user.email, user.password, user.display_name))
         new_user = cursor.fetchone()
         conn.commit()  
 

@@ -10,12 +10,14 @@ from typing import List, Optional
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
+    display_name: str
 
 # schema used to return user data (don't ever want to send back the password)
 class UserOut(BaseModel):
     id: int
     email: EmailStr
     created_at: datetime
+    display_name: str
 
 # schema used to format the required information for a login attempt
 class UserLogin(BaseModel):

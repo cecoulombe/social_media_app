@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     access_token = localStorage.getItem("access_token");
     if(access_token && !isTokenExpired(access_token)) {
         console.log("Token exists: " + access_token);
-        document.getElementById("updatePostForm").style.display = "none";
+        // document.getElementById("updatePostForm").style.display = "none";
         // load the desired content based on the page (i.e. all posts, specific post, comments, user's account/posts)
     } else {
         console.log("No token found, prompt login.");

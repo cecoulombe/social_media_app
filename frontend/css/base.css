@@ -109,6 +109,10 @@ p {
     color: var(--colour-text);
 }
 
+ul li {
+    list-style-type: none;
+}
+
 /* ------------------------ GLOBAL ELEMENT STYLES ------------------------ */
 .text-center {
     text-align: center;

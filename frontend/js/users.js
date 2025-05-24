@@ -15,28 +15,29 @@ const userPrefix = "http://localhost:9000/api/users"
 /**
  * Handles logic for creating and storing a new user.
  */
-document.getElementById("newAccountForm").addEventListener("submit", async function(event) {
-    event.preventDefault();
+// document.getElementById("newAccountForm").addEventListener("submit", async function(event) {
+//     event.preventDefault();
 
-    const email = document.getElementById("createEmail").value;
-    const password = document.getElementById("createPassword").value;
+//     const email = document.getElementById("createEmail").value;
+//     const password = document.getElementById("createPassword").value;
+//     const display_name = document.getElementById("createDisplayName").value;
 
-    let user = await userExists(email);
+//     let user = await userExists(email);
 
-    // check if there is a user with that email already
-    if (user) {
-        console.log("User with that email already exists.")
-        return;
-    }
+//     // check if there is a user with that email already
+//     if (user) {
+//         console.log("User with that email already exists.")
+//         return;
+//     }
     
-    try {
-        const created = await createUser(email, password);
-        if(created == 1)
-            await loginUser(email, password);
-    } catch (err) {
-        console.error("Error during signup/login:", err.message);
-    }
-});
+//     try {
+//         const created = await createUser(email, password, display_name);
+//         if(created == 1)
+//             await loginUser(email, password);
+//     } catch (err) {
+//         console.error("Error during signup/login:", err.message);
+//     }
+// });
 
 
 /**
@@ -47,10 +48,11 @@ document.getElementById("newAccountForm").addEventListener("submit", async funct
  * @function createUser
  * @param {string} username - The user's username (email address).
  * @param {string} password - The user's password.
+ * * @param {string} display_name - The user's display name.
  * @returns {Promise<void>} Resolves when post is created, stored in the database, and displayed on page.
  * @throws {Error} If the network request fails or response is not OK.
  */
-async function createUser(email, password) {
+async function createUser(email, password, display_name) {
     const url = userPrefix;
 
     // console.log(JSON.stringify({ email, password }));
@@ -61,7 +63,7 @@ async function createUser(email, password) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify ({email, password})
+            body: JSON.stringify ({email, password, display_name})
         });
 
         if(!response.ok) {
