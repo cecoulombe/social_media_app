@@ -14,6 +14,7 @@
     align-items: center;
     background-color: blue;
     position: sticky;
+    top: 0;
 }
 
 #navList {
@@ -47,21 +48,28 @@
 
 #searchBar {
     font: inherit;
-    padding: var(--spacing-sm);
-    margin: 0 var(--spacing-sm) 0 0;
+    padding: var(--spacing-xs);
+    margin: var(--spacing-xs) var(--spacing-sm) var(--spacing-xs) var(--spacing-xs);
     border: var(--border-thin) solid #cccccc;
     border-radius: var(--radius-sm);
 }
 
-#submit {
+#searchSubmit {
     max-width: 20%;
     padding: 0;
+    margin: var(--spacing-xs);
 }
 
 /* -------------- FEED -------------- */
 #postsContainer {
     flex: 1;
     background-color: green;
+    padding: var(--spacing-lg) 20%;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    justify-content: center;
 }
 
 /* later on - add media queries for mobile? as or right now, everything is for desktop */

@@ -3,8 +3,6 @@ from enum import Enum
 from pydantic import BaseModel, EmailStr, conint
 from typing import List, Optional
 
-#  TODO after completing the tutorial, drop the title field and add an optional mixed media field
-
 # ----------------------- USER SCHEMA -----------------------
 # schema used to create user data
 class UserCreate(BaseModel):
@@ -32,7 +30,6 @@ class MediaOut(BaseModel):
 # ----------------------- POST SCHEMA -----------------------
 # schema for generic posts
 class PostBase(BaseModel):
-    title: str
     content: str
     published: bool = True
 

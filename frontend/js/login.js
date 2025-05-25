@@ -49,6 +49,8 @@ async function loginUser(email, password) {
         localStorage.setItem("access_token", json.token.access_token);  // stores is so it can be called on refresh
 
         console.log(json, access_token);
+        // redirect to the home page
+        window.location.href = "home.html";
     }
     catch (error) {
         console.error(error.message)

@@ -131,7 +131,7 @@ async function getUserPosts() {
 
 /**
  * Handles logic for creating and storing a new post.
- * Sends a POST request to the /posts endpoint containing the title and content for a new post.
+ * Sends a POST request to the /posts endpoint containing the content for a new post.
  *
  * @async
  * @function createPost
@@ -142,11 +142,9 @@ async function createPost() {
     event.preventDefault();
     const url = postPrefix;
 
-    // TODO: get title and content from form fields
-    const title = document.getElementById("titleInput").value;
     const content = document.getElementById("contentInput").value;
 
-    console.log(JSON.stringify({title, content}));
+    console.log(JSON.stringify({content}));
 
     try {
         const response = await fetch(url, {
@@ -155,7 +153,7 @@ async function createPost() {
                 "Authorization": `Bearer ${access_token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify ({title, content})
+            body: JSON.stringify ({content})
         });
 
         if(!response.ok) {
@@ -173,7 +171,7 @@ async function createPost() {
 
 /**
  * Handles logic for updating the content of an existing post.
- * Sends a PUT request to the /posts/{id} endpoint containing the updated title and content the post based on id.
+ * Sends a PUT request to the /posts/{id} endpoint containing the updated content the post based on id.
  *
  * @async
  * @function updatePost
@@ -183,11 +181,9 @@ async function createPost() {
 async function updatePost(post_id) {
     const url = postPrefix + "/" + post_id;
     
-    // TODO: the user can change either the title and/or the content so you will need to first get the post using getPost then store the existing title and content, then let the user overwrite it (probably make the existing data into the default value and then when the form submits you'll get both the title and content without extra work back here?)
-    const title = document.getElementById("updateTitle").value;
     const content = document.getElementById("updateContent").value;
 
-    // console.log(JSON.stringify({title, content}));
+    // console.log(JSON.stringify({content}));
 
     try {
         const response = await fetch(url, {
@@ -196,7 +192,7 @@ async function updatePost(post_id) {
                 "Authorization": `Bearer ${access_token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify ({title, content})
+            body: JSON.stringify ({content})
         });
 
         if(!response.ok) {
@@ -250,7 +246,7 @@ async function deletePost() {
 }
 
 /**
- * Fills in the existing value for the title and content and makes the form visible.
+ * Fills in the existing value for the content and makes the form visible.
  *
  * @async
  * @function createUpdateForm
@@ -259,7 +255,6 @@ async function createUpdateForm(post_id){
     const post = await getPost(post_id);    // show the post to be updated and get the data from the post
     console.log(post);
 
-    document.getElementById("updateTitle").value = post.title;
     document.getElementById("updateContent").value = post.content;
 
     document.getElementById("updatePostForm").style.display = "block";

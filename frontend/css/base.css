@@ -21,8 +21,10 @@ body {
     /* COLOURS */
     --colour-background: #FFFFFF;
     --colour-background-alt: #000000;
+    --colour-background-user: #bbbbbb;
     --colour-text: #000000;
     --colour-txt-alt: #ffffff;
+    --colour-text-user: #454545;
     --colour-primary: #1600e0;
     --colour-primary-dark: #0c0078;
     --colour-primary-light: #978cff;
@@ -46,10 +48,11 @@ body {
     --spacing-md: 16px;
     --spacing-lg: 24px;
     --spacing-xl: 32px;
+    --spacing-xxl: 50px;
 
     /* BORDER RADIUS */
     --radius-sm: 5px;
-    --radius-base: 10px;
+    --radius-md: 10px;
     --radius-lg: 15px;
 
     /* BORDER SIZE */

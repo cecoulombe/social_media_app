@@ -13,7 +13,7 @@ let postTemplate = null;
 // load the template from template.html
 async function loadTemplate() {
     if(!postTemplate) {
-        const res = await fetch("/src/template.html");
+        const res = await fetch(`/src/template.html?nocache=${Date.now()}`);
         const html = await res.text();
         const container = document.createElement('div');
         container.innerHTML = html;
@@ -25,7 +25,7 @@ async function loadTemplate() {
 async function renderMultiplePosts(posts) {
     await loadTemplate();
 
-    const container = document.getElementById("postContainer");
+    const container = document.getElementById("postsContainer");
 
     // clear any old posts
     container.innerHTML = "";
@@ -37,9 +37,8 @@ async function renderMultiplePosts(posts) {
         console.log(post.id);
 
         // fill in the data
-        clone.querySelector(".postTitle").textContent = post.title;
         clone.querySelector(".postAuthor").textContent = post.author.email; // change this to be the display name
-        clone.querySelector(".content").textContent = post.content;
+        clone.querySelector(".postContent").textContent = post.content;
         clone.querySelector(".likeCounter").textContent = post.like_count;
 
         // if there is media, add it
@@ -91,7 +90,6 @@ async function renderPost(post) {
     console.log(post.id);
 
     // fill in the data
-    clone.querySelector(".postTitle").textContent = post.title;
     clone.querySelector(".postAuthor").textContent = post.author.email; // change this to be the display name
     clone.querySelector(".content").textContent = post.content;
     clone.querySelector(".likeCounter").textContent = post.like_count;

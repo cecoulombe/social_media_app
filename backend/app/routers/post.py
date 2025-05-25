@@ -10,7 +10,6 @@ router = APIRouter(
 )
 
 # TODO currently returning the email of the post creator but change that to the user/display name instead
-# TODO the title field will be dropped from the schema so the title search needs to be changed to searching content
 
 # TODO: right now the limit is set to 100, but you'll want to keep that a bit lower out of developement and then use pagination to get more posts
 # path operation to get all of the posts
@@ -29,7 +28,7 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
                     FROM posts 
                     LEFT JOIN users ON posts.user_id = users.id
                     LEFT JOIN likes ON posts.id = likes.post_id
-                    WHERE posts.title ILIKE %s
+                    WHERE posts.content ILIKE %s
                     GROUP BY posts.id, users.id, users.email, users.created_at
                     ORDER BY posts.created_at DESC
                     LIMIT %s OFFSET %s""", (f"%{search}%", limit, skip,))
@@ -205,7 +204,7 @@ def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
 def create_posts(post: sch.PostCreate, current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
 
-    cursor.execute("""INSERT INTO posts (title, content, published, user_id) VALUES (%s, %s, %s, %s) RETURNING *""", (post.title, post.content, post.published, current_user.id))
+    cursor.execute("""INSERT INTO posts (content, published, user_id) VALUES (%s, %s, %s) RETURNING *""", (post.content, post.published, current_user.id))
     new_post = cursor.fetchone()
     conn.commit()   # changes made to the database must be committed deliberately
     
@@ -255,7 +254,7 @@ def update_post(id: int, post: sch.PostCreate, current_user: int = Depends(oauth
     if user_id["user_id"] != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
     
-    cursor.execute("""UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *""", (post.title, post.content, post.published, str(id),))
+    cursor.execute("""UPDATE posts SET content = %s, published = %s WHERE id = %s RETURNING *""", (post.content, post.published, str(id),))
     updated = cursor.fetchone()
     if not updated:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,

@@ -1,4 +1,67 @@
 /* ------------------ POST LAYOUT ------------------ */
+.post {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    margin: var(--spacing-md) 0;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
+}
 
+.postAuthor {
+    background-color: var(--colour-background-user);
+    width: fit-content;
+    height: fit-content;
+    color: var(--colour-text-user);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-sm);
+    margin: 0 0  var(--spacing-xs) 0;
+}
+
+.contentDiv {
+    background-color: orange;
+    width: 100%;
+    height: fit-content;
+    padding: var(--spacing-sm);
+    margin: 0 0  var(--spacing-xs) 0;
+}
+
+.media {
+    background-color: yellow;
+    width: fit-content;
+    height: fit-content;
+}
+
+.postContent {
+    background-color: green;
+    width: fit-content;
+    height: fit-content;
+}
+
+.likeDiv {
+    background-color: blue;
+    width: fit-content;
+    height: fit-content;
+    padding: var(--spacing-sm);
+    margin: 0 0  var(--spacing-xs) 0;
+}
+
+.likeButton {
+    background-color: indigo;
+    width: fit-content;
+    height: fit-content;
+}
+
+.likeCounter {
+    background-color: violet;
+    width: fit-content;
+    height: fit-content;
+}
+
+.updateButton {
+    background-color: pink;
+    width: fit-content;
+    height: fit-content;
+}
 
 /* later on - add media queries for mobile? as or right now, everything is for desktop */
