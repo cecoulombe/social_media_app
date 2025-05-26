@@ -50,7 +50,6 @@ async function renderMultiplePosts(posts) {
                 img.src = "http://localhost:9000/" + mediaItem.url;
                 console.log(img.src);
                 img.alt = mediaItem.filename;
-                img.style.maxWidth = '200px';   // get rid of this after creating the css
                 clone.querySelector(".media").appendChild(img);
             });
 
