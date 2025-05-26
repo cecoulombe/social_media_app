@@ -46,7 +46,7 @@ async function getPosts() {
         const json = await response.json();
         const posts = json.data;
         // render posts - probably move this somewhere else?
-        renderMultiplePosts(posts)
+        await renderMultiplePosts(posts)
     }
     catch (error) {
         console.error(error.message);
@@ -122,7 +122,8 @@ async function getUserPosts() {
         const json = await response.json();
         const posts = json.data;
         // render posts - probably move this somewhere else?
-        renderMultiplePosts(posts)
+        await renderMultiplePosts(posts)
+        setUniformImageContainerHeight()
     }
     catch (error) {
         console.error(error.message);
