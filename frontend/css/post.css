@@ -8,6 +8,12 @@
     border-radius: var(--radius-md);
 }
 
+.postHead {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .postAuthor {
     background-color: var(--colour-background-user);
     width: fit-content;
@@ -16,6 +22,14 @@
     border-radius: var(--radius-sm);
     padding: var(--spacing-sm);
     margin: 0 0  var(--spacing-xs) 0;
+}
+
+
+.updateButton {
+    background-color: pink;
+    width: fit-content;
+    height: fit-content;
+    border-radius: var(--radius-sm);
 }
 
 .contentDiv {
@@ -39,6 +53,11 @@
 }
 
 .likeDiv {
+    display: flex;
+    flex-direction: row;
+}
+
+.likeDiv {
     background-color: blue;
     width: fit-content;
     height: fit-content;
@@ -54,12 +73,6 @@
 
 .likeCounter {
     background-color: violet;
-    width: fit-content;
-    height: fit-content;
-}
-
-.updateButton {
-    background-color: pink;
     width: fit-content;
     height: fit-content;
 }

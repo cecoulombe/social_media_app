@@ -13,7 +13,10 @@
         <!-- templates for all posts -->
          <template id="postTemplate">
             <div class="post">
-                <h4 class="postAuthor"></h4>
+                <div class="postHead">
+                    <h4 class="postAuthor"></h4>
+                    <button class="updateButton">Update</button>
+                </div>
                 <div class="contentDiv">
                     <div class="media"></div>
                     <p class="postContent"></p>
@@ -21,8 +24,8 @@
                 <div class="likeDiv">
                     <button class="likeButton">&lt;3</button>
                     <p class="likeCounter"></p>
+                    <!-- <p class="commentCounter"></p> -->
                 </div>
-                <button class="updateButton">Update</button>
             </div>
          </template>
 

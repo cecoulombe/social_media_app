@@ -1,0 +1,86 @@
+/* ------------------ CONTENT ------------------ */
+.content {
+    /* display: flex;
+    flex-direction: row; */
+    display: grid;
+    grid-template-columns: 30% 1fr;
+    grid-template-rows: auto;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* ----------- NAVIGATION ----------- */
+#navBanner {
+    grid-column: 1;
+    height: 100vh;
+    width: 40vw;
+    background-color: blue;
+    padding: var(--spacing-sm);
+    position: fixed;
+    top: 0;
+}
+
+/* #logo {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-sm);
+} */
+
+#navList {
+    height: 100%;
+    width: 100%;
+    margin: var(--spacing-lg) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navItem {
+    width: 100%;
+    height: fit-content;
+    margin: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background-color: yellow;
+    font-size: var(--font-xl);
+    border-radius: var(--radius-sm);
+}
+
+#searchBarContainer {
+    padding: 0;
+    margin: 0 0 var(--spacing-xl) 0;
+}
+
+#searchForm {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+#searchBar {
+    font: inherit;
+    padding: var(--spacing-xs);
+    margin: var(--spacing-xs);
+    border: var(--border-thin) solid #cccccc;
+    border-radius: var(--radius-sm);
+}
+
+#searchSubmit {
+    max-width: fit-content;
+    padding: 0 var(--spacing-xs);
+    margin: var(--spacing-xs) var(--spacing-xs) var(--spacing-xs) 0;
+}
+
+/* -------------- FEED -------------- */
+#postsContainer {
+    grid-column: 2;
+    background-color: green;
+    padding: var(--spacing-lg) 10%;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    justify-content: center;
+}
+
+/* later on - add media queries for mobile? as or right now, everything is for desktop */
