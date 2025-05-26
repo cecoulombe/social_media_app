@@ -20,11 +20,7 @@ const likePrefix = "http://localhost:9000/api/likes"
  * @returns {Promise<void>} Resolves when the like is added or removed and the message is displayed on the page.
  * @throws {Error} If the network request fails or response is not OK.
  */
-async function likePost(post_id) {
-    // TODO: there will be an icon that changes based on if the post is liked or not
-    // the id of the post will probably be passed in the event in some way? wont be a form submission and won't hardcode so I'll have to find a way to do that (maybe like a parent id?)
-    // const post_id = 51;
-    
+async function likePost(post_id) {   
     const get_url = likePrefix + "/" + post_id;
     const post_url = likePrefix;
 
@@ -41,7 +37,8 @@ async function likePost(post_id) {
             throw new Error('Get Reponse status: ${get_response.status}');
         }
 
-        const dir = await get_response.json();
+        const data = await get_response.json();
+        const dir = 1 - data.liked;
         console.log(dir);
 
         // actually add/remove the like
@@ -59,8 +56,65 @@ async function likePost(post_id) {
         }
 
         const json = await post_response.json();
-        document.getElementById("displayDiv").innerHTML = JSON.stringify(json);
         console.log(json);
+    }
+    catch (error) {
+        console.error(error.message);
+    }
+}
+
+/**
+ * Determines if a like is to be added to or removed from the post.
+ * Sends a POST request to the /likes endpoint with the id of the post and whether a like should be added or removed.
+ *
+ * @async
+ * @function getIsLiked
+ * @returns {Boolean} returns true if this user has already liked the post
+ * @throws {Error} If the network request fails or response is not OK.
+ */
+async function getIsLiked(post_id) {
+    const url = likePrefix + "/" + post_id;
+
+    try {
+        // check if the user is adding or removing a like (based on if it is already liked or not)
+        const get_response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${access_token}`
+            }
+        });
+
+        if(!get_response.ok) {
+            throw new Error('Reponse status: ${get_response.status}');
+        }
+
+        const data = await get_response.json();
+        const isLiked = data.liked;
+        // console.log("Is liked method: post " + post_id + " is liked? " + isLiked);
+        return isLiked;
+    }
+    catch (error) {
+        console.error(error.message);
+    }
+}
+
+
+/**
+ * Determines if a like is to be added to or removed from the post.
+ * Sends a POST request to the /likes endpoint with the id of the post and whether a like should be added or removed.
+ *
+ * @async
+ * @function getLikeCount
+ * @returns {Boolean} returns true if this user has already liked the post
+ * @throws {Error} If the network request fails or response is not OK.
+ */
+async function getLikeCount(post_id) {
+    const url = likePrefix + "/" + post_id;
+
+    try {
+        const post = await getPost(post_id);
+        const numLikes = post.like_count;
+        return numLikes;
     }
     catch (error) {
         console.error(error.message);

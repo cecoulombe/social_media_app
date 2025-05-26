@@ -62,4 +62,4 @@ def check_like(id:int, current_user: int = Depends(oauth2.get_current_user)):
     cursor.close()
     conn.close()
     
-    return 0 if isLiked else 1
+    return {"liked": bool(isLiked)}

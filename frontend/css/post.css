@@ -96,7 +96,13 @@
 } */
 
 .likeButton {
+    background-color: transparent;
     padding: 0;
+}
+
+.likeButtonImg {
+    background-color: transparent;
+    max-width: 30px;
 }
 
 /* ------------------ SLIDESHOW LAYOUT ------------------ */

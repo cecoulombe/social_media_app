@@ -203,6 +203,7 @@ async function updatePost(newContent, post_id) {
         }
 
         const json = await response.json();
+        // document.getElementById("displayDiv").innerHTML = JSON.stringify(json);
         console.log(json);
     }
     catch (error) {

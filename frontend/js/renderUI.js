@@ -41,7 +41,7 @@ async function renderMultiplePosts(posts) {
     // clear any old posts
     container.innerHTML = "";
 
-    posts.forEach(post => {
+    for (const post of posts) {
         // clone the template
         const clone = postTemplate.content.cloneNode(true);
         // get the .post element inside the fragment
@@ -53,8 +53,26 @@ async function renderMultiplePosts(posts) {
         // fill in the data
         postElement.querySelector(".postAuthor").textContent = post.author.email; // change this to be the display name
         postElement.querySelector(".postContent").textContent = post.content;
-        postElement.querySelector(".likeCounter").textContent = post.like_count; 
-        
+        const likeCount = postElement.querySelector(".likeCounter");
+        likeCount.textContent = post.like_count; 
+    
+        // change the like button based on if its been liked or not
+        const likeButton = postElement.querySelector(".likeButton");
+        likeButton.innerHTML = ""; // clear old content
+
+        let heartImg = document.createElement("img");
+        heartImg.classList.add("likeButtonImg")
+    
+        if(await getIsLiked(post.id)) {
+            // console.log("is liked");
+            heartImg.src = "../res/img/full_heart.png";
+        } else {
+            // console.log("is NOT liked");
+            heartImg.src = "../res/img/empty_heart_red.png";
+        }
+
+        likeButton.appendChild(heartImg);
+
         const updateButton = postElement.querySelector(".updateButton");
 
         // make sure only the poster can edit the post
@@ -108,8 +126,17 @@ async function renderMultiplePosts(posts) {
         }
 
         // add an event listener to the like button
-        postElement.querySelector(".likeButton").addEventListener("click", () => {
-            likePost(post.id);
+        postElement.querySelector(".likeButton").addEventListener("click", async () => {
+            await likePost(post.id);
+            const isLiked = await getIsLiked(post.id);
+            if(isLiked) {
+                console.log("is liked");
+                heartImg.src = "../res/img/full_heart.png";
+            } else {
+                console.log("is NOT liked");
+                heartImg.src = "../res/img/empty_heart_red.png";
+            }
+            likeCount.textContent = await getLikeCount(post.id);
         });
 
         // add an event listener to the update button
@@ -124,7 +151,7 @@ async function renderMultiplePosts(posts) {
         // console.log("Calling setupSlideshow for post", post.id);
         setTimeout(() => setupSlideshow(postElement), 0);
 
-    });
+    }
 }
 
 /**
