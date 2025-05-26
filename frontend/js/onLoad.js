@@ -9,6 +9,7 @@
 "use strict";
 
 let access_token;
+let current_user;
 const token_type = "bearer";
 
 /**
@@ -16,8 +17,11 @@ const token_type = "bearer";
  */
 document.addEventListener("DOMContentLoaded", () => {
     access_token = localStorage.getItem("access_token");
-    if(access_token && !isTokenExpired(access_token)) {
-        console.log("Token exists: " + access_token);
+    current_user = localStorage.getItem("current_user");
+    console.log("Access token: " + access_token);
+    console.log("Current user: " + current_user);
+    if(access_token && !isTokenExpired(access_token) && current_user) {
+        console.log("Token exists: " + access_token + ", current user is " + current_user);
         // document.getElementById("updatePostForm").style.display = "none";
         // load the desired content based on the page (i.e. all posts, specific post, comments, user's account/posts)
     } else {

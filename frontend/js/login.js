@@ -46,9 +46,11 @@ async function loginUser(email, password) {
 
         const json = await response.json();
         access_token = json.token.access_token;
-        localStorage.setItem("access_token", json.token.access_token);  // stores is so it can be called on refresh
+        localStorage.setItem("access_token", access_token);  // stores is so it can be called on refresh
+        localStorage.setItem("current_user", email);  
 
-        console.log(json, access_token);
+        // console.log(email);
+        // console.log(json, access_token);
         // redirect to the home page
         window.location.href = "home.html";
     }

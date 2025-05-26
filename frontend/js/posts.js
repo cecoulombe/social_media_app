@@ -3,7 +3,7 @@
  * Description: Handles post path operations including retrieving all posts, retrieving one post, creating a new post, editing an existing post, and deleting an existing post
  * Author: Caitlin Coulombe
  * Created: 2025-05-19
- * Last Updated: 2025-05-20
+ * Last Updated: 2025-05-26
  */
 
 
@@ -79,7 +79,7 @@ async function getPost(post_id) {
 
         const json = await response.json();
         const post = json.data;
-        renderPost(post);
+        // renderPost(post);
         return post;
     }
     catch (error) {
@@ -176,15 +176,17 @@ async function createPost() {
  *
  * @async
  * @function updatePost
+ * @param {string} newContent - the only part of the post that can change is the content so it needs to be passed
+ * @param {int} post_id - the id of the post to be changed
  * @returns {Promise<void>} Resolves when post is updated in the database, and displayed on page.
  * @throws {Error} If the network request fails or response is not OK.
  */
-async function updatePost(post_id) {
+async function updatePost(newContent, post_id) {
     const url = postPrefix + "/" + post_id;
     
-    const content = document.getElementById("updateContent").value;
+    const content = newContent;
 
-    // console.log(JSON.stringify({content}));
+    console.log(JSON.stringify({content}));
 
     try {
         const response = await fetch(url, {
@@ -201,7 +203,6 @@ async function updatePost(post_id) {
         }
 
         const json = await response.json();
-        document.getElementById("displayDiv").innerHTML = JSON.stringify(json);
         console.log(json);
     }
     catch (error) {
@@ -244,26 +245,4 @@ async function deletePost() {
     catch (error) {
         console.error(error.message);
     }
-}
-
-/**
- * Fills in the existing value for the content and makes the form visible.
- *
- * @async
- * @function createUpdateForm
- */
-async function createUpdateForm(post_id){
-    const post = await getPost(post_id);    // show the post to be updated and get the data from the post
-    console.log(post);
-
-    document.getElementById("updateContent").value = post.content;
-
-    document.getElementById("updatePostForm").style.display = "block";
-
-    document.getElementById("updatePostForm").onsubmit = async (event) => {
-        event.preventDefault();
-        await updatePost(post_id);
-        getPost(post_id);   // show the updated post
-    };
-
 }

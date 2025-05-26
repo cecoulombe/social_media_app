@@ -8,7 +8,13 @@
 
 "use strict";
 
-// after rendering each post, create the slideshow
+/**
+ * Creates slideshow controls for posts with multiple images
+ *
+ * @async
+ * @function setupSlideshow
+ * @param {Element} postElement - the post with media that needs a slideshow
+ */
 function setupSlideshow(postElement) {
     const slides = postElement.querySelectorAll(".slides");
     const dots = postElement.querySelectorAll(".dot");
@@ -21,7 +27,7 @@ function setupSlideshow(postElement) {
     let currentIndex = 0;
 
     function showSlide(n) {
-        console.log("Running showSlide with n =", n, "slides length =", slides.length);
+        // console.log("Running showSlide with n =", n, "slides length =", slides.length);
 
         if(n >= slides.length) {
             n = 0;
