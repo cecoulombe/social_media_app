@@ -96,10 +96,8 @@ async function getPost(post_id) {
  * @returns {Promise<void>} Resolves when user's posts are retrieved and displayed on page.
  * @throws {Error} If the network request fails or response is not OK.
  */
-async function getUserPosts() {
-    // TODO make this a parameter that is passed by the calling function
-    const user_id = 43;
-
+async function getUserPosts(user_id) {
+    console.log("in getUserPosts()");
     // query parameters
     // TODO: Update limit/skip to support pagination dynamically
     const limit = 100;  
@@ -121,9 +119,8 @@ async function getUserPosts() {
 
         const json = await response.json();
         const posts = json.data;
-        // render posts - probably move this somewhere else?
-        await renderMultiplePosts(posts)
-        setUniformImageContainerHeight()
+        console.log(posts);
+        return posts;
     }
     catch (error) {
         console.error(error.message);

@@ -11,7 +11,6 @@
 let postTemplate = null;
 // console.log("setupSlideshow is", typeof setupSlideshow);
 
-
 // load the template from template.html
 async function loadTemplate() {
     if(!postTemplate) {
@@ -31,6 +30,8 @@ async function loadTemplate() {
  * @param {json} posts - the posts that are to be rendered
  */
 async function renderMultiplePosts(posts) {
+    console.log("from render multiple posts:",posts);
+
     await loadTemplate();
 
     let prevArrow;
@@ -51,7 +52,8 @@ async function renderMultiplePosts(posts) {
         // console.log(post.id);
 
         // fill in the data
-        postElement.querySelector(".postAuthor").textContent = post.author.email; // change this to be the display name
+        const postAuthor = postElement.querySelector(".postAuthor");
+        postAuthor.textContent = post.author.email; // change this to be the display name
         postElement.querySelector(".postContent").textContent = post.content;
         const likeCount = postElement.querySelector(".likeCounter");
         likeCount.textContent = post.like_count; 
@@ -125,8 +127,12 @@ async function renderMultiplePosts(posts) {
             postElement.querySelector(".media").style.display ="none";
         }
 
-        // add an event listener to the like button
-        postElement.querySelector(".likeButton").addEventListener("click", async () => {
+        // add an event listeners
+        postAuthor.addEventListener("click", () => {
+            window.location.href = `user.html?user_id=${post.author.id}`;
+        });
+
+        likeButton.addEventListener("click", async () => {
             await likePost(post.id);
             const isLiked = await getIsLiked(post.id);
             if(isLiked) {
@@ -143,7 +149,10 @@ async function renderMultiplePosts(posts) {
         postElement.querySelector(".updateButton").addEventListener("click", (event) => {
             event.preventDefault();
             createUpdateForm(post.id);
-            window.location.href = "home.html#" + post.id;
+            const currentPage = window.location.pathname.split("/").pop();
+            // console.log("Current page:", currentPage);
+            // window.location.href = currentPage + "#" + post.id;
+            window.location.hash = post.id;
         });
 
         // add the postElement to the container
@@ -209,7 +218,11 @@ async function renderPost(post) {
  * @function createUpdateForm
  */
 async function createUpdateForm(post_id){
-    window.location.href = "home.html#" + post_id;
+    const currentPage = window.location.pathname.split("/").pop();
+    console.log("Current page:", currentPage);
+
+    // window.location.href = currentPage + "#" + post_id;
+    window.location.hash = post_id;
 
     const post = await getPost(post_id);    
     console.log(post);
@@ -244,7 +257,9 @@ async function createUpdateForm(post_id){
         const newContent = updateContent.value;
         
         await updatePost(newContent, post_id);
-        await getPosts();
+        // window.location.reload;
+        // await getPosts();
+        await reloadPage();
 
         const updatedPost = document.getElementById(post_id);
         if(updatedPost) {

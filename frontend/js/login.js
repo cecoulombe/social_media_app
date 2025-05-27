@@ -46,8 +46,11 @@ async function loginUser(email, password) {
 
         const json = await response.json();
         access_token = json.token.access_token;
+        const user_id = json.token.id;
         localStorage.setItem("access_token", access_token);  // stores is so it can be called on refresh
         localStorage.setItem("current_user", email);  
+        localStorage.setItem("user_id", user_id);
+        console.log("User id: ",user_id);
 
         // console.log(email);
         // console.log(json, access_token);

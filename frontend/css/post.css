@@ -16,15 +16,22 @@
     justify-content: space-between;
 }
 
-.postAuthor {
+.authorContainer {
     background-color: var(--colour-background-user);
-    width: fit-content;
-    height: fit-content;
     color: var(--colour-text-user);
     border-radius: var(--radius-sm);
-    padding: var(--spacing-sm);
     margin: 0 0  var(--spacing-xs) 0;
+    padding: var(--spacing-sm);
+    width: fit-content;
+    height: fit-content;   
+    cursor: pointer;
 }
+
+/* .postAuthor {
+    color: inherit;
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm);
+} */
 
 .updateButton {
     background-color: pink;
@@ -74,6 +81,10 @@
     padding: var(--spacing-xs) var(--spacing-sm);
     width: fit-content;
     height: fit-content;
+}
+
+.postContent p {
+    font-size: var(--font-lg);
 }
 
 .likeDiv {
@@ -148,7 +159,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 24px;
+    font-size: var(--font-xl);
     padding: 8px;
     user-select: none;
     color: white;

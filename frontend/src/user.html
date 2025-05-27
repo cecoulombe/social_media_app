@@ -16,10 +16,10 @@
         <!-- stylesheets -->
         <link rel="stylesheet" href="../css/base.css">
         <link rel="stylesheet" href="../css/post.css">
-        <link rel="stylesheet" href="../css/home.css">
+        <link rel="stylesheet" href="../css/userPage.css">
     </head>
 
-    <body>
+    <body class="userBody">
         <div class="content">
             <nav id="navBanner">
                 <!-- <img id="logo" src="../res/img/Family.jpeg" alt="pic of the family"> -->
@@ -38,8 +38,19 @@
                 </ul>
             </nav>
 
-            <div id="postsContainer">
+            <div id="feed">
+                <div id="userInfoContainer">
+                    <img id="profilePicture" alt="Profile Picture" />
+                    <div id="name">
+                        <h1 id="displayName"></h1>
+                        <h4 id="email"></h4>
+                    </div>
+                    <!-- <div id="bio"></div> -->
+                    <!-- <div id="followers"></div> -->
+                    <!-- <div id="following"></div> -->
+                </div>
 
+                <div id="postsContainer"></div>
             </div>
 
         </div>

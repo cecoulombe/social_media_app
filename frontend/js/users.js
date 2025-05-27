@@ -14,34 +14,6 @@ const userPrefix = "http://localhost:9000/api/users"
 
 /**
  * Handles logic for creating and storing a new user.
- */
-// document.getElementById("newAccountForm").addEventListener("submit", async function(event) {
-//     event.preventDefault();
-
-//     const email = document.getElementById("createEmail").value;
-//     const password = document.getElementById("createPassword").value;
-//     const display_name = document.getElementById("createDisplayName").value;
-
-//     let user = await userExists(email);
-
-//     // check if there is a user with that email already
-//     if (user) {
-//         console.log("User with that email already exists.")
-//         return;
-//     }
-    
-//     try {
-//         const created = await createUser(email, password, display_name);
-//         if(created == 1)
-//             await loginUser(email, password);
-//     } catch (err) {
-//         console.error("Error during signup/login:", err.message);
-//     }
-// });
-
-
-/**
- * Handles logic for creating and storing a new user.
  * Sends a POST request to the /users endpoint containing the email and password for a new user.
  *
  * @async
@@ -87,12 +59,13 @@ async function createUser(email, password, display_name) {
  *
  * @async
  * @function getUser
+ * @param {string} user_id - the user id of theuser being retrieved
+
  * @returns {Promise<void>} Resolves when user is retrieved and displayed on page.
  * @throws {Error} If the network request fails or response is not OK.
  */
-async function getUser() {
-    const user_id = 44;
-
+async function getUser(user_id) {
+    console.log("in getUser()");
     const url = userPrefix + "/" + user_id;
 
     try {
@@ -104,37 +77,9 @@ async function getUser() {
             throw new Error('Reponse status: ${response.status}');
         }
 
-        const json = await response.json();
-        return json;
-    }
-    catch (error) {
-        console.error(error.message);
-    }
-}
-
-/**
- * Verifies if there is already a user with the passed email
- *
- * @async
- * @function getUser
- * @param {string} email the email the user is attempting to create an account with
- * @returns {Boolean} True if there is already a user with that email, otherwise false.
- * @throws {Error} If the network request fails or response is not OK.
- */
-async function userExists(email) {
-    const url = userPrefix + "/get-user/" + email;
-
-    try {
-        const response = await fetch(url, {
-            method: "GET"
-        });
-
-        if(!response.ok) {
-            throw new Error('Reponse status: ${response.status}');
-        }
-
-        const json = await response.json();
-        return json === 1 || json.data === 1;
+        const data = await response.json();
+        console.log("from getUser:", data);
+        return data;
     }
     catch (error) {
         console.error(error.message);

@@ -38,8 +38,8 @@ body {
     /* FONT SIZES */
     --font-xs: 0.75rem;
     --font-s: 0.875rem;
-    --font-base: 1rem;
-    --font-large: 1.25rem;
+    --font-md: 1rem;
+    --font-lg: 1.25rem;
     --font-xl: 1.5rem;
     --font-xxl: 2rem;
 

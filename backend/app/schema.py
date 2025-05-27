@@ -54,6 +54,7 @@ class PostOut(Post):
 class Token(BaseModel):
     access_token: str
     token_type: str
+    id: int
 
 # schema used to format the incoming token's data
 class TokenData(BaseModel):

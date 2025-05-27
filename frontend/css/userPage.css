@@ -68,12 +68,45 @@
 }
 
 /* -------------- FEED -------------- */
+#feed {
+    margin-left: 30vw;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#userInfoContainer {
+    padding: var(--spacing-md);
+    background-color: yellow;
+    display: flex;
+    flex-direction: row;
+}
+
+#profilePicture {
+    background-color: var(--colour-background-image);
+}
+
+#name {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#displayName {
+    padding: 0 var(--spacing-sm);
+    font-size: var(--spacing-xxl);
+}
+
+#email {
+    padding: 0 var(--spacing-sm);
+    color: var(--colour-text-user);
+}
+
 #postsContainer {
-    margin-left: 30vw; 
     padding: var(--spacing-lg) 10%;
-    flex: 1;
+    /* flex: 1; */
     overflow-y: auto;
-    height: 100vh;
+    /* height: 100vh; */
     background-color: green;
     display: flex;
     flex-direction: column;

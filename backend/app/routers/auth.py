@@ -30,6 +30,6 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends()):
     cursor.close()
     conn.close()
 
-    return {"token": sch.Token(access_token=access_token , token_type="bearer")}
+    return {"token": sch.Token(access_token=access_token , token_type="bearer", id=user["id"])}
 
 # add in refresh tokens so that people don't need to log in over and over again
