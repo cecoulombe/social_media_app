@@ -1,31 +1,35 @@
 from datetime import datetime
 from enum import Enum
 from pydantic import BaseModel, EmailStr, conint
-from typing import Optional
-
-#  TODO after completing the tutorial, drop the title field and add an optional mixed media field
+from typing import List, Optional
 
 # ----------------------- USER SCHEMA -----------------------
 # schema used to create user data
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
+    display_name: str
 
 # schema used to return user data (don't ever want to send back the password)
 class UserOut(BaseModel):
     id: int
     email: EmailStr
     created_at: datetime
+    display_name: str
 
 # schema used to format the required information for a login attempt
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
+# ----------------------- MEDIA SCHEMA -----------------------
+class MediaOut(BaseModel):
+    filename: str
+    url: str
+
 # ----------------------- POST SCHEMA -----------------------
 # schema for generic posts
 class PostBase(BaseModel):
-    title: str
     content: str
     published: bool = True
 
@@ -43,12 +47,14 @@ class Post(PostBase):
 # schema used to manage post data 
 class PostOut(Post): 
     like_count: int
+    media: List[MediaOut]
 
 # ----------------------- TOKEN SCHEMA -----------------------
 # schema used to verify token format
 class Token(BaseModel):
     access_token: str
     token_type: str
+    id: int
 
 # schema used to format the incoming token's data
 class TokenData(BaseModel):

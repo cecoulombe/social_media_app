@@ -3,16 +3,16 @@
  * Description: Handles user login and retrieves a JWT token from the backend.
  * Author: Caitlin Coulombe
  * Created: 2025-05-19
- * Last Updated: 2025-05-19
+ * Last Updated: 2025-05-20
  */
 
 "use strict";
 
-const loginPrefix = "http://localhost:8000/login"
-
 let access_token;
 const token_type = "bearer";
 
+const loginPrefix = "http://localhost:9000/api/login"
+
 /**
  * Handles login form submission.
  * Sends a POST request to the /login endpoint using form-encoded credentials.
@@ -22,15 +22,11 @@ const token_type = "bearer";
  * @returns {Promise<void>} Resolves when login is complete and token is stored.
  * @throws {Error} If the network request fails or response is not OK.
  */
-async function loginUser() {
+async function loginUser(email, password) {
     const url = loginPrefix
 
-    // hardcoded username/password for testing: replace with input from text fields for both
-    const username = "jimmy@gmail.com"    // replace with the value from the username input when created
-    const password = "password12345"      // replace with the value from the password input when created
-
     const formData = new URLSearchParams();
-    formData.append("username", username);
+    formData.append("username", email);
     formData.append("password", password);
 
     // console.log(JSON.stringify({ username, password }));
@@ -50,9 +46,16 @@ async function loginUser() {
 
         const json = await response.json();
         access_token = json.token.access_token;
+        const user_id = json.token.id;
+        localStorage.setItem("access_token", access_token);  // stores is so it can be called on refresh
+        localStorage.setItem("current_user", email);  
+        localStorage.setItem("user_id", user_id);
+        console.log("User id: ",user_id);
 
-        document.getElementById("displayDiv").innerHTML = JSON.stringify(json);
-        console.log(json, access_token);
+        // console.log(email);
+        // console.log(json, access_token);
+        // redirect to the home page
+        window.location.href = "home.html";
     }
     catch (error) {
         console.error(error.message)
@@ -60,45 +63,12 @@ async function loginUser() {
 }
 
 /**
- * Handles login form submission.
- * Sends a POST request to the /login endpoint using form-encoded credentials.
- *
- * @async
- * @function loginUser
- * @param {string} username - The user's username (email address).
- * @param {string} password - The user's password.
- * @returns {Promise<void>} Resolves when login is complete and token is stored.
- * @throws {Error} If the network request fails or response is not OK.
+ * Handles login button press (redirects to loginUser())
  */
-async function loginNewUser(username, password) {
-    const url = loginPrefix
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault();
 
-    const formData = new URLSearchParams();
-    formData.append("username", username);
-    formData.append("password", password);
-
-    // console.log(JSON.stringify({ username, password }));
-
-    try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: formData.toString()
-        });
-
-        if(!response.ok) {
-            throw new Error('Response status: ${response.status');
-        }
-
-        const json = await response.json();
-        access_token = json.token.access_token;
-
-        document.getElementById("displayDiv").innerHTML = JSON.stringify(json);
-        console.log(json, access_token);
-    }
-    catch (error) {
-        console.error(error.message)
-    }
-}
+    const username = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+    loginUser(username, password);
+});

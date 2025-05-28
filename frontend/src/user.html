@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Author: Caitlin Coulombe, caitlincoulombe@gmail.com -->
+        <!-- Date: 2025/19/05 -->
+        <meta name="author" content="Caitlin Coulombe">
+        <title>Social Media App</title>
+
+        <meta charset="UTF-8">
+
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- stylesheets -->
+        <link rel="stylesheet" href="../css/base.css">
+        <link rel="stylesheet" href="../css/post.css">
+        <link rel="stylesheet" href="../css/userPage.css">
+    </head>
+
+    <body class="userBody">
+        <div class="content">
+            <nav id="navBanner">
+                <!-- <img id="logo" src="../res/img/Family.jpeg" alt="pic of the family"> -->
+                <ul id="navList">
+                    <!-- TODO search bar is visible but not implemented - add it in to retrieve users -->            
+                    <li id="searchBarContainer" class="navItem text-center">
+                        <form id="searchForm">
+                            <input type="text" name="searchBar" id="searchBar" placeholder="Search">
+                            <input type="submit" id="searchSubmit">
+                        </form>
+                    </li>
+                    
+                    <li id="home" class="navItem text-center"><a href="home.html">Home</a></li>
+                    <li id="myAccount" class="navItem text-center active"><a id="myAccountLink">My Account</a></li>
+                    <li id="createPost" class="navItem text-center"><a href="home.html">Create Post</a></li>
+                </ul>
+            </nav>
+
+            <div id="feed">
+                <div id="userInfoContainer">
+                    <img id="profilePicture" alt="Profile Picture" />
+                    <div id="name">
+                        <h1 id="displayName"></h1>
+                        <h4 id="email"></h4>
+                    </div>
+                    <!-- <div id="bio"></div> -->
+                    <!-- <div id="followers"></div> -->
+                    <!-- <div id="following"></div> -->
+                </div>
+
+                <div id="postsContainer"></div>
+            </div>
+
+        </div>
+
+        <!-- scripts -->
+         <script src="../js/onLoad.js"></script>
+         <script src="../js/slideshow.js"></script> 
+         <script src="../js/renderUI.js"></script>
+         <script src="../js/logout.js"></script>
+         <script src="../js/posts.js"></script>
+         <script src="../js/users.js"></script>
+         <script src="../js/like.js"></script> 
+        </body>
+</html>

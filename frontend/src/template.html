@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Author: Caitlin Coulombe, caitlincoulombe@gmail.com -->
+        <!-- Date: 2025/23/05 -->
+
+        <!-- stylesheets -->
+        <link rel="stylesheet" href="../css/base.css">
+        <link rel="stylesheet" href="../css/post.css">
+    </head>
+
+    <body>
+        <!-- templates for all posts -->
+         <template id="postTemplate">
+            <div class="post">
+                <div class="postHead">
+                    <div class="imgAndName">
+                        <img class="profilePic">
+                        <div class="authorContainer">
+                            <p class="postAuthor"></p>
+                            <div class="tooltip">
+                                <p class="timestamp date"></p>
+                                <span class="tooltipText time"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="updateButton">Update</button>
+                </div>
+                <div class="contentDiv">
+                    <div class="media">
+                        <div class="images"></div>
+                        <div class="dotContainer"></div>
+                    </div>
+                    <div class="contentContainer">
+                        <p class="postContent"></p>
+                    </div>
+                </div>
+                <div class="likeDiv">
+                    <h3 class="likeCounter"></h3>
+                    <!-- set to &#128148; (white heart) if not liked -->
+                    <!-- set to &#10084;&#65039; (red heart) if liked -->
+                    <button class="likeButton"></button> 
+                    <!-- <p class="commentCounter"></p> -->
+                     
+                </div>
+            </div>
+         </template>
+
+         <div id="postContainer"></div>
+
+        <!-- scripts -->
+         <script src="../js/renderUI.js"></script>
+        </body>
+</html>

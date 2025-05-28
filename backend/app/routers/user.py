@@ -1,4 +1,4 @@
-# Path operations converning users
+# Path operations concerning users
 from fastapi import Body, FastAPI, Response, status, HTTPException, APIRouter
 from app import schema as sch
 from app import utils
@@ -6,7 +6,6 @@ from app.database import get_db
 import psycopg2
 
 router = APIRouter(
-    prefix="/users",
     tags=['Users']
 )
 
@@ -20,9 +19,13 @@ def create_user(user: sch.UserCreate):
         user.password = hashed_password
 
         # Adding the pydantic model of the user to the table
-        cursor.execute("""INSERT INTO users (email, password) VALUES (%s, %s) RETURNING *""", (user.email, user.password))
+        cursor.execute("""INSERT INTO users (email, password, display_name) VALUES (%s, %s, %s) RETURNING *""", (user.email, user.password, user.display_name))
         new_user = cursor.fetchone()
         conn.commit()  
+
+        cursor.close()
+        conn.close()
+        
         return {"data": sch.UserOut(**new_user)}
     except psycopg2.errors.UniqueViolation:
         conn.rollback()
@@ -31,7 +34,22 @@ def create_user(user: sch.UserCreate):
         conn.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail = f"Unexpected error: {str(e)}")
     
+
 # Retreive the information from a specific user based on id
+@router.get("/get-user/{email}")
+def get_user(email: str):
+    conn, cursor = get_db()
+    cursor.execute("""SELECT 1 FROM users WHERE email = %s""", (email,))
+    user = cursor.fetchone()
+    if not user:
+        return 0
+
+    cursor.close()
+    conn.close()
+    
+    return 1
+
+# Retreive the information from a specific user based on email
 @router.get("/{id}")
 def get_user(id: int):
     conn, cursor = get_db()
@@ -39,4 +57,8 @@ def get_user(id: int):
     user = cursor.fetchone()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id: {id} does not exist")
+    
+    cursor.close()
+    conn.close()
+    
     return {"data": sch.UserOut(**user)}

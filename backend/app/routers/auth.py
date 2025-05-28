@@ -10,7 +10,7 @@ router = APIRouter(
     tags=['Authentication']
 )
 
-@router.post("/login")
+@router.post("/")
 def login(user_credentials: OAuth2PasswordRequestForm = Depends()):
     conn, cursor = get_db()
 
@@ -27,6 +27,9 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends()):
     # create a token
     access_token = oauth2.create_access_token(data = {"user_id": user["id"]})
 
-    return {"token": sch.Token(access_token=access_token , token_type="bearer")}
+    cursor.close()
+    conn.close()
+
+    return {"token": sch.Token(access_token=access_token , token_type="bearer", id=user["id"])}
 
 # add in refresh tokens so that people don't need to log in over and over again

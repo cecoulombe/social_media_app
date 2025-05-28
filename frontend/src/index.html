@@ -20,29 +20,66 @@
     <body>
         <div class="loginButtons">
             <button id="login" onclick="loginUser()">Login</button>
+            <button id="logout" onclick="logoutUser()">Logout</button>
         </div>
         <div class="postButtons">
             <button id="getAll" onclick="getPosts()">Get posts</button>
             <button id="getSingle" onclick="getPost()">Get post</button>
-            <button id="createPost" onclick="createPost()">Create post</button>
+            <button id="getUserPosts" onclick="getUserPosts()">Get user posts</button>
+            <!-- <button id="createPost" onclick="createPost()">Create post</button> -->
             <button id="updatePost" onclick="updatePost()">Update post</button>
             <button id="deletePost" onclick="deletePost()">Delete post</button>
         </div>
         <div class="userButtons">
-            <button id="createUser" onclick="newUser()">Create user</button>
+            <!-- <button id="createUser" onclick="newUser()">Create user</button> -->
             <button id="getUser" onclick="getUser()">Get user</button>
         </div>
-        <div class="likeButtons">
+        <!-- <div class="likeButtons">
             <button id="likePost" onclick="likePost()">Like post</button>
-        </div>
+        </div> -->
         <div class="display">
             <p id="displayDiv"></p>
         </div>
 
+        <!-- form to create a new post -->
+         <form id="createUserForm" onsubmit="newUser()">
+            <label for="emailInput">Email</label>
+            <input type="email" id="emailInput" name="emailInput" placeholder="JaneDoe@domain.com" requried>
+            <label for="passwordInput">Password</label>
+            <input type="password" id="passwordInput" name="passwordInput" required>
+
+            <input type="submit" value="Create new account">
+         </form>
+
+        <!-- form to create a new post -->
+         <form id="createPostForm" onsubmit="createPost()">
+            <label form="titleInput">Title</label>
+            <input type="text" id="titleInput" name="titleInput" required>
+            <label form="contentInput">Content</label>
+            <input type="text" id="contentInput" name="contentInput" required>
+
+            <input type="submit" value="Create new post">
+         </form>
+
+        <!-- TODO: when opening the update form, fill the values with the actual values from the post -->
+        <!-- form to update a post -->
+         <form id="updatePostForm" onsubmit="updatePost()">
+            <label form="updateTitle">Title</label>
+            <input type="text" id="updateTitle" name="updateTitle" required>
+            <label form="updateContent">Content</label>
+            <input type="text" id="updateContent" name="updateContent" required>
+
+            <input type="submit" value="Create new post">
+         </form>
+
+         <div id="postContainer"></div>
+
         <!-- scripts -->
+         <script src="../js/onLoad.js"></script>
+         <script src="../js/renderUI.js"></script>
          <script src="../js/login.js"></script>
          <script src="../js/posts.js"></script>
          <script src="../js/users.js"></script>
-         <script src="../js/like.js"></script>
+         <script src="../js/like.js"></script> 
         </body>
 </html>
