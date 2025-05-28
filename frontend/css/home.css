@@ -10,7 +10,7 @@
 #navBanner {
     height: 100vh;
     width: 30vw;
-    background-color: blue;
+    background-color: var(--colour-background-navigation);
     padding: var(--spacing-sm);
     position: fixed;
     top: 0;
@@ -31,9 +31,17 @@
     /* height: fit-content; */
     margin: var(--spacing-sm);
     padding: var(--spacing-sm);
-    background-color: yellow;
+    background-color: var(--colour-background-navItem);
     font-size: var(--font-xl);
     border-radius: var(--radius-sm);
+}
+
+.navItem.active {
+    background-color: var(--colour-background-navItem-active);
+}
+
+.navItem:hover:not(#searchBarContainer) {
+    background-color: var(--colour-background-navItem-hover);
 }
 
 .navItem > a {
@@ -65,6 +73,11 @@
     max-width: fit-content;
     padding: 0 var(--spacing-xs);
     margin: var(--spacing-xs) var(--spacing-xs) var(--spacing-xs) 0;
+    background-color: var(--colour-background-submit);
+}
+
+#searchSubmit:hover {
+    background-color: var(--colour-background-submit-hover);
 }
 
 /* -------------- FEED -------------- */
@@ -74,7 +87,7 @@
     flex: 1;
     overflow-y: auto;
     height: 100vh;
-    background-color: green;
+    background-color: var(--colour-background);
     display: flex;
     flex-direction: column;
 }

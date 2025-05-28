@@ -19,19 +19,39 @@ body {
 /* ------------------------ VARIABLES ------------------------ */
 :root {
     /* COLOURS */
-    --colour-background: #FFFFFF;
+    --colour-background: #e0e3f1;
     --colour-background-alt: #000000;
-    --colour-background-user: #bbbbbb;
+    --colour-background-user: #cecece;
+    --colour-background-post: #FFFFFF;
+    --colour-background-submit: #f0f0f0;
+    --colour-background-submit-hover: #cacaca;
+    --colour-background-navigation: #a8b5ee;
+    --colour-background-navItem: #92a2ea;
+    --colour-background-navItem-hover: #637cec;
+    --colour-background-navItem-active: #7589e6;
+    --colour-background-tooltip: #a4a4a4;
+    --colour-background-updateButton: #a8b5ee;
+    --colour-background-updateButton-hover: #7589e6;
     --colour-background-image: #ffffff;
+    --colour-background-userBanner: #7589e6;
+    /* --colour-background-imageContainer: #c3c3c3;
+    --colour-background-content: #f4f4f4;
+    --colour-background-contentContainer: #c3c3c3; */
+
+    --colour-border: #b3b3b3;
+
     --colour-text: #000000;
     --colour-txt-alt: #ffffff;
-    --colour-text-user: #454545;
+    --colour-text-user: #1e1e1e;
+    --colour-text-date: #6e6e6e;
+
     --colour-primary: #1600e0;
     --colour-primary-dark: #0c0078;
     --colour-primary-light: #978cff;
     --colour-secondary: #00e068;
     --colour-secondary-dark: #007866;
     --colour-secondary-light: #8cffe4;
+
     --colour-invalid: #ff000050;
     --colour-invalid-border: #98000050;
 

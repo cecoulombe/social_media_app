@@ -52,8 +52,30 @@ async function renderMultiplePosts(posts) {
         // console.log(post.id);
 
         // fill in the data
+        const profilePic = postElement.querySelector(".profilePic");
+        profilePic.src = "../res/img/default_icon.png"
+
         const postAuthor = postElement.querySelector(".postAuthor");
-        postAuthor.textContent = post.author.email; // change this to be the display name
+        postAuthor.textContent = post.author.display_name;
+        
+        // set up the timestamp
+        const timestampDate = postElement.querySelector(".date");
+        const timestampTime = postElement.querySelector(".time");
+        const date = new Date(post.created_at);
+        const formattedDate = date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+        timestampDate.textContent = formattedDate;
+
+        const formattedTime = date.toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+        });
+        timestampTime.textContent = formattedTime;
+
         postElement.querySelector(".postContent").textContent = post.content;
         const likeCount = postElement.querySelector(".likeCounter");
         likeCount.textContent = post.like_count; 
@@ -185,7 +207,7 @@ async function renderPost(post) {
     // console.log(post.id);
 
     // fill in the data
-    clone.querySelector(".postAuthor").textContent = post.author.email; // change this to be the display name
+    clone.querySelector(".postAuthor").textContent = post.author.display_name;
     clone.querySelector(".content").textContent = post.content;
     clone.querySelector(".likeCounter").textContent = post.like_count;
 

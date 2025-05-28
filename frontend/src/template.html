@@ -14,7 +14,16 @@
          <template id="postTemplate">
             <div class="post">
                 <div class="postHead">
-                    <h4 class="authorContainer postAuthor"></h4>
+                    <div class="imgAndName">
+                        <img class="profilePic">
+                        <div class="authorContainer">
+                            <p class="postAuthor"></p>
+                            <div class="tooltip">
+                                <p class="timestamp date"></p>
+                                <span class="tooltipText time"></span>
+                            </div>
+                        </div>
+                    </div>
                     <button class="updateButton">Update</button>
                 </div>
                 <div class="contentDiv">

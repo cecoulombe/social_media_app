@@ -1,6 +1,6 @@
 /* ------------------ POST LAYOUT ------------------ */
 .post {
-    background-color: white;
+    background-color: var(--colour-background-post);
     margin: var(--spacing-md) 0;
     padding: var(--spacing-sm);
     border-radius: var(--radius-md);
@@ -10,48 +10,105 @@
 }
 
 .postHead {
-    flex: 1;
-    display: flex;
+    flex: 1; 
+    display: flex;    
     flex-direction: row;
     justify-content: space-between;
+    margin-bottom: var(--spacing-xs);
+}
+
+.imgAndName {
+    max-height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.profilePic {
+    border-radius: 50%;
+    padding-right: var(--spacing-xs);
+    max-height: var(--spacing-xxl); 
 }
 
 .authorContainer {
-    background-color: var(--colour-background-user);
-    color: var(--colour-text-user);
-    border-radius: var(--radius-sm);
-    margin: 0 0  var(--spacing-xs) 0;
-    padding: var(--spacing-sm);
-    width: fit-content;
-    height: fit-content;   
-    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
 }
 
-/* .postAuthor {
-    color: inherit;
+.postAuthor {
+    /* background-color: var(--colour-background-user); */
+    color: var(--colour-text-user);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-xs);
+    width: fit-content;
+    cursor: pointer;
+    font-size: var(--font-xl);
+}
+
+.timestamp {
+    color: var(--colour-text-date);
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltipText {
+    visibility: hidden;
+    background-color: var(--colour-background-tooltip);
     padding: var(--spacing-sm);
-    margin: var(--spacing-sm);
-} */
+    border-radius: var(--radius-lg);
+    font-size: var(--font-md);
+    position: absolute;
+    bottom: 125%; 
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.tooltip:hover .tooltipText {
+    visibility: visible;
+}
+
+.tooltip .tooltipText::after {
+    content: "";
+    position: absolute;
+    top: 100%; 
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--colour-background-tooltip) transparent transparent transparent;
+}
 
 .updateButton {
-    background-color: pink;
+    background-color: var(--colour-background-updateButton);
+    font-size: var(--font-lg);
     width: fit-content;
     height: fit-content;
     border-radius: var(--radius-sm);
 }
 
+.updateButton:hover {
+    background-color: var(--colour-background-updateButton-hover);
+}
+
 .contentDiv {
     flex: 1;
-    background-color: orange;
+    /* background-color: var(--colour-background); */
     width: 100%;
     /* height: 70vh; */
-    padding: var(--spacing-sm);
+    /* padding: var(--spacing-sm); */
     margin-bottom:  var(--spacing-xs);
+    border-radius: var(--radius-md);
 }
 
 .media {
-    background-color: yellow;
     width: 100%;
+    border-radius: var(--radius-md);
 }
 
 .images {
@@ -62,7 +119,8 @@
     align-items: center;     
     width: 100%;
     height: 60vh;
-    background-color: var(--colour-background-image);
+    /* background-color: var(--colour-background-image); */
+    border-radius: var(--radius-md);
 }
 
 .images img {
@@ -74,46 +132,54 @@
 
 .contentContainer {
     margin-top: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    /* background-color: var(--colour-background)-contentContainer; */
+    border: var(--border-base) solid var(--colour-border);
 }
 
 .postContent {
-    background-color: green;
+    /* background-color: var(--colour-background-content); */
     padding: var(--spacing-xs) var(--spacing-sm);
     width: fit-content;
     height: fit-content;
-}
-
-.postContent p {
     font-size: var(--font-lg);
+    border-radius: var(--radius-md);
 }
 
 .likeDiv {
     flex: 1;
     display: flex;
     flex-direction: row;
-}
-
-.likeDiv {
-    background-color: blue;
+    /* background-color: var(--colour-background); */
     /* width: fit-content;
     height: fit-content; */
-    padding: var(--spacing-sm);
-    margin: 0 0  var(--spacing-xs) 0;
+    padding: 0 var(--spacing-sm);
 }
-/* 
+
 .likeCounter {
-    width: fit-content;
-    height: fit-content;
-} */
+    margin-right: var(--spacing-xs);
+    font-size: var(--font-lg);
+}
 
 .likeButton {
     background-color: transparent;
     padding: 0;
+    margin: 0;
 }
 
 .likeButtonImg {
     background-color: transparent;
+    border-radius: 40%;
     max-width: 30px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.likeButton:hover {
+    background-color: transparent;
+}
+
+.likeButtonImg:hover {
+    transform: scale(1.1);
 }
 
 /* ------------------ SLIDESHOW LAYOUT ------------------ */
@@ -181,7 +247,7 @@
 
 /* ------------------ UPDATE POSTS ------------------ */
 #updateForm {
-    padding: 0;
+    padding: var(--spacing-xs);
     display: flex;
     flex-direction: row;
 }
@@ -189,4 +255,10 @@
 #submitUpdate {
     max-width: fit-content;
     height:fit-content;
+    margin-left: var(--spacing-xs);
+    background-color: var(--colour-background-submit);
+}
+
+#submitUpdate:hover {
+    background-color: var(--colour-background-submit-hover);
 }
