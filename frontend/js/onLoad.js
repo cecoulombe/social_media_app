@@ -69,6 +69,16 @@ window.addEventListener("DOMContentLoaded", async () => {
 async function reloadPage() {
     const params = new URLSearchParams(window.location.search);
     const user_id = params.get("user_id");
+    const pathname = window.location.pathname;
+
+    const newPost = "/src/newPost.html"
+
+    // console.log("user_id", user_id);
+    // console.log("pathname", pathname);
+
+    if(pathname == newPost) {
+        return;
+    }
 
     // no user passed meaning it is the homepage
     if (!user_id) {

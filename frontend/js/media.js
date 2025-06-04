@@ -1,9 +1,9 @@
 /**
- * File: posts.js
- * Description: Handles post path operations including retrieving all posts, retrieving one post, creating a new post, editing an existing post, and deleting an existing post
+ * File: media.js
+ * Description: Adds submitted media to the database
  * Author: Caitlin Coulombe
- * Created: 2025-05-19
- * Last Updated: 2025-05-26
+ * Created: 2025-05-31
+ * Last Updated: 2025-05-31
  */
 
 
@@ -11,7 +11,7 @@
 
 console.log("Posts.js loaded");
 
-const postPrefix = "http://localhost:9000/api/posts"
+const mediaPrefix = "http://localhost:9000/api/upload"
 
 /**
  * Handles logic for retrieving all posts.
@@ -140,9 +140,8 @@ async function createPost() {
     event.preventDefault();
     const url = postPrefix;
 
-    const content = document.getElementById("newContent").value;
+    const content = document.getElementById("contentInput").value;
 
-    console.log("in CreatePost()");
     console.log(JSON.stringify({content}));
 
     try {
@@ -160,8 +159,8 @@ async function createPost() {
         }
 
         const json = await response.json();
-        console.log(json.data);
-        return json.data;
+        document.getElementById("displayDiv").innerHTML = JSON.stringify(json);
+        console.log(json);
     }
     catch (error) {
         console.error(error.message);

@@ -16,10 +16,10 @@
         <!-- stylesheets -->
         <link rel="stylesheet" href="../css/base.css">
         <link rel="stylesheet" href="../css/post.css">
-        <link rel="stylesheet" href="../css/userPage.css">
+        <link rel="stylesheet" href="../css/newPost.css">
     </head>
 
-    <body class="userBody">
+    <body>
         <div class="content">
             <nav id="navBanner">
                 <!-- <img id="logo" src="../res/img/Family.jpeg" alt="pic of the family"> -->
@@ -33,24 +33,27 @@
                     </li>
                     
                     <li id="home" class="navItem text-center"><a href="home.html">Home</a></li>
-                    <li id="myAccount" class="navItem text-center active"><a id="myAccountLink">My Account</a></li>
-                    <li id="createPost" class="navItem text-center"><a href="newPost.html">Create Post</a></li>
+                    <li id="myAccount" class="navItem text-center"><a id="myAccountLink">My Account</a></li>
+                    <li id="createPost" class="navItem text-center active"><a href="newPost.html">Create Post</a></li>
                 </ul>
             </nav>
 
-            <div id="feed">
-                <div id="userInfoContainer">
-                    <img id="profilePicture" alt="Profile Picture" />
-                    <div id="name">
-                        <h1 id="displayName"></h1>
-                        <h4 id="email"></h4>
+            <div id="newPostContainer">
+                <form id="newPostForm">
+                    <div class="post">
+                        <div class="contentDiv">
+                            <div class="media">
+                                <!-- find a way to display the photo(s), not just the filename -->
+                                <input type="file" id="newImages" class="images" name="images" multiple>
+                            </div>
+                            <div class="contentContainer">
+                                <textarea id="newContent" class="postContent" name="postContent"></textarea>
+                            </div>
+                        </div>
                     </div>
-                    <!-- <div id="bio"></div> -->
-                    <!-- <div id="followers"></div> -->
-                    <!-- <div id="following"></div> -->
-                </div>
+                    <input type="submit" id="submitNewPost" name="submitNewPost">
+                </form>
 
-                <div id="postsContainer"></div>
             </div>
 
         </div>
@@ -63,5 +66,6 @@
          <script src="../js/posts.js"></script>
          <script src="../js/users.js"></script>
          <script src="../js/like.js"></script> 
+         <script src="../js/validateNewPost.js"></script> 
         </body>
 </html>

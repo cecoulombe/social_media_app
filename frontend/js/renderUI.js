@@ -77,6 +77,10 @@ async function renderMultiplePosts(posts) {
         timestampTime.textContent = formattedTime;
 
         postElement.querySelector(".postContent").textContent = post.content;
+        if(!post.content)
+        {
+            postElement.style.display="none";
+        }
         const likeCount = postElement.querySelector(".likeCounter");
         likeCount.textContent = post.like_count; 
     

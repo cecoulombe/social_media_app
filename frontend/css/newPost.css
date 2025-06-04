@@ -1,0 +1,95 @@
+/* ------------------ CONTENT ------------------ */
+.content {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* ----------- NAVIGATION ----------- */
+#navBanner {
+    height: 100vh;
+    width: 30vw;
+    background-color: var(--colour-background-navigation);
+    padding: var(--spacing-sm);
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
+
+#navList {
+    height: 100%;
+    width: 100%;
+    margin: var(--spacing-lg) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navItem {
+    width: 100%;
+    /* height: fit-content; */
+    margin: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background-color: var(--colour-background-navItem);
+    font-size: var(--font-xl);
+    border-radius: var(--radius-sm);
+}
+
+.navItem.active {
+    background-color: var(--colour-background-navItem-active);
+}
+
+.navItem:hover:not(#searchBarContainer) {
+    background-color: var(--colour-background-navItem-hover);
+}
+
+.navItem > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#searchBarContainer {
+    padding: 0;
+    margin: 0 0 var(--spacing-xl) 0;
+}
+
+#searchForm {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+#searchBar {
+    font: inherit;
+    padding: var(--spacing-xs);
+    margin: var(--spacing-xs);
+    border: var(--border-thin) solid #cccccc;
+    border-radius: var(--radius-sm);
+}
+
+#searchSubmit {
+    max-width: fit-content;
+    padding: 0 var(--spacing-xs);
+    margin: var(--spacing-xs) var(--spacing-xs) var(--spacing-xs) 0;
+    background-color: var(--colour-background-submit);
+}
+
+#searchSubmit:hover {
+    background-color: var(--colour-background-submit-hover);
+}
+
+/* -------------- FEED -------------- */
+#newPostContainer {
+    margin-left: 30vw; 
+    padding: var(--spacing-lg) 10%;
+    flex: 1;
+    overflow-y: auto;
+    height: 100vh;
+    background-color: var(--colour-background);
+    display: flex;
+    flex-direction: column;
+}
+
+/* later on - add media queries for mobile? as or right now, everything is for desktop */
