@@ -1,4 +1,8 @@
+# File: auth.py
 # Path operations for authenticating user login attempts
+# Author: Caitlin Coulombe
+# Last Updated: 2025-06-04
+
 from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from app import schema as sch

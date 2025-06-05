@@ -1,4 +1,8 @@
+# File: user.py
 # Path operations concerning users
+# Author: Caitlin Coulombe
+# Last Updated: 2025-06-04
+
 from fastapi import Body, FastAPI, Response, status, HTTPException, APIRouter
 from app import schema as sch
 from app import utils

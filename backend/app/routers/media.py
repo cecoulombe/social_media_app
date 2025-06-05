@@ -1,4 +1,8 @@
+# File: media.py
 # Path operations concerning adding media
+# Author: Caitlin Coulombe
+# Last Updated: 2025-06-04
+
 from typing import Optional
 from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter, UploadFile, Form, File
 from fastapi.responses import JSONResponse

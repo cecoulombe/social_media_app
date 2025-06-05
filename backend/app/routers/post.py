@@ -1,4 +1,8 @@
-# Path operations concerning posts
+# File: post.py
+# Contains path operations related to creating, retrieving, updaing, and deleting posts
+# Author: Caitlin Coulombe
+# Last Updated: 2025-06-04
+
 from typing import Optional
 from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter
 from app import schema as sch
@@ -43,7 +47,7 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
                     JOIN users ON posts.user_id = users.id
                     LEFT JOIN likes ON posts.id = likes.post_id
                     GROUP BY posts.id, users.id, users.email, users.created_at
-                    ORDER BY posts.id ASC
+                    ORDER BY posts.id DESC
                     LIMIT %s OFFSET %s""", (limit, skip,))
         
     posts = cursor.fetchall()
@@ -105,7 +109,7 @@ def get_posts(user_id: int, current_user: int = Depends(oauth2.get_current_user)
                 LEFT JOIN likes ON posts.id = likes.post_id
                 WHERE posts.user_id = %s
                 GROUP BY posts.id, users.id, users.email, users.created_at
-                ORDER BY posts.id ASC
+                ORDER BY posts.id DESC
                 LIMIT %s OFFSET %s""", (str(user_id), limit, skip,))
         
     posts = cursor.fetchall()
