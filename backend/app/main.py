@@ -28,7 +28,7 @@ app.mount("/media", StaticFiles(directory="media"), name="media")
 app.mount("/frontend", StaticFiles(directory=frontend_path, html=True), name="frontend")
 
 # determines which domains can access the api (currently set to all but will change to the website domain when published)
-origins = ["*"]
+origins = ["http://localhost:8000"]
 
 app.add_middleware(
     CORSMiddleware,

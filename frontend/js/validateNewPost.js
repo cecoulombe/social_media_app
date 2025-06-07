@@ -15,9 +15,12 @@ const preview = document.getElementById("previewGrid");
 const MAX_FILES = 9;
 
 /**
- * Handles submission of the new post form
+ * Validates the form on submission to ensure that there is either media or content for the post being added
+ *
+ * @event submit  when the new post form is submitted
+ * @return if there is no media and no content, then attempt to create a post fails and returns
  */
-document.getElementById("newPostForm").addEventListener("submit", function(event) {
+document.getElementById("newPostForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
     // variables
@@ -32,18 +35,22 @@ document.getElementById("newPostForm").addEventListener("submit", function(event
     }
 
     // UNCOMMENT THIS TO ACTUALLY MAKE THE POST
-    // const data = createPost();
+    const data = await createPost();
     // add media
-    // console.log(data);
+    const media = await uploadMedia(data.id);
+
+    window.location.href = "home.html";
 
     // console.log("medias: ", medias);
     // console.log("content:", content);
 });
 
-
-
 /**
  * Limits the number of media added to each post and previews the media
+ * Adds a thumbnail for each media to the post so that the user can see all of the media they are adding
+ *
+ * @async
+ * @event change when the media input is changed
  */
 mediaInput.addEventListener("change", async function() {
     preview.innerHTML = '';
@@ -84,6 +91,19 @@ mediaInput.addEventListener("change", async function() {
     }
 });
 
+
+/**
+ * Reads a file and returns a Data URL (base64-encoded string) representing the file's contents
+ * 
+ * Uses the FileReader API to asynchronously read a file as a data URl, 
+ * which can be used for previewing the file in the browser before uploading 
+ *
+ * @async
+ * @function readFileAsDataURL
+ * @param {File} file The file to be read
+ * @returns {Promise<string>} Resolves with the data URL string of the file. If reading failes, the promise is rejected with the error.
+ * @throws {Error} If the network request fails or response is not OK.
+ */
 function readFileAsDataURL(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();

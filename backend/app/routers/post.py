@@ -1,7 +1,7 @@
 # File: post.py
 # Contains path operations related to creating, retrieving, updaing, and deleting posts
 # Author: Caitlin Coulombe
-# Last Updated: 2025-06-04
+# Last Updated: 2025-06-06
 
 from typing import Optional
 from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter
@@ -214,8 +214,8 @@ def create_posts(post: sch.PostCreate, current_user: int = Depends(oauth2.get_cu
     
     cursor.close()
     conn.close()
-
-    return {"data": sch.PostCreate(**new_post)}
+    print("NEW POST DATA: ", new_post)
+    return {"data": sch.PostCreateOut(**new_post)}
 
 # Delete a post based on the passed id
 @router.delete("/{id}")
