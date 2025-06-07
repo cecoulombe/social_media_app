@@ -2,7 +2,9 @@
 <html>
     <head>
         <!-- Author: Caitlin Coulombe, caitlincoulombe@gmail.com -->
-        <!-- Date: 2025/19/05 -->
+        <!-- Date Created: 2025-19-05 -->
+        <!-- Last modified: 2025-06-04 -->
+
         <meta name="author" content="Caitlin Coulombe">
         <title>Social Media App</title>
 
@@ -42,9 +44,11 @@
                 <form id="newPostForm">
                     <div class="post">
                         <div class="contentDiv">
-                            <div class="media">
-                                <!-- find a way to display the photo(s), not just the filename -->
-                                <input type="file" id="newImages" class="images" name="images" multiple>
+                            <label for="newImages">Select up to 9 images to add (optional)</label>
+                            <input type="file" id="newImages" class="images" name="images" accept="images/*" multiple>
+                            <p id="warning"></p>
+                            <div id="previewContainer">
+                                <div id="previewGrid" class="media"></div>
                             </div>
                             <div class="contentContainer">
                                 <textarea id="newContent" class="postContent" name="postContent"></textarea>
@@ -67,5 +71,6 @@
          <script src="../js/users.js"></script>
          <script src="../js/like.js"></script> 
          <script src="../js/validateNewPost.js"></script> 
+         <script src="../js/media.js"></script>
         </body>
 </html>

@@ -92,4 +92,35 @@
     flex-direction: column;
 }
 
+.post {
+    padding: var(--spacing-sm);
+    margin: 0;
+}
+
+#previewContainer {
+    display: none;
+    max-height: 60vh;
+    /* aspect-ratio: 1 / 1; */
+    border: var(--border-base) solid var(--colour-border);
+    margin: var(--spacing-md) 0;
+    overflow: auto;
+}
+
+#previewGrid {
+    display: grid;
+    gap: var(--spacing-sm);
+    width: 100%;
+}
+
+.thumbnail {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.contentDiv {
+    margin-bottom: 0;
+}
+
 /* later on - add media queries for mobile? as or right now, everything is for desktop */

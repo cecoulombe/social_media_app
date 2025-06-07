@@ -1,3 +1,8 @@
+# File: schema.py
+# Contains schema used for ensuring database is formatted as intended
+# Author: Caitlin Coulombe
+# Last Updated: 2025-06-06
+
 from datetime import datetime
 from enum import Enum
 from pydantic import BaseModel, EmailStr, conint
@@ -36,6 +41,10 @@ class PostBase(BaseModel):
 # schema for creating a post
 class PostCreate(PostBase):
     pass
+
+# schema for returning the created post
+class PostCreateOut(PostCreate):
+    id: int
 
 # schema used to manage post data 
 class Post(PostBase): 

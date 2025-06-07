@@ -1,3 +1,8 @@
+# File: like.py
+# Path operations for authenticating user login attempts
+# Author: Caitlin Coulombe
+# Last Updated: 2025-06-04
+
 from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter
 from app import schema as sch
 from app import oauth2
