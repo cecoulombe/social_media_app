@@ -71,6 +71,8 @@ body {
     --spacing-xl: 32px;
     --spacing-xxl: 50px;
 
+    --spacing-profilePic-sm: 60px;
+
     /* BORDER RADIUS */
     --radius-sm: 5px;
     --radius-md: 10px;

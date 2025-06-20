@@ -54,11 +54,12 @@ async function renderMultiplePosts(posts) {
         // fill in the data
         // add the profile picture for the user
         const profilePic = postElement.querySelector(".profilePic");
-        if(!post.author.profile_pic)
-        {
-            profilePic.src = "../res/img/default_icon.png";
+        if(post.author.profile_pic ) {
+            console.log("Has a profile pic: " + post.author.profile_pic.url)
+            profilePic.src = "http://localhost:9000/" + post.author.profile_pic.url;
+            profilePic.alt = post.author.profile_pic.filename;
         } else {
-            console.log("There is a profile picture");
+            profilePic.src = "../res/img/default_icon.png";
         }
     
         const postAuthor = postElement.querySelector(".postAuthor");
