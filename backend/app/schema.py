@@ -8,6 +8,11 @@ from enum import Enum
 from pydantic import BaseModel, EmailStr, conint
 from typing import List, Optional
 
+# ----------------------- MEDIA SCHEMA -----------------------
+class MediaOut(BaseModel):
+    filename: str
+    url: str
+
 # ----------------------- USER SCHEMA -----------------------
 # schema used to create user data
 class UserCreate(BaseModel):
@@ -21,16 +26,12 @@ class UserOut(BaseModel):
     email: EmailStr
     created_at: datetime
     display_name: str
+    profile_pic: Optional[MediaOut] = None
 
 # schema used to format the required information for a login attempt
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
-
-# ----------------------- MEDIA SCHEMA -----------------------
-class MediaOut(BaseModel):
-    filename: str
-    url: str
 
 # ----------------------- POST SCHEMA -----------------------
 # schema for generic posts

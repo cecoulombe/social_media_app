@@ -56,13 +56,29 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
     for post in posts:
         post_dict = dict(post)
 
-        # Create nested author object that is expected by sch.Post
+        # get the profile picture for the user
+        cursor.execute("""SELECT filename, filepath FROM profile_pictures WHERE user_id = %s""", (str(post_dict["author_id"]),))
+        # print("AUTHOR_ID:", post_dict["author_id"], type(post_dict["author_id"]))
+
+        profile_pic_row = cursor.fetchone()
+
+        if profile_pic_row:
+            profile_pic = {
+                "filename":profile_pic_row["filename"],
+                "url": profile_pic_row["filepath"]
+            }
+        else:
+            profile_pic = None
+
+        # group the author information
         author_data = {
             "id": post_dict["author_id"],
             "email": post_dict["author_email"],
             "created_at": post_dict["author_created_at"],
-            "display_name": post_dict["author_display_name"]
+            "display_name": post_dict["author_display_name"],
+            "profile_pic": profile_pic
         }
+
         post_dict["author"] = author_data
 
         # remove the flattened author fields to avoid conflict
@@ -117,14 +133,30 @@ def get_posts(user_id: int, current_user: int = Depends(oauth2.get_current_user)
     result = []
     for post in posts:
         post_dict = dict(post)
+        
+        # get the profile picture for the user
+        cursor.execute("""SELECT filename, filepath FROM profile_pictures WHERE user_id = %s""", (str(post_dict["author_id"]),))
+        # print("AUTHOR_ID:", post_dict["author_id"], type(post_dict["author_id"]))
 
-        # Create nested author object that is expected by sch.Post
+        profile_pic_row = cursor.fetchone()
+
+        if profile_pic_row:
+            profile_pic = {
+                "filename":profile_pic_row["filename"],
+                "url": profile_pic_row["filepath"]
+            }
+        else:
+            profile_pic = None
+
+        # group the author information
         author_data = {
             "id": post_dict["author_id"],
             "email": post_dict["author_email"],
             "created_at": post_dict["author_created_at"],
-            "display_name": post_dict["author_display_name"]
+            "display_name": post_dict["author_display_name"],
+            "profile_pic": profile_pic
         }
+
         post_dict["author"] = author_data
 
         # remove the flattened author fields to avoid conflict
@@ -172,13 +204,29 @@ def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
     
     post_dict = dict(post)
 
+    # get the profile picture for the user
+    cursor.execute("""SELECT filename, filepath FROM profile_pictures WHERE user_id = %s""", (str(post_dict["author_id"]),))
+    # print("AUTHOR_ID:", post_dict["author_id"], type(post_dict["author_id"]))
+
+    profile_pic_row = cursor.fetchone()
+
+    if profile_pic_row:
+        profile_pic = {
+            "filename":profile_pic_row["filename"],
+            "url": profile_pic_row["filepath"]
+        }
+    else:
+        profile_pic = None
+
     # group the author information
     author_data = {
         "id": post_dict["author_id"],
         "email": post_dict["author_email"],
         "created_at": post_dict["author_created_at"],
-        "display_name": post_dict["author_display_name"]
+        "display_name": post_dict["author_display_name"],
+        "profile_pic": profile_pic
     }
+
     post_dict["author"] = author_data
 
     # remove the flattened author fields to avoid conflict

@@ -39,7 +39,7 @@ def create_user(user: sch.UserCreate):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail = f"Unexpected error: {str(e)}")
     
 
-# Retreive the information from a specific user based on id
+# Find out if there is a user with that email
 @router.get("/get-user/{email}")
 def get_user(email: str):
     conn, cursor = get_db()
@@ -57,12 +57,29 @@ def get_user(email: str):
 @router.get("/{id}")
 def get_user(id: int):
     conn, cursor = get_db()
-    cursor.execute("""SELECT * FROM users WHERE id = %s""", (str(id),))
+    cursor.execute("""SELECT users.*, 
+                   profile_pictures.filename AS filename,
+                   profile_pictures.filepath AS url
+                   FROM users 
+                   LEFT JOIN profile_pictures ON profile_pictures.user_id = users.id
+                   WHERE users.id = %s""", (str(id),))
     user = cursor.fetchone()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id: {id} does not exist")
     
+    user_dict = dict(user)
+
+    profile_pic = {
+        "filename": user_dict["filename"],
+        "url": user_dict["url"]
+    }
+
+    user_dict["profile_pic"] = profile_pic
+
+    del user_dict["filename"]
+    del user_dict["url"]
+    
     cursor.close()
     conn.close()
     
-    return {"data": sch.UserOut(**user)}
+    return {"data": sch.UserOut(**user_dict)}
