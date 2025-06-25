@@ -3,6 +3,7 @@
 # Author: Caitlin Coulombe
 # Last Updated: 2025-06-20
 
+import os
 from typing import Optional
 from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter
 from app import schema as sch
@@ -279,13 +280,27 @@ def delete_post(id:int, current_user: int = Depends(oauth2.get_current_user)):
 
     if user_id["user_id"] != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
+    
+    #  get associated media prior to deleting the post
+    cursor.execute("""SELECT filepath FROM files WHERE post_id = %s""", (str(id),))
+    media_files = cursor.fetchall()
 
+    #  delete the post
     cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING *""", (str(id),))
     deleted = cursor.fetchone()
     if not deleted:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"post with id: {id} was not found")
     conn.commit()   # deletion changes the database so it needs to be committed
+
+    # remove associated media from the disk
+    for media in media_files:
+        filepath = media["filepath"]
+        if filepath and os.path.exists(filepath):
+            try:
+                os.remove(filepath)
+            except Exception as e:
+                print(f"Warning: Failed to delete file {filepath} : {e}")
     
     cursor.close()
     conn.close()

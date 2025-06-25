@@ -3,7 +3,7 @@
  * Description: Handles user path operations including creating a new user and retrieving the information of a single user
  * Author: Caitlin Coulombe
  * Created: 2025-05-19
- * Last Updated: 2025-05-20
+ * Last Updated: 2025-05-24
  */
 
 "use strict";
@@ -88,13 +88,12 @@ async function getUser(user_id) {
 
 
 /**
- * Handles logic for updating the content of an existing post.
- * Sends a PUT request to the /posts/{id} endpoint containing the updated content the post based on id.
+ * Handles logic for updating the current user's display name
+ * Sends a PUT request to the /users/update_name/{id} endpoint containing the new display name.
  *
  * @async
  * @function updateUser
- * @param {string} newContent - the only part of the post that can change is the content so it needs to be passed
- * @param {int} post_id - the id of the post to be changed
+ * @param {string} display_name - the new display_name
  * @returns {Promise<void>} Resolves when post is updated in the database, and displayed on page.
  * @throws {Error} If the network request fails or response is not OK.
  */
@@ -115,11 +114,10 @@ async function updateUser(display_name) {
         });
 
         if(!response.ok) {
-            throw new Error('Reponse status: ${response.status}');
+            throw new Error(`Reponse status: ${response.status}`);
         }
 
         const json = await response.json();
-        // document.getElementById("displayDiv").innerHTML = JSON.stringify(json);
         console.log(json);
     }
     catch (error) {

@@ -68,6 +68,7 @@ async function renderUserPage(user_id) {
 async function createAccountUpdateForm(user_id){
     // user can change/add a profile icon and change their display name but not the email or password
     console.log("Updating the profile");
+    document.getElementById("updateAccountButton").style.display = "none";
 
     // change the display name
     // get the current name
@@ -87,7 +88,7 @@ async function createAccountUpdateForm(user_id){
     saveButton.textContent = "Save Profile Changes";
     saveButton.id = "saveChangesButton";
     saveButton.classList.add("updateButton");
-    document.getElementById("userInfoContainer").appendChild(saveButton);
+    document.getElementById("updateButtonsContainer").appendChild(saveButton);
 
     // change the photo
     const fileInput = document.getElementById("profilePicInput");
@@ -100,6 +101,20 @@ async function createAccountUpdateForm(user_id){
         }
     });
 
+    // make the profile pic clickable to open file input
+    const profilePic = document.getElementById("profilePicture");
+    profilePic.style.cursor = "pointer";
+    profilePic.style.filter = "brightness(0.9)"
+    profilePic.style.outline = "2px solid var(--colour-border)";
+    profilePic.style.outlineOffset = "2px";
+
+    profilePic.classList.add("editable");
+
+    profilePic.addEventListener("click", () => {
+        fileInput.click();  // opens file picker
+    });
+
+
     // save button logic
     saveButton.addEventListener("click", async () => {
         const newDisplayName = nameInput.value;
@@ -107,33 +122,11 @@ async function createAccountUpdateForm(user_id){
 
         // replace everything here with proper frontend in users.js and media.js, storing this here for now so I don't forget
         await updateUser(newDisplayName);
-        
-        
-        // formData.append("display_name", newDisplayName);
-        // if (newPic) {
-        //     formData.append("profile_picture", newPic);
-        // }
+        await updateProfilePic(newPic);
 
-        // try {
-        //     const response = await fetch("http://localhost:9000/api/update-account", {
-        //         method: "POST",
-        //         headers: {
-        //             Authorization: `Bearer ${access_token}`
-        //         },
-        //         body: formData
-        //     });
-
-        //     if (!response.ok) {
-        //         throw new Error("Failed to update account");
-        //     }
-
-        //     const result = await response.json();
-        //     console.log("Account updated", result);
-        //     location.reload(); // Or re-render the info
-
-        // } catch (error) {
-        //     console.error("Error updating account:", error);
-        // }
+        // reset profile pic click behavior
+        profilePic.style.cursor = "default";
+        profilePic.replaceWith(profilePic.cloneNode(true)); // removes event listeners
 
         window.location.reload();
     });

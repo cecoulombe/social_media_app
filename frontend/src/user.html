@@ -45,9 +45,9 @@
             <div id="feed">
                 <header id="userHeader">
                     <div id="userInfoContainer">
-                        <label for="profilePicInput">
+                        <!-- <label for="profilePicInput"> -->
                             <img id="profilePicture" alt="Profile Picture" />
-                        </label>
+                        <!-- </label> -->
                         <input type="file" id="profilePicInput" accept="image/*">
                         <div id="name">
                             <h1 id="displayName"></h1>
@@ -57,7 +57,9 @@
                         <!-- <div id="followers"></div> -->
                         <!-- <div id="following"></div> -->
                     </div>
-                    <button id="updateAccountButton" class="updateButton" type="button">Update Account</button>
+                    <div id="updateButtonsContainer">
+                        <button id="updateAccountButton" class="updateButton" type="button">Update Account</button>
+                    </div>
                 </header>
 
                 <div id="postsContainer"></div>
@@ -74,5 +76,6 @@
          <script src="../js/users.js"></script>
          <script src="../js/like.js"></script> 
          <script src="../js/userPage.js"></script> 
+         <script src="../js/media.js"></script> 
         </body>
 </html>

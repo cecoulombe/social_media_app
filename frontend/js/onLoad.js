@@ -89,30 +89,6 @@ async function reloadPage() {
         return;
     }
 
-    // // there is a user passed, meaning it is a user profile
-    // const user = await getUser(user_id);
-
-    // console.log("user from reloadPage", user);
-
-    // // grab the profile picture
-    // const profilePic = document.getElementById("profilePicture");
-    // if (profilePic) {
-    //     if(user.data.profile_pic) {
-    //         console.log("There is a profile pic for the user");
-    //         profilePic.src = "http://localhost:9000/" + user.data.profile_pic.url;
-    //         profilePic.alt = user.data.profile_pic.filename;
-    //     } else {
-    //         profilePic.src = "../res/img/default_icon.png";
-    //         profilePic.alt = "Default icon"
-    //     }
-    // } else {
-    //     console.warn("profilePicture element not found in the DOM.");
-    // }
-    // document.getElementById("displayName").innerText = user.data.display_name;
-    // document.getElementById("email").innerText = user.data.email;
-
-    // // if this is the user, show the update account button
-
     renderUserPage(user_id);
 
     const posts = await getUserPosts(user_id);

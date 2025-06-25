@@ -104,7 +104,7 @@ async def upload_file(user_id: int, file: UploadFile = File(...), current_user: 
                             detail=f"Invalid file type")
 
     filename = f"{int(datetime.utcnow().timestamp())}_{file.filename}"
-    file_path = os.path.join("media", filename)
+    file_path = os.path.join("media/profile_picture", filename)
 
     # save file to disk
     with open(file_path, "wb") as buffer:
@@ -119,7 +119,7 @@ async def upload_file(user_id: int, file: UploadFile = File(...), current_user: 
     cursor.close()
     conn.close()
 
-    return {"url": f"/media/{filename}"}
+    return {"url": f"/media/profile_picture/{filename}"}
 
 # for retrieving the data for the profile picture for the user
 @router.get("/by-user/{user_id}")
@@ -165,8 +165,12 @@ async def upload_file(user_id: int, file: UploadFile = File(...), current_user: 
     old = cursor.fetchone()
     old_filepath = old["filepath"] if old else None
 
+    # delete old file from storage
+    if old_filepath and os.path.exists(old_filepath):
+        os.remove(old_filepath)
+
     filename = f"{int(datetime.utcnow().timestamp())}_{file.filename}"
-    file_path = os.path.join("media", filename)
+    file_path = os.path.join("media/profile_picture", filename)
 
     # save file to disk
     with open(file_path, "wb") as buffer:
@@ -184,4 +188,4 @@ async def upload_file(user_id: int, file: UploadFile = File(...), current_user: 
     cursor.close()
     conn.close()
 
-    return {"url": f"/media/{filename}"}
+    return {"url": f"/media/profile_picture/{filename}"}
