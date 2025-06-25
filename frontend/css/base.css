@@ -30,10 +30,10 @@ body {
     --colour-background-navItem-hover: #637cec;
     --colour-background-navItem-active: #7589e6;
     --colour-background-tooltip: #a4a4a4;
-    --colour-background-updateButton: #a8b5ee;
+    --colour-background-updateButton: #92a2ea;
     --colour-background-updateButton-hover: #7589e6;
     --colour-background-image: #ffffff;
-    --colour-background-userBanner: #7589e6;
+    --colour-background-userBanner: #a8b5ee;
     /* --colour-background-imageContainer: #c3c3c3;
     --colour-background-content: #f4f4f4;
     --colour-background-contentContainer: #c3c3c3; */
@@ -72,6 +72,7 @@ body {
     --spacing-xxl: 50px;
 
     --spacing-profilePic-sm: 60px;
+    --spacing-profilePic-lg: 120px;
 
     /* BORDER RADIUS */
     --radius-sm: 5px;

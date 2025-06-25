@@ -76,7 +76,7 @@
     margin: var(--spacing-xs) var(--spacing-xs) var(--spacing-xs) 0;
 }
 
-/* -------------- FEED -------------- */
+/* -------------- CONTENT -------------- */
 #feed {
     margin-left: 30vw;
     display: flex;
@@ -84,19 +84,32 @@
     width: 100%;
 }
 
+#userHeader {
+    display: flex;
+    flex-direction: row;
+    /* height: fit-content; */
+    background-color: var(--colour-background-userBanner);
+}
+
 #userInfoContainer {
     /* position: sticky; */
     padding: var(--spacing-md);
-    background-color: var(--colour-background-userBanner);
+    /* background-color: var(--colour-background-userBanner); */
     display: flex;
     flex-direction: row;
     height: 20vh;
 }
 
 #profilePicture {
-    height: 100%;
-    background-color: var(--colour-background-image);
     border-radius: 50%;
+    margin-right: var(--spacing-xs);
+    width: var(--spacing-profilePic-lg);
+    height: var(--spacing-profilePic-lg); 
+    object-fit: cover;
+}
+
+#profilePicInput {
+    display: none;
 }
 
 #name {
@@ -114,6 +127,12 @@
 #email {
     padding: 0 var(--spacing-sm);
     color: var(--colour-text-user);
+}
+
+#updateAccountButton {
+    margin: var(--spacing-md);
+    margin-left: auto;
+    margin-right: var(--spacing-lg);
 }
 
 #postsContainer {

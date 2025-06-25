@@ -85,3 +85,44 @@ async function getUser(user_id) {
         console.error(error.message);
     }
 }
+
+
+/**
+ * Handles logic for updating the content of an existing post.
+ * Sends a PUT request to the /posts/{id} endpoint containing the updated content the post based on id.
+ *
+ * @async
+ * @function updateUser
+ * @param {string} newContent - the only part of the post that can change is the content so it needs to be passed
+ * @param {int} post_id - the id of the post to be changed
+ * @returns {Promise<void>} Resolves when post is updated in the database, and displayed on page.
+ * @throws {Error} If the network request fails or response is not OK.
+ */
+async function updateUser(display_name) {
+    console.log("user id: " + user_id);
+    const url = userPrefix + "/update_name/" + user_id;
+
+    console.log(JSON.stringify({display_name}));
+
+    try {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${access_token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify ({display_name})
+        });
+
+        if(!response.ok) {
+            throw new Error('Reponse status: ${response.status}');
+        }
+
+        const json = await response.json();
+        // document.getElementById("displayDiv").innerHTML = JSON.stringify(json);
+        console.log(json);
+    }
+    catch (error) {
+        console.error(error.message);
+    }
+}

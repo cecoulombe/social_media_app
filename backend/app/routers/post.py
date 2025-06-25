@@ -1,7 +1,7 @@
 # File: post.py
 # Contains path operations related to creating, retrieving, updaing, and deleting posts
 # Author: Caitlin Coulombe
-# Last Updated: 2025-06-06
+# Last Updated: 2025-06-20
 
 from typing import Optional
 from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter

@@ -3,7 +3,7 @@
  * Description: Handles all the logic for when the page is refreshed (i.e. persist login, load ui, &c.)
  * Author: Caitlin Coulombe
  * Created: 2025-05-21
- * Last Updated: 2025-05-21
+ * Last Updated: 2025-06-20
  */
 
 "use strict";
@@ -31,13 +31,14 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             console.warn("Could not find #myAccountLink in the DOM");
         }
-
         // document.getElementById("updatePostForm").style.display = "none";
         // load the desired content based on the page (i.e. all posts, specific post, comments, user's account/posts)
     } else {
         console.log("No token found, prompt login.");
         // redirect to login page
     }
+
+    reloadPage();
 });
 
 /**
@@ -56,10 +57,11 @@ function isTokenExpired(token) {
 }
 
 
-// loads only the appropriate posts for the current user profile
-window.addEventListener("DOMContentLoaded", async () => {
-    await reloadPage();
-});
+// // loads only the appropriate posts for the current user profile
+// window.addEventListener("DOMContentLoaded", async () => {
+//     console.log("hi");
+//     await reloadPage();
+// });
 
 /**
  * ensures the posts for the proper page are rendered
@@ -87,20 +89,31 @@ async function reloadPage() {
         return;
     }
 
-    // there is a user passed, meaning it is a user profile
-    const user = await getUser(user_id);
+    // // there is a user passed, meaning it is a user profile
+    // const user = await getUser(user_id);
 
-    console.log("user from reloadPage", user);
+    // console.log("user from reloadPage", user);
 
-    // when implemented, grab the profile picture
-    const profilePic = document.getElementById("profilePicture");
-    if (profilePic) {
-        profilePic.src = "../res/img/default_icon.png";
-    } else {
-        console.warn("profilePicture element not found in the DOM.");
-    }
-    document.getElementById("displayName").innerText = user.data.display_name;
-    document.getElementById("email").innerText = user.data.email;
+    // // grab the profile picture
+    // const profilePic = document.getElementById("profilePicture");
+    // if (profilePic) {
+    //     if(user.data.profile_pic) {
+    //         console.log("There is a profile pic for the user");
+    //         profilePic.src = "http://localhost:9000/" + user.data.profile_pic.url;
+    //         profilePic.alt = user.data.profile_pic.filename;
+    //     } else {
+    //         profilePic.src = "../res/img/default_icon.png";
+    //         profilePic.alt = "Default icon"
+    //     }
+    // } else {
+    //     console.warn("profilePicture element not found in the DOM.");
+    // }
+    // document.getElementById("displayName").innerText = user.data.display_name;
+    // document.getElementById("email").innerText = user.data.email;
+
+    // // if this is the user, show the update account button
+
+    renderUserPage(user_id);
 
     const posts = await getUserPosts(user_id);
     console.log("from userpage:", posts);

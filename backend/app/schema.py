@@ -1,7 +1,7 @@
 # File: schema.py
 # Contains schema used for ensuring database is formatted as intended
 # Author: Caitlin Coulombe
-# Last Updated: 2025-06-06
+# Last Updated: 2025-06-20
 
 from datetime import datetime
 from enum import Enum
@@ -32,6 +32,10 @@ class UserOut(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
+# schema used to update the user's display name
+class UserUpdate(BaseModel):
+    display_name: str
 
 # ----------------------- POST SCHEMA -----------------------
 # schema for generic posts

@@ -17,6 +17,10 @@
         <link rel="stylesheet" href="../css/base.css">
         <link rel="stylesheet" href="../css/post.css">
         <link rel="stylesheet" href="../css/userPage.css">
+
+        <!-- favicon -->
+        <link rel="icon" type="image/png" href="../res/img/favicon/icon.png" />
+
     </head>
 
     <body class="userBody">
@@ -33,22 +37,28 @@
                     </li>
                     
                     <li id="home" class="navItem text-center"><a href="home.html">Home</a></li>
-                    <li id="myAccount" class="navItem text-center active"><a id="myAccountLink">My Account</a></li>
+                    <li id="myAccount" class="navItem text-center"><a id="myAccountLink">My Account</a></li>
                     <li id="createPost" class="navItem text-center"><a href="newPost.html">Create Post</a></li>
                 </ul>
             </nav>
 
             <div id="feed">
-                <div id="userInfoContainer">
-                    <img id="profilePicture" alt="Profile Picture" />
-                    <div id="name">
-                        <h1 id="displayName"></h1>
-                        <h4 id="email"></h4>
+                <header id="userHeader">
+                    <div id="userInfoContainer">
+                        <label for="profilePicInput">
+                            <img id="profilePicture" alt="Profile Picture" />
+                        </label>
+                        <input type="file" id="profilePicInput" accept="image/*">
+                        <div id="name">
+                            <h1 id="displayName"></h1>
+                            <h4 id="email"></h4>
+                        </div>
+                        <!-- <div id="bio"></div> -->
+                        <!-- <div id="followers"></div> -->
+                        <!-- <div id="following"></div> -->
                     </div>
-                    <!-- <div id="bio"></div> -->
-                    <!-- <div id="followers"></div> -->
-                    <!-- <div id="following"></div> -->
-                </div>
+                    <button id="updateAccountButton" class="updateButton" type="button">Update Account</button>
+                </header>
 
                 <div id="postsContainer"></div>
             </div>
@@ -63,5 +73,6 @@
          <script src="../js/posts.js"></script>
          <script src="../js/users.js"></script>
          <script src="../js/like.js"></script> 
+         <script src="../js/userPage.js"></script> 
         </body>
 </html>

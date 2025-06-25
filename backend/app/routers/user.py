@@ -1,11 +1,12 @@
 # File: user.py
 # Path operations concerning users
 # Author: Caitlin Coulombe
-# Last Updated: 2025-06-04
+# Last Updated: 2025-06-24
 
-from fastapi import Body, FastAPI, Response, status, HTTPException, APIRouter
+from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter
 from app import schema as sch
 from app import utils
+from app import oauth2
 from app.database import get_db
 import psycopg2
 
@@ -83,3 +84,32 @@ def get_user(id: int):
     conn.close()
     
     return {"data": sch.UserOut(**user_dict)}
+
+# update a user's display name based on id
+@router.put("/update_name/{id}")
+def update_post(id: int, user: sch.UserUpdate, current_user: int = Depends(oauth2.get_current_user)):
+    conn, cursor = get_db()
+
+    cursor.execute("""SELECT 1 FROM users WHERE id = %s""", (str(id),))
+    user_id = cursor.fetchone()
+    if not user_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"user with id: {id} was not found")
+    
+    if id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, 
+                            detail=f"Not authorized to perform requested action.")
+    
+    cursor.execute("""UPDATE users SET display_name = %s WHERE id = %s RETURNING *""", (user.display_name, str(id),))
+    updated = cursor.fetchone()
+    if not updated:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
+                            detail=f"user with id: {id} was not udpated")
+    
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return {"user": sch.UserOut(**updated)}
+    

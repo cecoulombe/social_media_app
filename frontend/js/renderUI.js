@@ -3,7 +3,7 @@
  * Description: Uses the template in index.html to create a post
  * Author: Caitlin Coulombe
  * Created: 2025-05-20
- * Last Updated: 2025-05-26
+ * Last Updated: 2025-06-20
  */
 
 "use strict";
@@ -54,12 +54,13 @@ async function renderMultiplePosts(posts) {
         // fill in the data
         // add the profile picture for the user
         const profilePic = postElement.querySelector(".profilePic");
-        if(post.author.profile_pic ) {
-            console.log("Has a profile pic: " + post.author.profile_pic.url)
+        if(post.author.profile_pic) {
+            // console.log("Has a profile pic: " + post.author.profile_pic.url)
             profilePic.src = "http://localhost:9000/" + post.author.profile_pic.url;
             profilePic.alt = post.author.profile_pic.filename;
         } else {
             profilePic.src = "../res/img/default_icon.png";
+            profilePic.alt = "Default icon"
         }
     
         const postAuthor = postElement.querySelector(".postAuthor");
@@ -270,6 +271,8 @@ async function createUpdateForm(post_id){
     // fill it with a form
     const updateForm = document.createElement("form");
     updateForm.id = "updateForm";
+
+    // form elements
     const updateContent = document.createElement("textarea");
     
     updateContent.name = "updateContent";
