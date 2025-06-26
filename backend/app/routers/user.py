@@ -1,8 +1,9 @@
 # File: user.py
 # Path operations concerning users
 # Author: Caitlin Coulombe
-# Last Updated: 2025-06-24
+# Last Updated: 2025-06-25
 
+import os
 from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter
 from app import schema as sch
 from app import utils
@@ -113,3 +114,77 @@ def update_post(id: int, user: sch.UserUpdate, current_user: int = Depends(oauth
 
     return {"user": sch.UserOut(**updated)}
     
+
+# verify just the user's password (used to confirm account deletion)
+@router.post("/verify-password/{id}")
+def verify_password(id: int, attempt: sch.PasswordAttempt, current_user: int = Depends(oauth2.get_current_user)):
+    conn, cursor = get_db()
+
+    if id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, 
+                            detail=f"Not authorized to perform requested action.")
+    
+    cursor.execute("""SELECT password FROM users WHERE id = %s""", (str(id),))
+    password = cursor.fetchone()
+    stored_password = password["password"]
+
+    # verify that the attempted password is correct
+    if not utils.verify(attempt.password, stored_password):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail=f"Invalid password attempt")
+    
+    return {"success": True}
+
+# delete a users account
+@router.delete("/{id}")
+def delete_user(id: int, current_user: int = Depends(oauth2.get_current_user)):
+    conn, cursor = get_db()
+
+    cursor.execute("""SELECT 1 FROM users WHERE id = %s""", (str(id),))
+    user_exists = cursor.fetchone()
+    if not user_exists:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"user with id: {id} was not found")
+    
+    # get associated media prior to deleting the user
+    cursor.execute("""SELECT filepath FROM profile_pictures WHERE user_id = %s""", (str(id),))
+    profile_pic = cursor.fetchone()
+
+    # get media associated with the users posts
+    cursor.execute("""SELECT filepath FROM files 
+                   JOIN posts ON files.post_id = posts.id
+                   JOIN users ON posts.user_id = users.id
+                   WHERE users.id = %s""", (str(id),))
+    media_paths = cursor.fetchall()
+
+    # delete the user
+    cursor.execute("""DELETE FROM users WHERE id = %s RETURNING *""", (str(id),))
+    deleted = cursor.fetchone()
+    if not deleted:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"user with id: {id} was not found")
+    conn.commit()
+
+    # remove profile picture
+    if profile_pic:
+        pp_filepath = profile_pic["filepath"]
+        if pp_filepath and os.path.exists(pp_filepath):
+            try: 
+                os.remove(pp_filepath)
+            except Exception as e:
+                print(f"Warning: Failed to delete file {pp_filepath} : {e}")
+
+    # remove associated media
+    if media_paths:
+        for media in media_paths:
+            m_filepath = media["filepath"]
+            if m_filepath and os.path.exists(m_filepath):
+                try: 
+                    os.remove(m_filepath)
+                except Exception as e:
+                    print(f"Warning: Failed to delete file {m_filepath} : {e}")
+
+    cursor.close()
+    conn.close()
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

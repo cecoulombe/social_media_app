@@ -85,10 +85,11 @@ async function renderMultiplePosts(posts) {
         timestampTime.textContent = formattedTime;
 
         const postContent = postElement.querySelector(".postContent");
+        const contentContainer = postElement.querySelector(".contentContainer");
         postContent.textContent = post.content;
         if(!post.content)
         {
-            postContent.style.display="none";
+            contentContainer.style.display="none";
         }
         const likeCount = postElement.querySelector(".likeCounter");
         likeCount.textContent = post.like_count; 
@@ -268,6 +269,26 @@ async function createUpdateForm(post_id){
     // empty the content container
     const contentContainer = postElem.querySelector(".contentContainer");
     contentContainer.innerHTML = "";
+
+    // hide the update button and show the delete post button instead
+    const updateButton = postElem.querySelector(".updateButton");
+    updateButton.style.display = "none";
+    const deleteButton = postElem.querySelector(".deleteButton");
+    deleteButton.style.display = "block";
+
+    deleteButton.onclick = async (event) => {
+        event.preventDefault();
+
+        // confirm delete
+        const deleteConfirm = window.confirm("Are you sure you want to delete this post?");
+        if (deleteConfirm) {
+            console.log("Delete the post");
+            await deletePost(post_id);
+            await reloadPage();
+        } else {
+            console.log("Delete post cancelled");
+        }
+    };
 
     // fill it with a form
     const updateForm = document.createElement("form");

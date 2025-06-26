@@ -45,6 +45,10 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     cursor.execute("""SELECT * FROM users WHERE id = %s""", (str(token.id),))
     user = cursor.fetchone()
 
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail=f"User does not exist or is not authenticated")
+
     return sch.UserOut(**user)
 
     # return verify_access_token(token, credentials_exception)

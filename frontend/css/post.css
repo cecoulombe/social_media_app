@@ -98,6 +98,19 @@
     background-color: var(--colour-background-updateButton-hover);
 }
 
+.deleteButton {
+    display: none;
+    background-color: var(--colour-background-deleteButton);
+    font-size: var(--font-lg);
+    width: fit-content;
+    height: fit-content;
+    border-radius: var(--radius-sm);
+}
+
+.deleteButton:hover {
+    background-color: var(--colour-background-deleteButton-hover);
+}
+
 .contentDiv {
     flex: 1;
     /* background-color: var(--colour-background); */

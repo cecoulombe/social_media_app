@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         console.log("No token found, prompt login.");
         // redirect to login page
+        window.location.href = "login.html";
     }
 
     reloadPage();
@@ -55,13 +56,6 @@ function isTokenExpired(token) {
     console.log("Token is expired? " + isExpired);
     return isExpired;
 }
-
-
-// // loads only the appropriate posts for the current user profile
-// window.addEventListener("DOMContentLoaded", async () => {
-//     console.log("hi");
-//     await reloadPage();
-// });
 
 /**
  * ensures the posts for the proper page are rendered

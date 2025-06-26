@@ -32,6 +32,8 @@ body {
     --colour-background-tooltip: #a4a4a4;
     --colour-background-updateButton: #92a2ea;
     --colour-background-updateButton-hover: #7589e6;
+    --colour-background-deleteButton: #ea9292;
+    --colour-background-deleteButton-hover: #e67575;
     --colour-background-image: #ffffff;
     --colour-background-userBanner: #a8b5ee;
     --colour-background-input: #a4a4a4;

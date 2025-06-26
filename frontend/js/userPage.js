@@ -85,35 +85,10 @@ async function createAccountUpdateForm(user_id){
 
     // show save button
     const saveButton = document.createElement("button");
-    saveButton.textContent = "Save Profile Changes";
+    saveButton.textContent = "Save Changes";
     saveButton.id = "saveChangesButton";
     saveButton.classList.add("updateButton");
     document.getElementById("updateButtonsContainer").appendChild(saveButton);
-
-    // change the photo
-    const fileInput = document.getElementById("profilePicInput");
-    fileInput.addEventListener("change", () => {
-        const file = fileInput.files[0];
-        if(file) {
-            const previewUrl = URL.createObjectURL(file);
-            console.log("previewUrl: " + previewUrl);
-            document.getElementById("profilePicture").src = previewUrl;
-        }
-    });
-
-    // make the profile pic clickable to open file input
-    const profilePic = document.getElementById("profilePicture");
-    profilePic.style.cursor = "pointer";
-    profilePic.style.filter = "brightness(0.9)"
-    profilePic.style.outline = "2px solid var(--colour-border)";
-    profilePic.style.outlineOffset = "2px";
-
-    profilePic.classList.add("editable");
-
-    profilePic.addEventListener("click", () => {
-        fileInput.click();  // opens file picker
-    });
-
 
     // save button logic
     saveButton.addEventListener("click", async () => {
@@ -129,5 +104,58 @@ async function createAccountUpdateForm(user_id){
         profilePic.replaceWith(profilePic.cloneNode(true)); // removes event listeners
 
         window.location.reload();
+    });
+
+    // show the delete account button
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete Account";
+    deleteButton.id = "deleteAccountButton";
+    deleteButton.classList.add("deleteButton");
+    deleteButton.style.display = "block";
+    document.getElementById("updateButtonsContainer").appendChild(deleteButton);
+
+    // delete button logic
+    deleteButton.onclick = async (event) => {
+        event.preventDefault();
+
+        // confirm delete and verify password
+        // TODO: at a later date, make this an html pop up that has the password filter and requests both username and password
+        const passwordAttempt = prompt("Are you sure you want to delete your account? This action is permanent. \n To confirm deletion, enter your password and submit.");
+
+        if(passwordAttempt && validatePassword(passwordAttempt))
+        {
+            // deleteAccount();
+            console.log("Correct password, deleting account");
+        } else if(passwordAttempt) {
+            // invalid password
+            console.log("Invalid password, do not delete");
+        } else {
+            // cancelled deletion
+            console.log("Deletion cancelled");
+        }
+    };
+
+
+    // change the photo
+    const fileInput = document.getElementById("profilePicInput");
+    fileInput.addEventListener("change", () => {
+        const file = fileInput.files[0];
+        if(file) {
+            const previewUrl = URL.createObjectURL(file);
+            console.log("previewUrl: " + previewUrl);
+            document.getElementById("profilePicture").src = previewUrl;
+        }
+    });
+
+    // make the profile pic clickable to open file input
+    const profilePic = document.getElementById("profilePicture");
+    profilePic.style.cursor = "pointer";
+    profilePic.style.outline = "2px solid var(--colour-border)";
+    profilePic.style.outlineOffset = "2px";
+
+    profilePic.classList.add("editable");
+
+    profilePic.addEventListener("click", () => {
+        fileInput.click();  // opens file picker
     });
 }

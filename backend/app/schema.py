@@ -37,6 +37,10 @@ class UserLogin(BaseModel):
 class UserUpdate(BaseModel):
     display_name: str
 
+# schema used to get a password attempt
+class PasswordAttempt(BaseModel):
+    password: str
+
 # ----------------------- POST SCHEMA -----------------------
 # schema for generic posts
 class PostBase(BaseModel):
