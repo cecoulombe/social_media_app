@@ -44,7 +44,7 @@ async function createUser(email, password, display_name) {
 
         const json = await response.json();
         console.log(json);
-        return 1;
+        return json.data.id;
     }
     catch (error) {
         window.alert("Sign in attempt unsuccessful.");
@@ -122,5 +122,76 @@ async function updateUser(display_name) {
     }
     catch (error) {
         console.error(error.message);
+    }
+}
+
+/**
+ * Handles logic for deleting an existing user.
+ * Sends a DELETE request to the /users/{id} endpoint to remove the user from the database.
+ *
+ * @async
+ * @function deleteUser
+ * @returns {Promise<void>} Resolves when post is deleted from the database.
+ * @throws {Error} If the network request fails or response is not OK.
+ */
+async function deleteUser() {
+    console.log("deleting the user");
+    const url = userPrefix + "/" + user_id;
+
+    try {
+        const response = await fetch(url, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${access_token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if(!response.ok) {
+            throw new Error('Reponse status: ${response.status}');
+        }
+
+        const msg = "User successfully deleted.";
+        console.log(msg);
+    }
+    catch (error) {
+        console.error(error.message);
+    }
+}
+
+/**
+ * Handles logic for deleting an existing user.
+ * Sends a DELETE request to the /users/{id} endpoint to remove the user from the database.
+ *
+ * @async
+ * @function deleteUser
+ * @returns {Promise<void>} Resolves when post is deleted from the database.
+ * @throws {Error} If the network request fails or response is not OK.
+ */
+async function validatePassword(password) {
+    console.log("Validating the attempting password");
+    const url = userPrefix + "/verify-password/" + user_id;
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${access_token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify ({password})
+        });
+
+        if(!response.ok) {
+            throw new Error('Reponse status: ${response.status}');
+        }
+
+        const msg = "Password validated";
+        console.log(msg);
+        return 1;
+    }
+    catch (error) {
+        console.error(error.message);
+        return 0;
     }
 }

@@ -10,8 +10,8 @@ from typing import List, Optional
 
 # ----------------------- MEDIA SCHEMA -----------------------
 class MediaOut(BaseModel):
-    filename: str
-    url: str
+    filename: Optional[str] = None
+    url: Optional[str] = None
 
 # ----------------------- USER SCHEMA -----------------------
 # schema used to create user data
@@ -64,7 +64,8 @@ class Post(PostBase):
 
 # schema used to manage post data 
 class PostOut(Post): 
-    like_count: int
+    like_count: Optional[int] = 0
+    comment_count: Optional[int] = 0
     media: List[MediaOut]
 
 # ----------------------- TOKEN SCHEMA -----------------------
@@ -86,3 +87,22 @@ class VoteDirection(int, Enum):
 class Like(BaseModel):
     post_id: int
     dir: VoteDirection
+
+# ----------------------- COMMENTS SCHEMA -----------------------
+class Comment(BaseModel):
+    content: str
+    parent_id: Optional[int] = None
+
+class CreateComment(Comment):
+    pass
+
+class CreateCommentOut(Comment):
+    id: int
+    content: str
+    post_id: int
+    user_id: int
+    parent_id: Optional[int] = None
+    created_at: datetime
+
+class CommentOut(CreateCommentOut):
+    author: UserOut

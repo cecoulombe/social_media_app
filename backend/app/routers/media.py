@@ -88,15 +88,17 @@ def get_media(post_id: int):
 
     return {"files": files}
 
-# for uploading a profile picture 
+# for uploading a profile picture - occurs during account creation so the user cannot be authorized yet
 @router.post("/profile/upload/{user_id}", status_code=status.HTTP_201_CREATED)
-async def upload_file(user_id: int, file: UploadFile = File(...), current_user: int = Depends(oauth2.get_current_user)):
+# async def upload_file(user_id: int, file: UploadFile = File(...), current_user: int = Depends(oauth2.get_current_user)):
+async def upload_file(user_id: int, file: UploadFile = File(...)):
+
     conn, cursor = get_db()
     uploaded_urls = []
 
-    # only add profile picture to self
-    if user_id != current_user.id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
+    # # only add profile picture to self
+    # if user_id != current_user.id:
+    #     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
 
 
     if file.content_type not in ALLOWED_CONTENT_TYPES:

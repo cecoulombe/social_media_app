@@ -14,8 +14,6 @@ router = APIRouter(
     tags=['Posts']
 )
 
-# TODO currently returning the email of the post creator but change that to the user/display name instead
-
 # TODO: right now the limit is set to 100, but you'll want to keep that a bit lower out of developement and then use pagination to get more posts
 # path operation to get all of the posts
 @router.get("/")
@@ -29,27 +27,46 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
                     users.email AS author_email,
                     users.created_at AS author_created_at,
                     users.display_name AS author_display_name,
-                    COUNT(likes.post_id) AS like_count
+                    COALESCE(like_counts.like_count, 0) AS like_count, 
+                    COALESCE(comment_counts.comment_count, 0) AS comment_count 
                     FROM posts 
                     LEFT JOIN users ON posts.user_id = users.id
-                    LEFT JOIN likes ON posts.id = likes.post_id
+                    LEFT JOIN (
+                            SELECT post_id, 
+                            COUNT(*) AS like_count 
+                            FROM likes 
+                            GROUP BY post_id) AS like_counts ON posts.id = like_counts.post_id 
+                       LEFT JOIN (
+                            SELECT post_id, 
+                            COUNT(*) AS comment_count 
+                            FROM comments 
+                            GROUP BY post_id) AS comment_counts ON posts.id = comment_counts.post_id 
                     WHERE posts.content ILIKE %s
                     GROUP BY posts.id, users.id, users.email, users.created_at
                     ORDER BY posts.created_at DESC
                     LIMIT %s OFFSET %s""", (f"%{search}%", limit, skip,))
     else:
-        cursor.execute("""SELECT posts.*,
-                    users.id AS author_id,
-                    users.email AS author_email,
-                    users.created_at AS author_created_at,
-                    users.display_name AS author_display_name,
-                    COUNT(likes.post_id) AS like_count
-                    FROM posts 
-                    JOIN users ON posts.user_id = users.id
-                    LEFT JOIN likes ON posts.id = likes.post_id
-                    GROUP BY posts.id, users.id, users.email, users.created_at
-                    ORDER BY posts.id DESC
-                    LIMIT %s OFFSET %s""", (limit, skip,))
+        cursor.execute("""SELECT posts.*, 
+                       users.id AS author_id, 
+                       users.email AS author_email, 
+                       users.created_at AS author_created_at, 
+                       users.display_name AS author_display_name, 
+                       COALESCE(like_counts.like_count, 0) AS like_count, 
+                       COALESCE(comment_counts.comment_count, 0) AS comment_count 
+                       FROM posts 
+                       JOIN users ON posts.user_id = users.id 
+                       LEFT JOIN (
+                            SELECT post_id, 
+                            COUNT(*) AS like_count 
+                            FROM likes 
+                            GROUP BY post_id) AS like_counts ON posts.id = like_counts.post_id 
+                       LEFT JOIN (
+                            SELECT post_id, 
+                            COUNT(*) AS comment_count 
+                            FROM comments 
+                            GROUP BY post_id) AS comment_counts ON posts.id = comment_counts.post_id 
+                       ORDER BY posts.id DESC 
+                       LIMIT %s OFFSET %s""", (limit, skip,))
         
     posts = cursor.fetchall()
 
@@ -115,19 +132,28 @@ def get_posts(user_id: int, current_user: int = Depends(oauth2.get_current_user)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"user with id: {user_id} was not found")
 
-    cursor.execute("""SELECT posts.*,
-                users.id AS author_id,
-                users.email AS author_email,
-                users.created_at AS author_created_at,
-                users.display_name AS author_display_name,
-                COUNT(likes.post_id) AS like_count
-                FROM posts 
-                JOIN users ON posts.user_id = users.id
-                LEFT JOIN likes ON posts.id = likes.post_id
-                WHERE posts.user_id = %s
-                GROUP BY posts.id, users.id, users.email, users.created_at
-                ORDER BY posts.id DESC
-                LIMIT %s OFFSET %s""", (str(user_id), limit, skip,))
+    cursor.execute("""SELECT posts.*, 
+            users.id AS author_id, 
+            users.email AS author_email, 
+            users.created_at AS author_created_at, 
+            users.display_name AS author_display_name, 
+            COALESCE(like_counts.like_count, 0) AS like_count, 
+            COALESCE(comment_counts.comment_count, 0) AS comment_count 
+            FROM posts 
+            JOIN users ON posts.user_id = users.id 
+            LEFT JOIN (
+                SELECT post_id, 
+                COUNT(*) AS like_count 
+                FROM likes 
+                GROUP BY post_id) AS like_counts ON posts.id = like_counts.post_id 
+            LEFT JOIN (
+                SELECT post_id, 
+                COUNT(*) AS comment_count 
+                FROM comments 
+                GROUP BY post_id) AS comment_counts ON posts.id = comment_counts.post_id 
+            WHERE posts.user_id = %s
+            ORDER BY posts.id DESC 
+            LIMIT %s OFFSET %s""", (str(user_id), limit, skip,))
         
     posts = cursor.fetchall()
 
@@ -187,17 +213,27 @@ def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
 
     # create a relationship between the post and the author of the post
-    cursor.execute("""SELECT posts.*,
-                   users.id AS author_id,
-                   users.email AS author_email,
-                   users.created_at AS author_created_at,
-                   users.display_name AS author_display_name,
-                   COUNT(likes.post_id) AS like_count
-                   FROM posts
-                   LEFT JOIN users ON posts.user_id = users.id
-                   LEFT JOIN likes ON posts.id = likes.post_id
-                   WHERE posts.id = %s
-                   GROUP BY posts.id, users.id, users.email, users.created_at""", (str(id),))
+    cursor.execute("""SELECT posts.*, 
+            users.id AS author_id, 
+            users.email AS author_email, 
+            users.created_at AS author_created_at, 
+            users.display_name AS author_display_name, 
+            COALESCE(like_counts.like_count, 0) AS like_count, 
+            COALESCE(comment_counts.comment_count, 0) AS comment_count 
+            FROM posts 
+            JOIN users ON posts.user_id = users.id 
+            LEFT JOIN (
+                SELECT post_id, 
+                COUNT(*) AS like_count 
+                FROM likes 
+                GROUP BY post_id) AS like_counts ON posts.id = like_counts.post_id 
+            LEFT JOIN (
+                SELECT post_id, 
+                COUNT(*) AS comment_count 
+                FROM comments 
+                GROUP BY post_id) AS comment_counts ON posts.id = comment_counts.post_id 
+            WHERE posts.id = %s""", (str(id),))
+        
     post = cursor.fetchone()
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,

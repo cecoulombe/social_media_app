@@ -44,7 +44,7 @@ async function renderUserPage(user_id) {
     // grab the profile picture
     const profilePic = document.getElementById("profilePicture");
     if (profilePic) {
-        if(user.data.profile_pic) {
+        if(user.data.profile_pic && user.data.profile_pic.url) {
             console.log("There is a profile pic for the user");
             profilePic.src = "http://localhost:9000/" + user.data.profile_pic.url;
             profilePic.alt = user.data.profile_pic.filename;
@@ -95,7 +95,6 @@ async function createAccountUpdateForm(user_id){
         const newDisplayName = nameInput.value;
         const newPic = fileInput.files[0];
 
-        // replace everything here with proper frontend in users.js and media.js, storing this here for now so I don't forget
         await updateUser(newDisplayName);
         await updateProfilePic(newPic);
 
@@ -122,13 +121,14 @@ async function createAccountUpdateForm(user_id){
         // TODO: at a later date, make this an html pop up that has the password filter and requests both username and password
         const passwordAttempt = prompt("Are you sure you want to delete your account? This action is permanent. \n To confirm deletion, enter your password and submit.");
 
-        if(passwordAttempt && validatePassword(passwordAttempt))
+        if(passwordAttempt && await validatePassword(passwordAttempt))
         {
-            // deleteAccount();
             console.log("Correct password, deleting account");
+            await deleteUser();
+            await logoutUser();
         } else if(passwordAttempt) {
             // invalid password
-            console.log("Invalid password, do not delete");
+            window.alert("Invalid password, account not deleted");
         } else {
             // cancelled deletion
             console.log("Deletion cancelled");

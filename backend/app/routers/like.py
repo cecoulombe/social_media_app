@@ -1,5 +1,5 @@
 # File: like.py
-# Path operations for authenticating user login attempts
+# Path operations related to likes
 # Author: Caitlin Coulombe
 # Last Updated: 2025-06-04
 

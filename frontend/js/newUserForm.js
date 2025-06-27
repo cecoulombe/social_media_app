@@ -58,7 +58,6 @@ function getEmails() {
  * @function getPasswords
  * @returns {Boolean} Returns true if the inputs match exactly
  */
-
 function getPasswords() {
     const pass_1 = createPassword.value;
     const pass_2 = confirmPassword.value;
@@ -76,3 +75,31 @@ createEmail.addEventListener('input', getEmails);
 confirmEmail.addEventListener('input', getEmails);
 createPassword.addEventListener('input', getPasswords);
 confirmPassword.addEventListener('input', getPasswords);
+
+/**
+ * Event listener for the submit button to create a new user
+ */
+submit.onclick = async (event) => {
+    event.preventDefault();
+
+    // create a new account with the info
+    const email = createEmail.value;
+    const password = createPassword.value;
+    const display_name = document.getElementById('createDisplayName').value;
+
+    const newUserId = await createUser(email, password, display_name);
+    if(!newUserId) {
+        console.log("There was an error in creating a new user");
+        return;
+    }
+    
+    // add default profile pic when created
+    const defaultPic = await createDefaultProfilePic(newUserId);
+    if(!defaultPic) {
+        console.log("There was an error in creating the default profile picture.")
+        return;
+    }
+
+    await loginUser(email, password);
+};
+

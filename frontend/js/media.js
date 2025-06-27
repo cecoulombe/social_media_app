@@ -65,13 +65,12 @@ async function uploadMedia(post_id) {
 }
 
 /**
- * Handles logic for updating the content of an existing post.
- * Sends a PUT request to the /posts/{id} endpoint containing the updated content the post based on id.
+ * Handles logic for updating the user's profile pic
+ * Sends a PUT request to the /media/profile/update/{id} endpoint containing the new profile picture
  *
  * @async
  * @function updateProfilePic
- * @param {string} newContent - the only part of the post that can change is the content so it needs to be passed
- * @param {int} post_id - the id of the post to be changed
+ * @param {int} newPic - the file with the new profile picture
  * @returns {Promise<void>} Resolves when post is updated in the database, and displayed on page.
  * @throws {Error} If the network request fails or response is not OK.
  */
@@ -102,4 +101,56 @@ async function updateProfilePic(newPic) {
     catch (error) {
         console.error(error.message);
     }
+}
+
+/**
+ * Handles logic for adding the default profile pic
+ * Sends a PUT request to the /media/profile/update/{id} endpoint containing the default profile picture
+ *
+ * @async
+ * @function createDefaultProfilePic
+ * @param {int} user_id - the id of the user to get the default profile pic
+ * @returns {Promise<void>} Resolves when post is updated in the database, and displayed on page.
+ * @throws {Error} If the network request fails or response is not OK.
+ */
+async function createDefaultProfilePic(user_id) {
+    console.log("user id: " + user_id);
+
+    const url = mediaPrefix + `/profile/upload/${user_id}`;
+
+    const defaultPic = await getDefaultProfilePic();
+
+    const formData = new FormData();
+    formData.append("file", defaultPic);
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${access_token}`
+            },
+            body: formData
+        });
+
+        if(!response.ok) {
+            throw new Error(`Reponse status: ${response.status}`);
+        }
+
+        const json = await response.json();
+        console.log(json);
+        return 1;
+    }
+    catch (error) {
+        console.error(error.message);
+        return 0;
+    }
+}
+
+/**
+ * Creates a blob with the default profile picture so that it can be added automatically
+ */
+async function getDefaultProfilePic() {
+    const response = await fetch("../res/img/default_icon.png");
+    const blob = await response.blob();
+    return new File([blob], "default_icon.png", {type: blob.type});
 }

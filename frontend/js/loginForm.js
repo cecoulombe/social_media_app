@@ -3,7 +3,7 @@
  * Description: Handles user login and retrieves a JWT token from the backend.
  * Author: Caitlin Coulombe
  * Created: 2025-05-19
- * Last Updated: 2025-05-20
+ * Last Updated: 2025-06-26
  */
 
 "use strict";
@@ -72,3 +72,4 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     const password = document.getElementById("loginPassword").value;
     loginUser(username, password);
 });
+

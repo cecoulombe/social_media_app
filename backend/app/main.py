@@ -1,7 +1,7 @@
 import os
 from fastapi import Body, FastAPI, Response, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import post, user, auth, like, media
+from app.routers import post, user, auth, like, media, comment
 from app.config import settings
 from fastapi.staticfiles import StaticFiles
 
@@ -19,6 +19,7 @@ app.include_router(user.router, prefix="/api/users")
 app.include_router(auth.router, prefix="/api/login")  # Your login router here
 app.include_router(like.router, prefix="/api/likes")
 app.include_router(media.router, prefix="/api/media")
+app.include_router(comment.router, prefix="/api/comment")
 
 # Mount media files (optional)
 app.mount("/media", StaticFiles(directory="media"), name="media")

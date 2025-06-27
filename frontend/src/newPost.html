@@ -41,6 +41,7 @@
                     <li id="myAccount" class="navItem text-center"><a id="myAccountLink">My Account</a></li>
                     <li id="createPost" class="navItem text-center active"><a href="newPost.html">Create Post</a></li>
                 </ul>
+                <button id="logoutButton" class="deleteButton" onclick="logoutUser()">Logout</button>
             </nav>
 
             <div id="newPostContainer">
@@ -48,7 +49,7 @@
                     <div class="post">
                         <div class="contentDiv">
                             <label for="newImages">Select up to 9 images to add (optional)</label>
-                            <input type="file" id="newImages" class="images" name="images" accept="images/*" multiple>
+                            <input type="file" id="newImages" name="images" accept="images/*" multiple>
                             <p id="warning"></p>
                             <div id="previewContainer">
                                 <div id="previewGrid" class="media"></div>
