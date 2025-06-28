@@ -9,16 +9,28 @@
 "use strict";
 
 let postTemplate = null;
+let commentTemplate_Parent = null;
 // console.log("setupSlideshow is", typeof setupSlideshow);
 
 // load the template from template.html
-async function loadTemplate() {
+async function loadPostTemplate() {
     if(!postTemplate) {
         const res = await fetch(`/src/template.html?nocache=${Date.now()}`);
         const html = await res.text();
         const container = document.createElement('div');
         container.innerHTML = html;
         postTemplate = container.querySelector("#postTemplate");
+    }
+}
+
+// load the template from commentTemplate_parent.html
+async function loadParentCommentTemplate() {
+    if(!commentTemplate_Parent) {
+        const res = await fetch(`/src/commentTemplate_parent.html?nocache=${Date.now()}`);
+        const html = await res.text();
+        const container = document.createElement('div');
+        container.innerHTML = html;
+        commentTemplate_Parent = container.querySelector("#parentCommentTemplate");
     }
 }
 
@@ -32,7 +44,7 @@ async function loadTemplate() {
 async function renderMultiplePosts(posts) {
     console.log("from render multiple posts:",posts);
 
-    await loadTemplate();
+    await loadPostTemplate();
 
     let prevArrow;
     let nextArrow;
@@ -93,6 +105,9 @@ async function renderMultiplePosts(posts) {
         }
         const likeCount = postElement.querySelector(".likeCounter");
         likeCount.textContent = post.like_count; 
+        
+        const commentCount = postElement.querySelector(".commentCounter");
+        commentCount.textContent = post.comment_count; 
     
         // change the like button based on if its been liked or not
         const likeButton = postElement.querySelector(".likeButton");
@@ -191,11 +206,20 @@ async function renderMultiplePosts(posts) {
             window.location.hash = post.id;
         });
 
+        // show the first three parent comments
+        const commentContainer = postElement.querySelector(".commentContainer");
+        const comments = await getComments_Home(post.id);
+        console.log("IN RENDER UI, FROM GET COMMENTS PARENTS: ", comments);
+
+        // render parent comments
+        for (const comment of comments) {
+            await renderParentComment(comment, commentContainer);
+        }
+
         // add the postElement to the container
         container.appendChild(postElement); 
         // console.log("Calling setupSlideshow for post", post.id);
         setTimeout(() => setupSlideshow(postElement), 0);
-
     }
 }
 
@@ -207,7 +231,7 @@ async function renderMultiplePosts(posts) {
  * @param {json} post - the post that is to be rendered
  */
 async function renderPost(post) {
-    await loadTemplate();
+    await loadPostTemplate();
 
     const container = document.getElementById("postContainer");
     const template = document.getElementById("postTemplate");
@@ -324,4 +348,37 @@ async function createUpdateForm(post_id){
             updatedPost.scrollIntoView({behavior: "smooth", block: "start"});
         }
     });
+}
+
+/**
+ * Uses commentTemplate_parent.html to generate the comment
+ *
+ * @async
+ * @function renderParentComment
+ * @param {json} comment - the comment that is to be rendered
+ */
+async function renderParentComment(comment, container){
+    await loadParentCommentTemplate();
+
+    // clone the template
+    const clone = commentTemplate_Parent.content.cloneNode(true);
+    clone.id = comment.id;
+
+    // fill in the data
+    clone.querySelector(".postAuthor").textContent = comment.author.display_name;
+    clone.querySelector(".commentContent").textContent = comment.content;
+
+    // add the profile picture for the user
+    const profilePic =  clone.querySelector(".profilePic");
+    if(comment.author.profile_pic) {
+        // console.log("Has a profile pic: " + post.author.profile_pic.url)
+        profilePic.src = "http://localhost:9000/" + comment.author.profile_pic.url;
+        profilePic.alt = comment.author.profile_pic.filename;
+    } else {
+        profilePic.src = "../res/img/default_icon.png";
+        profilePic.alt = "Default icon"
+    }
+
+    // add the clone to the container
+    container.appendChild(clone);
 }

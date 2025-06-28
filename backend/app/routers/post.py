@@ -1,7 +1,7 @@
 # File: post.py
 # Contains path operations related to creating, retrieving, updaing, and deleting posts
 # Author: Caitlin Coulombe
-# Last Updated: 2025-06-20
+# Last Updated: 2025-06-26
 
 import os
 from typing import Optional
