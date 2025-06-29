@@ -33,7 +33,7 @@ def get_comments(post_id: int, current_user: int = Depends(oauth2.get_current_us
                    FROM comments
                    JOIN users ON comments.user_id = users.id
                    WHERE post_id = %s
-                   ORDER BY comments.id DESC
+                   ORDER BY comments.created_at ASC
                    LIMIT %s OFFSET %s""", (str(post_id), limit, skip,))
     comments = cursor.fetchall()
 
@@ -100,7 +100,7 @@ def get_comments(post_id: int, current_user: int = Depends(oauth2.get_current_us
                    FROM comments
                    JOIN users ON comments.user_id = users.id
                    WHERE post_id = %s AND parent_id IS NULL
-                   ORDER BY comments.id DESC
+                   ORDER BY comments.created_at ASC
                    LIMIT %s OFFSET %s""", (str(post_id), limit, skip,))
     comments = cursor.fetchall()
 

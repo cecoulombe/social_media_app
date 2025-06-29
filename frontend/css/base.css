@@ -22,9 +22,11 @@ body {
     --colour-background: #e0e3f1;
     --colour-background-alt: #000000;
     --colour-background-user: #cecece;
-    --colour-background-post: #FFFFFF;
+    --colour-background-post: #ffffff;
+    --colour-background-commentContainer: #ffffff;
     --colour-background-submit: #f0f0f0;
     --colour-background-submit-hover: #cacaca;
+    
     --colour-background-navigation: #a8b5ee;
     --colour-background-navItem: #92a2ea;
     --colour-background-navItem-hover: #637cec;
@@ -34,6 +36,7 @@ body {
     --colour-background-updateButton-hover: #7589e6;
     --colour-background-deleteButton: #ea9292;
     --colour-background-deleteButton-hover: #e67575;
+    --colour-background-loadComments-hover: #dfdfdf;
     --colour-background-image: #ffffff;
     --colour-background-userBanner: #a8b5ee;
     --colour-background-input: #a4a4a4;
@@ -46,7 +49,8 @@ body {
     --colour-text: #000000;
     --colour-txt-alt: #ffffff;
     --colour-text-user: #1e1e1e;
-    --colour-text-date: #6e6e6e;
+    --colour-text-commentAuthor: #4f4f4f;
+    --colour-text-light: #6e6e6e;
 
     --colour-primary: #1600e0;
     --colour-primary-dark: #0c0078;
@@ -64,7 +68,7 @@ body {
     --font-md: 1rem;
     --font-lg: 1.25rem;
     --font-xl: 1.5rem;
-    --font-xxl: 2rem;
+    --font-xxl: 2.5rem;
 
     /* SPACING */
     --spacing-xs: 4px;
@@ -74,6 +78,7 @@ body {
     --spacing-xl: 32px;
     --spacing-xxl: 50px;
 
+    --spacing-profilePic-xs: 45px;
     --spacing-profilePic-sm: 60px;
     --spacing-profilePic-lg: 120px;
 

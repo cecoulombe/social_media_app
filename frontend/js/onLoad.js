@@ -20,9 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
     access_token = localStorage.getItem("access_token");
     current_user = localStorage.getItem("current_user");
     user_id = localStorage.getItem("user_id");
+    
     console.log("Access token: " + access_token);
     console.log("Current user: " + current_user);
     console.log("User id: " + user_id);
+
     if(access_token && !isTokenExpired(access_token) && current_user) {
         console.log("Token exists: " + access_token + ", current user is " + current_user);
         const accountLink = document.getElementById("myAccountLink");
