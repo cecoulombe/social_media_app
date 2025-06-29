@@ -1,0 +1,188 @@
+/* ------------------ COMMENT LAYOUT ------------------ */
+.comment {
+    background-color: var(--colour-background-post);
+    margin-bottom: var(--spacing-sm);
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-md);
+    border: var(--border-base) solid var(--colour-border);
+    display: flex;
+    flex-direction: column;
+}
+
+.parentContainer {
+    background-color: var(--colour-background-post);
+    display: flex;
+    flex-direction: row;
+}
+
+.iconDiv {
+    margin-right: var(--spacing-xs);   
+}
+
+.comment .profilePic {
+    border-radius: 50%;
+    margin-right: var(--spacing-xs);
+    width: var(--spacing-profilePic-xs);
+    height: var(--spacing-profilePic-xs); 
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.rightDiv {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.authorDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    line-height: 1.1;
+}
+
+.commentAuthor {
+    color: var(--colour-text-commentAuthor);
+    border-radius: var(--radius-sm);
+    width: fit-content;
+    cursor: pointer;
+    font-size: var(--font-xl);
+    padding: 0 var(--spacing-xs) 0 0;
+}
+
+.timestamp {
+    color: var(--colour-text-light);
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .comment_tooltipText {
+    visibility: hidden;
+    background-color: var(--colour-background-tooltip);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-md);
+    position: absolute;
+    bottom: 125%; 
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Don't currently want the tool tip for comments but its here if I decide to add it back in */
+/* 
+.tooltip:hover .comment_tooltipText {
+    visibility: visible;
+}
+
+.tooltip .comment_tooltipText::after {
+    content: "";
+    position: absolute;
+    top: 100%; 
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--colour-background-tooltip) transparent transparent transparent;
+} */
+
+.commentContentDiv {
+    color: var(--colour-text);
+    border-radius: var(--radius-sm);
+    width: fit-content;
+}
+
+.commentContent {
+    font-size: var(--font-lg);
+    line-height: 1;
+}
+
+.buttonDiv {
+    display: flex;
+    flex-direction: row;
+}
+
+.replyButton, 
+.editButton {
+    padding: 0 var(--spacing-xs) 0 0;
+    color: var(--colour-text-light);
+    /* background-color: var(--colour-background-post); */
+    background-color: transparent;
+    transition: transform 0.2s ease-in-out;
+}
+
+.replyButton:hover,
+.editButton:hover {
+    transform: scale(1.08);
+    /* background-color: var(--colour-background-post); */
+    background-color: transparent;
+}
+
+.deleteCommentButton {
+    display: none;
+    padding: 0 var(--spacing-xs) 0 0;
+    color: var(--colour-background-deleteButton-hover);
+    /* background-color: var(--colour-background-post); */
+    background-color: transparent;
+    transition: transform 0.2s ease-in-out;
+}
+
+.deleteCommentButton:hover {
+    transform: scale(1.08);
+    /* background-color: var(--colour-background-post); */
+    background-color: transparent;
+}
+
+
+.loadCommentsButton {
+    background-color: var(--colour-background-post);
+    font-size: var(--font-lg);
+    color: var(--colour-text-light);
+    /* justify-content: center; */
+    width: 100%;
+    border: var(--border-base) solid var(--colour-border);
+    border-radius: var(--radius-md);
+    line-height: 1;
+}
+
+.loadCommentsButton:hover {
+    background-color: var(--colour-background-loadComments-hover);
+}
+
+.childContainer {
+    background-color: var(--colour-background-post);
+    margin-left: 7%;
+}
+
+.childComment {
+    background-color: var(--colour-background-post);
+    display: flex;
+    flex-direction: row;
+}
+
+#newCommentForm {
+    background-color: var(--colour-background-post);
+    display: flex;
+    flex-direction: row;
+    /* padding: var(--spacing-sm); */
+}
+
+#commentContent {
+    background-color: var(--colour-background-submit);
+}
+
+#submitComment {
+    max-width: fit-content;
+    height:fit-content;
+    margin-left: var(--spacing-xs);
+    background-color: var(--colour-background-submit);
+}
+
+#submitComment:hover {
+    background-color: var(--colour-background-submit-hover);
+}
