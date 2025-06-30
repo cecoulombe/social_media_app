@@ -42,7 +42,7 @@ To get started with this project, follow the steps below:
    ```bash
    uvicorn app.main:app --reload
 6. The API will be available at
-   http://127.0.0.1:8000
+   http://127.0.0.1:9000
 
 ---
 
