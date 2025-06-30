@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Author: Caitlin Coulombe, caitlincoulombe@gmail.com -->
+        <!-- Date: 2025/23/05 -->
+
+        <!-- stylesheets -->
+        <link rel="stylesheet" href="../css/base.css">
+        <link rel="stylesheet" href="../css/comment.css">
+
+        <!-- favicon -->
+        <link rel="icon" type="image/png" href="../res/img/favicon/icon.png" />
+    </head>
+
+    <body>
+        <!-- templates for all posts -->
+         <template id="childCommentTemplate">
+            <div class="comment"> 
+                <div class="childComment">
+                    <div class="iconDiv">
+                        <img class="profilePic">
+                    </div>
+                    <div class="rightDiv">
+                        <div class="authorDiv">
+                            <p class="commentAuthor"></p>
+                            <div class="tooltip">
+                                <p class="timestamp daysAgo"></p>
+                                <span class="comment_tooltipText date"></span>
+                            </div>
+                        </div>
+                        <div class="commentContentDiv">
+                            <p class="commentContent"></p>
+                        </div>
+                        <div class = "buttonDiv">
+                            <div class="editDiv">
+                                    <button class="editButton">Edit</button> 
+                            </div>
+                            <div class="deleteDiv">
+                                <button class="deleteCommentButton">Delete</button> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- scripts -->
+         <script src="../js/renderUI/renderComments.js"></script>
+        </body>
+</html>

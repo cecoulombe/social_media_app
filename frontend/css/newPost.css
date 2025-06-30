@@ -123,4 +123,13 @@
     margin-bottom: 0;
 }
 
+.contentContainer {
+    border: none;
+}
+
+#newContent {
+    width: 100%;
+    height: 100%;
+}
+
 /* later on - add media queries for mobile? as or right now, everything is for desktop */

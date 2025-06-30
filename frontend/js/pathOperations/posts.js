@@ -156,7 +156,7 @@ async function createPost() {
         });
 
         if(!response.ok) {
-            throw new Error('Reponse status: ${response.status}');
+            throw new Error(`Reponse status: ${response.status}`);
         }
 
         const json = await response.json();
@@ -197,7 +197,7 @@ async function updatePost(newContent, post_id) {
         });
 
         if(!response.ok) {
-            throw new Error('Reponse status: ${response.status}');
+            throw new Error(`Reponse status: ${response.status}`);
         }
 
         const json = await response.json();
@@ -219,10 +219,8 @@ async function updatePost(newContent, post_id) {
  * @returns {Promise<void>} Resolves when post is deleted from the database.
  * @throws {Error} If the network request fails or response is not OK.
  */
-async function deletePost() {
-    // TODO: Update id to be a form value
-    const post_id = 53;
-
+async function deletePost(post_id) {
+    console.log("deleting the post");
     const url = postPrefix + "/" + post_id;
 
     try {

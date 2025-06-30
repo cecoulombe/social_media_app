@@ -1,8 +1,9 @@
 # File: post.py
 # Contains path operations related to creating, retrieving, updaing, and deleting posts
 # Author: Caitlin Coulombe
-# Last Updated: 2025-06-06
+# Last Updated: 2025-06-26
 
+import os
 from typing import Optional
 from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter
 from app import schema as sch
@@ -12,8 +13,6 @@ from app.database import get_db
 router = APIRouter(
     tags=['Posts']
 )
-
-# TODO currently returning the email of the post creator but change that to the user/display name instead
 
 # TODO: right now the limit is set to 100, but you'll want to keep that a bit lower out of developement and then use pagination to get more posts
 # path operation to get all of the posts
@@ -28,27 +27,46 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
                     users.email AS author_email,
                     users.created_at AS author_created_at,
                     users.display_name AS author_display_name,
-                    COUNT(likes.post_id) AS like_count
+                    COALESCE(like_counts.like_count, 0) AS like_count, 
+                    COALESCE(comment_counts.comment_count, 0) AS comment_count 
                     FROM posts 
                     LEFT JOIN users ON posts.user_id = users.id
-                    LEFT JOIN likes ON posts.id = likes.post_id
+                    LEFT JOIN (
+                            SELECT post_id, 
+                            COUNT(*) AS like_count 
+                            FROM likes 
+                            GROUP BY post_id) AS like_counts ON posts.id = like_counts.post_id 
+                       LEFT JOIN (
+                            SELECT post_id, 
+                            COUNT(*) AS comment_count 
+                            FROM comments 
+                            GROUP BY post_id) AS comment_counts ON posts.id = comment_counts.post_id 
                     WHERE posts.content ILIKE %s
                     GROUP BY posts.id, users.id, users.email, users.created_at
                     ORDER BY posts.created_at DESC
                     LIMIT %s OFFSET %s""", (f"%{search}%", limit, skip,))
     else:
-        cursor.execute("""SELECT posts.*,
-                    users.id AS author_id,
-                    users.email AS author_email,
-                    users.created_at AS author_created_at,
-                    users.display_name AS author_display_name,
-                    COUNT(likes.post_id) AS like_count
-                    FROM posts 
-                    JOIN users ON posts.user_id = users.id
-                    LEFT JOIN likes ON posts.id = likes.post_id
-                    GROUP BY posts.id, users.id, users.email, users.created_at
-                    ORDER BY posts.id DESC
-                    LIMIT %s OFFSET %s""", (limit, skip,))
+        cursor.execute("""SELECT posts.*, 
+                       users.id AS author_id, 
+                       users.email AS author_email, 
+                       users.created_at AS author_created_at, 
+                       users.display_name AS author_display_name, 
+                       COALESCE(like_counts.like_count, 0) AS like_count, 
+                       COALESCE(comment_counts.comment_count, 0) AS comment_count 
+                       FROM posts 
+                       JOIN users ON posts.user_id = users.id 
+                       LEFT JOIN (
+                            SELECT post_id, 
+                            COUNT(*) AS like_count 
+                            FROM likes 
+                            GROUP BY post_id) AS like_counts ON posts.id = like_counts.post_id 
+                       LEFT JOIN (
+                            SELECT post_id, 
+                            COUNT(*) AS comment_count 
+                            FROM comments 
+                            GROUP BY post_id) AS comment_counts ON posts.id = comment_counts.post_id 
+                       ORDER BY posts.id DESC 
+                       LIMIT %s OFFSET %s""", (limit, skip,))
         
     posts = cursor.fetchall()
 
@@ -56,13 +74,29 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
     for post in posts:
         post_dict = dict(post)
 
-        # Create nested author object that is expected by sch.Post
+        # get the profile picture for the user
+        cursor.execute("""SELECT filename, filepath FROM profile_pictures WHERE user_id = %s""", (str(post_dict["author_id"]),))
+        # print("AUTHOR_ID:", post_dict["author_id"], type(post_dict["author_id"]))
+
+        profile_pic_row = cursor.fetchone()
+
+        if profile_pic_row:
+            profile_pic = {
+                "filename":profile_pic_row["filename"],
+                "url": profile_pic_row["filepath"]
+            }
+        else:
+            profile_pic = None
+
+        # group the author information
         author_data = {
             "id": post_dict["author_id"],
             "email": post_dict["author_email"],
             "created_at": post_dict["author_created_at"],
-            "display_name": post_dict["author_display_name"]
+            "display_name": post_dict["author_display_name"],
+            "profile_pic": profile_pic
         }
+
         post_dict["author"] = author_data
 
         # remove the flattened author fields to avoid conflict
@@ -98,33 +132,58 @@ def get_posts(user_id: int, current_user: int = Depends(oauth2.get_current_user)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"user with id: {user_id} was not found")
 
-    cursor.execute("""SELECT posts.*,
-                users.id AS author_id,
-                users.email AS author_email,
-                users.created_at AS author_created_at,
-                users.display_name AS author_display_name,
-                COUNT(likes.post_id) AS like_count
-                FROM posts 
-                JOIN users ON posts.user_id = users.id
-                LEFT JOIN likes ON posts.id = likes.post_id
-                WHERE posts.user_id = %s
-                GROUP BY posts.id, users.id, users.email, users.created_at
-                ORDER BY posts.id DESC
-                LIMIT %s OFFSET %s""", (str(user_id), limit, skip,))
+    cursor.execute("""SELECT posts.*, 
+            users.id AS author_id, 
+            users.email AS author_email, 
+            users.created_at AS author_created_at, 
+            users.display_name AS author_display_name, 
+            COALESCE(like_counts.like_count, 0) AS like_count, 
+            COALESCE(comment_counts.comment_count, 0) AS comment_count 
+            FROM posts 
+            JOIN users ON posts.user_id = users.id 
+            LEFT JOIN (
+                SELECT post_id, 
+                COUNT(*) AS like_count 
+                FROM likes 
+                GROUP BY post_id) AS like_counts ON posts.id = like_counts.post_id 
+            LEFT JOIN (
+                SELECT post_id, 
+                COUNT(*) AS comment_count 
+                FROM comments 
+                GROUP BY post_id) AS comment_counts ON posts.id = comment_counts.post_id 
+            WHERE posts.user_id = %s
+            ORDER BY posts.id DESC 
+            LIMIT %s OFFSET %s""", (str(user_id), limit, skip,))
         
     posts = cursor.fetchall()
 
     result = []
     for post in posts:
         post_dict = dict(post)
+        
+        # get the profile picture for the user
+        cursor.execute("""SELECT filename, filepath FROM profile_pictures WHERE user_id = %s""", (str(post_dict["author_id"]),))
+        # print("AUTHOR_ID:", post_dict["author_id"], type(post_dict["author_id"]))
 
-        # Create nested author object that is expected by sch.Post
+        profile_pic_row = cursor.fetchone()
+
+        if profile_pic_row:
+            profile_pic = {
+                "filename":profile_pic_row["filename"],
+                "url": profile_pic_row["filepath"]
+            }
+        else:
+            profile_pic = None
+
+        # group the author information
         author_data = {
             "id": post_dict["author_id"],
             "email": post_dict["author_email"],
             "created_at": post_dict["author_created_at"],
-            "display_name": post_dict["author_display_name"]
+            "display_name": post_dict["author_display_name"],
+            "profile_pic": profile_pic
         }
+
         post_dict["author"] = author_data
 
         # remove the flattened author fields to avoid conflict
@@ -154,17 +213,27 @@ def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
     conn, cursor = get_db()
 
     # create a relationship between the post and the author of the post
-    cursor.execute("""SELECT posts.*,
-                   users.id AS author_id,
-                   users.email AS author_email,
-                   users.created_at AS author_created_at,
-                   users.display_name AS author_display_name,
-                   COUNT(likes.post_id) AS like_count
-                   FROM posts
-                   LEFT JOIN users ON posts.user_id = users.id
-                   LEFT JOIN likes ON posts.id = likes.post_id
-                   WHERE posts.id = %s
-                   GROUP BY posts.id, users.id, users.email, users.created_at""", (str(id),))
+    cursor.execute("""SELECT posts.*, 
+            users.id AS author_id, 
+            users.email AS author_email, 
+            users.created_at AS author_created_at, 
+            users.display_name AS author_display_name, 
+            COALESCE(like_counts.like_count, 0) AS like_count, 
+            COALESCE(comment_counts.comment_count, 0) AS comment_count 
+            FROM posts 
+            JOIN users ON posts.user_id = users.id 
+            LEFT JOIN (
+                SELECT post_id, 
+                COUNT(*) AS like_count 
+                FROM likes 
+                GROUP BY post_id) AS like_counts ON posts.id = like_counts.post_id 
+            LEFT JOIN (
+                SELECT post_id, 
+                COUNT(*) AS comment_count 
+                FROM comments 
+                GROUP BY post_id) AS comment_counts ON posts.id = comment_counts.post_id 
+            WHERE posts.id = %s""", (str(id),))
+        
     post = cursor.fetchone()
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -172,13 +241,29 @@ def get_post(id: int, current_user: int = Depends(oauth2.get_current_user)):
     
     post_dict = dict(post)
 
+    # get the profile picture for the user
+    cursor.execute("""SELECT filename, filepath FROM profile_pictures WHERE user_id = %s""", (str(post_dict["author_id"]),))
+    # print("AUTHOR_ID:", post_dict["author_id"], type(post_dict["author_id"]))
+
+    profile_pic_row = cursor.fetchone()
+
+    if profile_pic_row:
+        profile_pic = {
+            "filename":profile_pic_row["filename"],
+            "url": profile_pic_row["filepath"]
+        }
+    else:
+        profile_pic = None
+
     # group the author information
     author_data = {
         "id": post_dict["author_id"],
         "email": post_dict["author_email"],
         "created_at": post_dict["author_created_at"],
-        "display_name": post_dict["author_display_name"]
+        "display_name": post_dict["author_display_name"],
+        "profile_pic": profile_pic
     }
+
     post_dict["author"] = author_data
 
     # remove the flattened author fields to avoid conflict
@@ -231,13 +316,27 @@ def delete_post(id:int, current_user: int = Depends(oauth2.get_current_user)):
 
     if user_id["user_id"] != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
+    
+    #  get associated media prior to deleting the post
+    cursor.execute("""SELECT filepath FROM files WHERE post_id = %s""", (str(id),))
+    media_files = cursor.fetchall()
 
+    #  delete the post
     cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING *""", (str(id),))
     deleted = cursor.fetchone()
     if not deleted:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"post with id: {id} was not found")
     conn.commit()   # deletion changes the database so it needs to be committed
+
+    # remove associated media from the disk
+    for media in media_files:
+        filepath = media["filepath"]
+        if filepath and os.path.exists(filepath):
+            try:
+                os.remove(filepath)
+            except Exception as e:
+                print(f"Warning: Failed to delete file {filepath} : {e}")
     
     cursor.close()
     conn.close()
@@ -256,7 +355,8 @@ def update_post(id: int, post: sch.PostCreate, current_user: int = Depends(oauth
                             detail=f"post with id: {id} was not found")
 
     if user_id["user_id"] != current_user.id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, 
+                            detail=f"Not authorized to perform requested action.")
     
     cursor.execute("""UPDATE posts SET content = %s, published = %s WHERE id = %s RETURNING *""", (post.content, post.published, str(id),))
     updated = cursor.fetchone()

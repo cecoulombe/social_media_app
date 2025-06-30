@@ -14,6 +14,7 @@ router = APIRouter(
     tags=['Authentication']
 )
 
+# login the user based on username and password attempt
 @router.post("/")
 def login(user_credentials: OAuth2PasswordRequestForm = Depends()):
     conn, cursor = get_db()
@@ -35,5 +36,6 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends()):
     conn.close()
 
     return {"token": sch.Token(access_token=access_token , token_type="bearer", id=user["id"])}
+
 
 # add in refresh tokens so that people don't need to log in over and over again

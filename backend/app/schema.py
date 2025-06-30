@@ -1,12 +1,17 @@
 # File: schema.py
 # Contains schema used for ensuring database is formatted as intended
 # Author: Caitlin Coulombe
-# Last Updated: 2025-06-06
+# Last Updated: 2025-06-20
 
 from datetime import datetime
 from enum import Enum
 from pydantic import BaseModel, EmailStr, conint
 from typing import List, Optional
+
+# ----------------------- MEDIA SCHEMA -----------------------
+class MediaOut(BaseModel):
+    filename: Optional[str] = None
+    url: Optional[str] = None
 
 # ----------------------- USER SCHEMA -----------------------
 # schema used to create user data
@@ -21,16 +26,20 @@ class UserOut(BaseModel):
     email: EmailStr
     created_at: datetime
     display_name: str
+    profile_pic: Optional[MediaOut] = None
 
 # schema used to format the required information for a login attempt
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
-# ----------------------- MEDIA SCHEMA -----------------------
-class MediaOut(BaseModel):
-    filename: str
-    url: str
+# schema used to update the user's display name
+class UserUpdate(BaseModel):
+    display_name: str
+
+# schema used to get a password attempt
+class PasswordAttempt(BaseModel):
+    password: str
 
 # ----------------------- POST SCHEMA -----------------------
 # schema for generic posts
@@ -55,7 +64,8 @@ class Post(PostBase):
 
 # schema used to manage post data 
 class PostOut(Post): 
-    like_count: int
+    like_count: Optional[int] = 0
+    comment_count: Optional[int] = 0
     media: List[MediaOut]
 
 # ----------------------- TOKEN SCHEMA -----------------------
@@ -77,3 +87,22 @@ class VoteDirection(int, Enum):
 class Like(BaseModel):
     post_id: int
     dir: VoteDirection
+
+# ----------------------- COMMENTS SCHEMA -----------------------
+class Comment(BaseModel):
+    content: str
+    parent_id: Optional[int] = None
+
+class CreateComment(Comment):
+    pass
+
+class CreateCommentOut(Comment):
+    id: int
+    content: str
+    post_id: int
+    user_id: int
+    parent_id: Optional[int] = None
+    created_at: datetime
+
+class CommentOut(CreateCommentOut):
+    author: UserOut

@@ -1,11 +1,13 @@
 # File: user.py
 # Path operations concerning users
 # Author: Caitlin Coulombe
-# Last Updated: 2025-06-04
+# Last Updated: 2025-06-25
 
-from fastapi import Body, FastAPI, Response, status, HTTPException, APIRouter
+import os
+from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter
 from app import schema as sch
 from app import utils
+from app import oauth2
 from app.database import get_db
 import psycopg2
 
@@ -39,7 +41,7 @@ def create_user(user: sch.UserCreate):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail = f"Unexpected error: {str(e)}")
     
 
-# Retreive the information from a specific user based on id
+# Find out if there is a user with that email
 @router.get("/get-user/{email}")
 def get_user(email: str):
     conn, cursor = get_db()
@@ -57,12 +59,132 @@ def get_user(email: str):
 @router.get("/{id}")
 def get_user(id: int):
     conn, cursor = get_db()
-    cursor.execute("""SELECT * FROM users WHERE id = %s""", (str(id),))
+    cursor.execute("""SELECT users.*, 
+                   profile_pictures.filename AS filename,
+                   profile_pictures.filepath AS url
+                   FROM users 
+                   LEFT JOIN profile_pictures ON profile_pictures.user_id = users.id
+                   WHERE users.id = %s""", (str(id),))
     user = cursor.fetchone()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id: {id} does not exist")
     
+    user_dict = dict(user)
+
+    profile_pic = {
+        "filename": user_dict["filename"],
+        "url": user_dict["url"]
+    }
+
+    user_dict["profile_pic"] = profile_pic
+
+    del user_dict["filename"]
+    del user_dict["url"]
+    
     cursor.close()
     conn.close()
     
-    return {"data": sch.UserOut(**user)}
+    return {"data": sch.UserOut(**user_dict)}
+
+# update a user's display name based on id
+@router.put("/update_name/{id}")
+def update_post(id: int, user: sch.UserUpdate, current_user: int = Depends(oauth2.get_current_user)):
+    conn, cursor = get_db()
+
+    cursor.execute("""SELECT 1 FROM users WHERE id = %s""", (str(id),))
+    user_id = cursor.fetchone()
+    if not user_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"user with id: {id} was not found")
+    
+    if id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, 
+                            detail=f"Not authorized to perform requested action.")
+    
+    cursor.execute("""UPDATE users SET display_name = %s WHERE id = %s RETURNING *""", (user.display_name, str(id),))
+    updated = cursor.fetchone()
+    if not updated:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
+                            detail=f"user with id: {id} was not udpated")
+    
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return {"user": sch.UserOut(**updated)}
+    
+
+# verify just the user's password (used to confirm account deletion)
+@router.post("/verify-password/{id}")
+def verify_password(id: int, attempt: sch.PasswordAttempt, current_user: int = Depends(oauth2.get_current_user)):
+    conn, cursor = get_db()
+
+    if id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, 
+                            detail=f"Not authorized to perform requested action.")
+    
+    cursor.execute("""SELECT password FROM users WHERE id = %s""", (str(id),))
+    password = cursor.fetchone()
+    stored_password = password["password"]
+
+    # verify that the attempted password is correct
+    if not utils.verify(attempt.password, stored_password):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail=f"Invalid password attempt")
+    
+    return {"success": True}
+
+# delete a users account
+@router.delete("/{id}")
+def delete_user(id: int, current_user: int = Depends(oauth2.get_current_user)):
+    conn, cursor = get_db()
+
+    cursor.execute("""SELECT 1 FROM users WHERE id = %s""", (str(id),))
+    user_exists = cursor.fetchone()
+    if not user_exists:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"user with id: {id} was not found")
+    
+    # get associated media prior to deleting the user
+    cursor.execute("""SELECT filepath FROM profile_pictures WHERE user_id = %s""", (str(id),))
+    profile_pic = cursor.fetchone()
+
+    # get media associated with the users posts
+    cursor.execute("""SELECT filepath FROM files 
+                   JOIN posts ON files.post_id = posts.id
+                   JOIN users ON posts.user_id = users.id
+                   WHERE users.id = %s""", (str(id),))
+    media_paths = cursor.fetchall()
+
+    # delete the user
+    cursor.execute("""DELETE FROM users WHERE id = %s RETURNING *""", (str(id),))
+    deleted = cursor.fetchone()
+    if not deleted:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"user with id: {id} was not found")
+    conn.commit()
+
+    # remove profile picture
+    if profile_pic:
+        pp_filepath = profile_pic["filepath"]
+        if pp_filepath and os.path.exists(pp_filepath):
+            try: 
+                os.remove(pp_filepath)
+            except Exception as e:
+                print(f"Warning: Failed to delete file {pp_filepath} : {e}")
+
+    # remove associated media
+    if media_paths:
+        for media in media_paths:
+            m_filepath = media["filepath"]
+            if m_filepath and os.path.exists(m_filepath):
+                try: 
+                    os.remove(m_filepath)
+                except Exception as e:
+                    print(f"Warning: Failed to delete file {m_filepath} : {e}")
+
+    cursor.close()
+    conn.close()
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

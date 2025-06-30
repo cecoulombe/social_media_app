@@ -1,7 +1,7 @@
 # File: media.py
 # Path operations concerning adding media
 # Author: Caitlin Coulombe
-# Last Updated: 2025-06-06
+# Last Updated: 2025-06-20
 from typing import List, Optional
 from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter, UploadFile, Form, File
 from fastapi.responses import JSONResponse
@@ -88,15 +88,17 @@ def get_media(post_id: int):
 
     return {"files": files}
 
-# for uploading a profile picture 
+# for uploading a profile picture - occurs during account creation so the user cannot be authorized yet
 @router.post("/profile/upload/{user_id}", status_code=status.HTTP_201_CREATED)
-async def upload_file(user_id: int, file: UploadFile = File(...), current_user: int = Depends(oauth2.get_current_user)):
+# async def upload_file(user_id: int, file: UploadFile = File(...), current_user: int = Depends(oauth2.get_current_user)):
+async def upload_file(user_id: int, file: UploadFile = File(...)):
+
     conn, cursor = get_db()
     uploaded_urls = []
 
-    # only add profile picture to self
-    if user_id != current_user.id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
+    # # only add profile picture to self
+    # if user_id != current_user.id:
+    #     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
 
 
     if file.content_type not in ALLOWED_CONTENT_TYPES:
@@ -104,7 +106,7 @@ async def upload_file(user_id: int, file: UploadFile = File(...), current_user: 
                             detail=f"Invalid file type")
 
     filename = f"{int(datetime.utcnow().timestamp())}_{file.filename}"
-    file_path = os.path.join("media", filename)
+    file_path = os.path.join("media/profile_picture", filename)
 
     # save file to disk
     with open(file_path, "wb") as buffer:
@@ -119,7 +121,7 @@ async def upload_file(user_id: int, file: UploadFile = File(...), current_user: 
     cursor.close()
     conn.close()
 
-    return {"url": f"/media/{filename}"}
+    return {"url": f"/media/profile_picture/{filename}"}
 
 # for retrieving the data for the profile picture for the user
 @router.get("/by-user/{user_id}")
@@ -165,8 +167,12 @@ async def upload_file(user_id: int, file: UploadFile = File(...), current_user: 
     old = cursor.fetchone()
     old_filepath = old["filepath"] if old else None
 
+    # delete old file from storage
+    if old_filepath and os.path.exists(old_filepath):
+        os.remove(old_filepath)
+
     filename = f"{int(datetime.utcnow().timestamp())}_{file.filename}"
-    file_path = os.path.join("media", filename)
+    file_path = os.path.join("media/profile_picture", filename)
 
     # save file to disk
     with open(file_path, "wb") as buffer:
@@ -184,4 +190,4 @@ async def upload_file(user_id: int, file: UploadFile = File(...), current_user: 
     cursor.close()
     conn.close()
 
-    return {"url": f"/media/{filename}"}
+    return {"url": f"/media/profile_picture/{filename}"}
