@@ -194,6 +194,57 @@ def create_comment(post_id: int, parent_id: int, comment: sch.CreateComment, cur
     # print("NEW COMMENT DATA: " + new_comment)
     return {"data" :sch.CreateCommentOut(**new_comment)}
 
-# edit a comment?
+# path operation to edit an existing comment
+@router.put("/{comment_id}")
+def create_comment(comment_id: int, comment: sch.CreateComment, current_user: int = Depends(oauth2.get_current_user)):
+    conn, cursor = get_db()
 
-# delete a comment
+    cursor.execute("""SELECT user_id FROM comments WHERE id = %s""", (str(comment_id),))
+    user_id = cursor.fetchone()
+    if not user_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"comment with id: {comment_id} was not found")
+    
+    if user_id["user_id"] != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail=f"Not authorized to perform requested action.")
+    
+    cursor.execute("""UPDATE comments SET content = %s WHERE id = %s RETURNING *""", (comment.content, str(comment_id),))
+    updated = cursor.fetchone()
+    if not updated:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"comment with id: {comment_id} was not updated")
+    
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    
+    return {"data" :sch.CreateCommentOut(**updated)}
+
+# path operation to delete an existing comment
+@router.delete("/{comment_id}")
+def create_comment(comment_id: int, current_user: int = Depends(oauth2.get_current_user)):
+    conn, cursor = get_db()
+
+    cursor.execute("""SELECT user_id FROM comments WHERE id = %s""", (str(comment_id),))
+    user_id = cursor.fetchone()
+    if not user_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"comment with id: {comment_id} was not found")
+    
+    if user_id["user_id"] != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail=f"Not authorized to perform requested action.")
+    
+    cursor.execute("""DELETE FROM comments WHERE id = %s RETURNING *""", (str(comment_id),))
+    deleted = cursor.fetchone()
+    if not deleted:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"post with id: {id} was not found")
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

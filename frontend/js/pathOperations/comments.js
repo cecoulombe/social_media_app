@@ -127,3 +127,74 @@ async function createComment(post_id, parent_id, content) {
         console.error(error.message);
     }
 }
+
+/**
+ * Handles logic for deleting a comment
+ * Sends a DELETE request to the /comment/id endpoint containing the id of the comment to delete
+ *
+ * @async
+ * @function updateComment
+ * @param {int} comment_id - the id of the comment to be deleted
+ * @returns {Promise<void>} Resolves when post is created, stored in the database, and displayed on page.
+ * @throws {Error} If the network request fails or response is not OK.
+ */
+async function updateComment(newContent, comment_id) {
+    const url = commentPrefix + "/" + comment_id;
+
+    const content = newContent;
+
+    try {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${access_token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify ({content})
+        });
+
+        if(!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+        console.log(json.data);
+        // return json.data
+    }
+    catch (error) {
+        console.error(error.message);
+    }
+}
+
+/**
+ * Handles logic for deleting a comment
+ * Sends a DELETE request to the /comment/id endpoint containing the id of the comment to delete
+ *
+ * @async
+ * @function deleteComment
+ * @param {int} comment_id - the id of the comment to be deleted
+ * @returns {Promise<void>} Resolves when post is created, stored in the database, and displayed on page.
+ * @throws {Error} If the network request fails or response is not OK.
+ */
+async function deleteComment(comment_id) {
+    const url = commentPrefix + "/" + comment_id;
+
+    try {
+        const response = await fetch(url, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${access_token}`
+            }
+        });
+
+        if(!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+
+        const msg = "Post successfully deleted.";
+        console.log(msg);
+    }
+    catch (error) {
+        console.error(error.message);
+    }
+}

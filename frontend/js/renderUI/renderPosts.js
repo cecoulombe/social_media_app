@@ -289,10 +289,12 @@ async function renderPost_comments(post, postElement, commentCount) {
                 const editButton = commentElement.querySelector(".editButton");
                 editButton.onclick = async (event) => {
                     event.preventDefault();
-                    // console.log("Reply clicked for comment ID:", parent.id);
-                    await createCommentUpdateForm(commentElement, parent);
 
-                    await renderPost_allComments(post, postElement, null);
+                    console.log("Editting a parent from home");
+                    // console.log("Reply clicked for comment ID:", parent.id);
+                    await createCommentUpdateForm(post, postElement, commentElement, comment.id);
+
+                    // await renderPost_allComments(post, postElement, null);
                 };
             }
             
@@ -414,10 +416,12 @@ async function renderPost_allComments(post, postElement, parent_id) {
             const editButton = commentElement.querySelector(".editButton");
             editButton.onclick = async (event) => {
                 event.preventDefault();
-                // console.log("Reply clicked for comment ID:", parent.id);
-                await createCommentUpdateForm(commentElement, parent);
 
-                await renderPost_allComments(post, postElement, null);
+                console.log("Editting a parent");
+                // console.log("Reply clicked for comment ID:", parent.id);
+                await createCommentUpdateForm(post, postElement, commentElement, parent.id);
+
+                // await renderPost_allComments(post, postElement, null);
             };
             
             // console.log("Need to append children now");
@@ -437,10 +441,11 @@ async function renderPost_allComments(post, postElement, parent_id) {
                     const editButton = childElement.querySelector(".editButton");
                     editButton.onclick = async (event) => {
                         event.preventDefault();
+                        console.log("Editting a child");
                         // console.log("Reply clicked for comment ID:", parent.id);
-                        await createCommentUpdateForm(childElement, child_id);
+                        await createCommentUpdateForm(post, postElement, childElement, child.id);
 
-                        await renderPost_allComments(post, postElement, null);
+                        // await renderPost_allComments(post, postElement, null);
                     };
                 }
             }
@@ -546,9 +551,17 @@ async function createUpdateForm(post_id){
  * @param {*} comment - the comment element that is being edited
  * @param {int} comment_id - the id of the comment that is being edited
  */
-async function createCommentUpdateForm(commentElem, comment_id){
+async function createCommentUpdateForm(post, postElement, commentElem, comment_id){
     // create a form where the content is
-    // empty the content container
+    // empty the content container after getting the original value
+
+    console.log("Comment id: " + comment_id);
+
+    const content = commentElem.querySelector(".commentContent").innerHTML;
+    // console.log("Old content: " + content);
+
+    // console.log("Comment to edit: ", commentElem);
+
     const contentContainer = commentElem.querySelector(".commentContent");
     contentContainer.innerHTML = "";
 
@@ -565,8 +578,8 @@ async function createCommentUpdateForm(commentElem, comment_id){
         const deleteConfirm = window.confirm("Are you sure you want to delete this comment?");
         if (deleteConfirm) {
             console.log("Delete the post"); 
-            // await deletePost(post_id);
-            // await reloadPage();
+            await deleteComment(comment_id);
+            await renderPost_allComments(post, postElement, null);
         } else {
             console.log("Delete post cancelled");
         }
@@ -581,7 +594,8 @@ async function createCommentUpdateForm(commentElem, comment_id){
     
     updateContent.name = "updateContent";
     updateContent.id = "updateContent";
-    updateContent.value = post.content;
+
+    updateContent.value = content;
     updateContent.required = true;
 
     const submitUpdate = document.createElement("input");
@@ -596,14 +610,16 @@ async function createCommentUpdateForm(commentElem, comment_id){
         event.preventDefault();
         const newContent = updateContent.value;
         
-        await updatePost(newContent, post_id);
+        await updateComment(newContent, comment_id);
         // window.location.reload;
         // await getPosts();
-        await reloadPage();
+        
 
-        const updatedPost = document.getElementById(post_id);
-        if(updatedPost) {
-            updatedPost.scrollIntoView({behavior: "smooth", block: "start"});
-        }
+        // const updatedComment = document.getElementById(comment_id);
+        // if(updatedComment) {
+        //     updatedComment.scrollIntoView({behavior: "smooth", block: "start"});
+        // }
+        await renderPost_allComments(post, postElement, null);
+
     });
 }

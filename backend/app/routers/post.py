@@ -355,7 +355,8 @@ def update_post(id: int, post: sch.PostCreate, current_user: int = Depends(oauth
                             detail=f"post with id: {id} was not found")
 
     if user_id["user_id"] != current_user.id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, 
+                            detail=f"Not authorized to perform requested action.")
     
     cursor.execute("""UPDATE posts SET content = %s, published = %s WHERE id = %s RETURNING *""", (post.content, post.published, str(id),))
     updated = cursor.fetchone()
