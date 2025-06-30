@@ -67,7 +67,7 @@ http://127.0.0.1:8000
       * Fetches a list of all posts from a specific user
    3. GET /posts/{id}
       * Fetches a specific post by its ID
-   4. POST / posts
+   4. POST /posts
       * Creates a new post. Requires a JSON payload with post content
    5. DELETE /posts/{id}
       * Deletes a specific post by its ID
@@ -106,12 +106,18 @@ http://127.0.0.1:8000
   4. PUT /media/profile/update/{user_id}
       * Replaces the current profile picture for a user with a new one.
 - Comment
-  1. f
-      * f
-  2. f
-      * f
-  3. f
-      * f
+   1. GET /comment/{post_id}
+      * Fetches a list of all comments for a single post specified by id
+   2. GET /comment/parent/{post_id}
+      * Gets all of the parent comments for a post specified by id. Usually limited to 3 and used on the home page/user page
+   3. POST /comment/{post_id}
+      * Creates a new parent comment for a post
+   4. POST /comment/{post_id}/{parent_id}
+      * Creates a new child comment for a post. The parent of the comment is specified by id
+   5. PUT /comment/{comment_id}
+      * Updates a single comment based on its id
+   6. DELETE /comment/{comment_id}
+      * Deletes a specific comment by its id
 ---
 
 ## **Technologies Used**
