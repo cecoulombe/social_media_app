@@ -94,14 +94,23 @@ http://127.0.0.1:8000
       * Allows the user to add a like to a post they have not previously liked or to remove a like from a post they have already liked.
   2. GET /like/{id}
       * Returns 1 if the post has been liked by the current user (used to determine which heart icon to use, filled for liked and empty for not).
-    
-
-- Auth
-  10. f
+- Media
+  1. POST /media/upload/{post_id}
+      * Allows the user to add up to 9 posts (limited on the front end). The images are stored in the directory backent/media.
+  2. GET /media/by-id/{post_id}
+      * Retrieves all of the media related to a single post
+  3. POST /media/profile/upload/{user_id}
+      * Adds a profile picture to the user. Only a single profile picture can exist per user. This is called during new user creation and is filled with the default icon.
+  4. GET /media/by-user/{user_id}
+      * Gets the profile picture associated with the user id
+  4. PUT /media/profile/update/{user_id}
+      * Replaces the current profile picture for a user with a new one.
+- Comment
+  1. f
       * f
-  12. f
+  2. f
       * f
-  13. f
+  3. f
       * f
 ---
 
