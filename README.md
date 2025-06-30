@@ -125,4 +125,4 @@ http://127.0.0.1:9000
 - Backend: FastAPI, Uvicorn
 - Database: PostgreSQL
 
- ## **Last updated: June 29, 2025**
+ ## *Last updated: June 29, 2025*
