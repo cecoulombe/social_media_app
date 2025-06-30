@@ -13,12 +13,12 @@ A small social media web application for users to interact with each other. This
 
 ## **Project Overview**
 This web application will allow users to:
-- Create posts
-- Comment on posts
+- Create posts, view, update, and delete posts created by themselves and others
+- Comment on posts and reply to other comments
 - Like posts
-- Add friends
+- Update their display name and profile picture
 
-The backend API is partially functional, and users can interact with it through Postman for testing purposes.
+Both the frontend and backend have the functionality described above using the path operations described below.
 
 ---
 
@@ -48,8 +48,8 @@ To get started with this project, follow the steps below:
 
 ## **Usage**
 You can test the backend API by using Postman or by visiting the interactive API docs provided by FastAPI:
-* Swagger UI: http://127.0.0.1:8000/docs
-* ReDoc: http://127.0.0.1:8000/redoc
+* Swagger UI: http://127.0.0.1:9000/docs
+* ReDoc: http://127.0.0.1:9000/redoc
 
 ---
 
@@ -57,7 +57,7 @@ You can test the backend API by using Postman or by visiting the interactive API
 The backend exposes several endpoints to manage posts and users. Other functionality will be added in the future (i.e. commentting on posts, liking posts, friendships with other users)
 
 ### Base URL:
-http://127.0.0.1:8000
+http://127.0.0.1:9000
 
 ### Endpoints:
 - Posts
@@ -124,4 +124,5 @@ http://127.0.0.1:8000
 - Frontend: (to be added)
 - Backend: FastAPI, Uvicorn
 - Database: PostgreSQL
- 
+
+ ## **Last updated: June 29, 2025**
