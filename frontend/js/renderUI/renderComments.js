@@ -3,7 +3,7 @@
  * Description: Uses the template in home.html to create a comment
  * Author: Caitlin Coulombe
  * Created: 2025-06-28
- * Last Updated: 2025-06-28
+ * Last Updated: 2025-06-29
  */
 
 "use strict";

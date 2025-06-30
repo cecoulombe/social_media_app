@@ -3,7 +3,7 @@
  * Description: Uses the template in index.html to create a post. Contains all of the logic related to rendering a post
  * Author: Caitlin Coulombe
  * Created: 2025-05-20
- * Last Updated: 2025-06-28
+ * Last Updated: 2025-06-29
  */
 
 "use strict";

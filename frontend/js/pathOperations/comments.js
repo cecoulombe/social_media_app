@@ -2,8 +2,8 @@
  * File: comments.js
  * Description: Handles like path operations which involves adding or removing a like from the passed post
  * Author: Caitlin Coulombe
- * Created: 2025-05-19
- * Last Updated: 2025-05-20
+ * Created: 2025-06-26
+ * Last Updated: 2025-06-29
  */
 
 
