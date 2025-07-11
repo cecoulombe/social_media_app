@@ -33,6 +33,23 @@
                     <input type="submit" class="submit" value="LOGIN">
                 </form>
             </div>
+
+            <div id="createNewAccount" class="flex-item">
+                <h1 class="text-center">Create a new account</h1>
+                <form id="newAccountForm">
+                    <label for="createDisplayName">Enter a display name</label>
+                    <input type="text" id="createDisplayName" name="createDisplayName" placeholder=" " required>
+                    <label for="createEmail">Enter your email below</label>
+                    <input type="email" id="createEmail" name="createEmail" placeholder=" " required>
+                    <label for="confirmEmail" class="matchingLabel">Confirm your email address <span id="matchEmail" class="matching">Email must match</span> </label>
+                    <input type="email" id="confirmEmail" name="confirmEmail" placeholder=" " required>
+                    <label for="createPassword">Enter your password below</label>
+                    <input type="password" id="createPassword" name="createPassword" placeholder=" " required>
+                    <label for="confirmPassword" class="matchingLabel">Confirm your password <span id="matchPassword" class="matching">Password must match</span></label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" " required>
+                    <input type="submit" id="submitNewAccount" class="submit" value="CREATE ACCOUNT">
+                </form>
+            </div>
         </div>
         <!-- scripts -->
          <script src="js/pathOperations/loginForm.js"></script>
