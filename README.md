@@ -24,7 +24,7 @@ This web application allows users to:
 
 Both the frontend and backend are implemented with full CRUD functionality.
 
-***Performance Notes**
+**Performance Notes**
 
 - The backend is hosted on a free instance of Render, which enters sleep mode after periods of inactivity. As a result, the **first request (such as logging in)** may take **up to 50 seconds** to respond while the server spins back up. Subsequent interactions will be much faster.
 
