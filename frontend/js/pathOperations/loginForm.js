@@ -62,8 +62,8 @@ async function loginUser(email, password) {
         window.location.href = "home.html";
     }
     catch (error) {
-        window.alert("Invalid login attempt. Please verify email and password then try again.");
         console.error(error.message)
+        window.alert("Invalid login attempt. Please verify email and password then try again.");
     }
 }
 
