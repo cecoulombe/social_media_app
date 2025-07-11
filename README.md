@@ -24,6 +24,13 @@ This web application allows users to:
 
 Both the frontend and backend are implemented with full CRUD functionality.
 
+***Performance Notes**
+
+- The backend is hosted on a free instance of Render, which enters sleep mode after periods of inactivity. As a result, the **first request (such as logging in)** may take **up to 50 seconds** to respond while the server spins back up. Subsequent interactions will be much faster.
+
+- The database is running on a cost-optimized AWS RDS instance. This may cause **slightly longer load times** when fetching or submitting data.  
+  When submitting a new post or comment, please **click the Submit button once** and allow a few seconds for the action to complete to avoid duplicate entries.
+
 ---
 
 ## Hosted Demo
