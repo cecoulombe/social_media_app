@@ -69,7 +69,7 @@ async function reloadPage() {
     const user_id = params.get("user_id");
     const pathname = window.location.pathname;
 
-    const newPost = "/src/newPost.html"
+    const newPost = "/newPost.html"
 
     // console.log("user_id", user_id);
     // console.log("pathname", pathname);

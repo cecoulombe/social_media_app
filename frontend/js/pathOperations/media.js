@@ -155,7 +155,7 @@ async function createDefaultProfilePic(user_id) {
  * Creates a blob with the default profile picture so that it can be added automatically
  */
 async function getDefaultProfilePic() {
-    const response = await fetch("../res/img/default_icon.png");
+    const response = await fetch("../../res/img/default_icon.png");
     const blob = await response.blob();
     return new File([blob], "default_icon.png", {type: blob.type});
 }

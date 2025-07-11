@@ -72,7 +72,7 @@ async function renderMultiplePosts(posts) {
 
             profilePic.alt = post.author.profile_pic.filename;
         } else {
-            profilePic.src = "../res/img/default_icon.png";
+            profilePic.src = "../../res/img/default_icon.png";
             profilePic.alt = "Default icon"
         }
 
@@ -163,10 +163,10 @@ async function renderPost_likeButton(post, postElement, likeCount) {
 
     if(await getIsLiked(post.id)) {
         // console.log("is liked");
-        heartImg.src = "../res/img/full_heart.png";
+        heartImg.src = "../../res/img/full_heart.png";
     } else {
         // console.log("is NOT liked");
-        heartImg.src = "../res/img/empty_heart_red.png";
+        heartImg.src = "../../res/img/empty_heart_red.png";
     }
 
     likeButton.appendChild(heartImg);
@@ -176,10 +176,10 @@ async function renderPost_likeButton(post, postElement, likeCount) {
         const isLiked = await getIsLiked(post.id);
         if(isLiked) {
             // console.log("is liked");
-            heartImg.src = "../res/img/full_heart.png";
+            heartImg.src = "../../res/img/full_heart.png";
         } else {
             // console.log("is NOT liked");
-            heartImg.src = "../res/img/empty_heart_red.png";
+            heartImg.src = "../../res/img/empty_heart_red.png";
         }
         likeCount.textContent = await getLikeCount(post.id);
     });
