@@ -91,7 +91,7 @@ async function renderParentComment(comment, container){
     const profilePic =  clone.querySelector(".profilePic");
     if(comment.author.profile_pic) {
         // console.log("Has a profile pic: " + post.author.profile_pic.url)
-        profilePic.src = "http://localhost:9000/" + comment.author.profile_pic.url;
+        profilePic.src = comment.author.profile_pic.url;
         profilePic.alt = comment.author.profile_pic.filename;
     } else {
         profilePic.src = "/../res/img/default_icon.png";
