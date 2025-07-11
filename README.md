@@ -9,6 +9,7 @@ A small social media web application for users to interact with each other. This
 - [Usage](#usage)
 - [API Documentation](#api-documentation)
 - [Technologies Used](#technologies-used)
+- [Hosting Services](#hosting-services)
 
 ---
 
@@ -194,8 +195,27 @@ You can test the backend API using:
 
 ## Technologies Used
 
-- **Frontend:** (to be added)
+- **Frontend:** HTML, CSS, JS
 - **Backend:** FastAPI, Uvicorn
 - **Database:** PostgreSQL
+
+---
+
+## Hosting Services
+
+This project is deployed using a combination of cloud services to handle different parts of the application stack:
+
+- **Frontend:**  
+  Hosted with [AWS Amplify](https://aws.amazon.com/amplify/)  
+  URL: [https://demo.d3hhdjdcpgfljz.amplifyapp.com](https://demo.d3hhdjdcpgfljz.amplifyapp.com)
+
+- **Backend (FastAPI):**  
+  Deployed on [Render](https://render.com/) for automatic builds and scalable API hosting
+
+- **Database:**  
+  Hosted on [AWS RDS](https://aws.amazon.com/rds/) using PostgreSQL
+
+- **Media Storage:**  
+  Uploaded images and profile pictures are stored in [AWS S3](https://aws.amazon.com/s3/) buckets
 
 _Last updated: July 11, 2025_
