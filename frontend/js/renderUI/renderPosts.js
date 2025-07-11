@@ -13,7 +13,7 @@ let postTemplate = null;
 // load the template from template.html
 async function loadPostTemplate() {
     if(!postTemplate) {
-        const res = await fetch(`/src/template.html?nocache=${Date.now()}`);
+        const res = await fetch(`../../template.html?nocache=${Date.now()}`);
         const html = await res.text();
         const container = document.createElement('div');
         container.innerHTML = html;
