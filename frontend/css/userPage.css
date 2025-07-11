@@ -58,7 +58,8 @@
 
 #searchForm {
     padding: 0;
-    display: flex;
+    /* display: flex; */
+    display: none;
     flex-direction: row;
 }
 
