@@ -235,7 +235,7 @@ async function renderPost_media(post, postElement) {
             img.classList.add("slides");
             // console.log(mediaItem.url);
             
-            console.log('Media URL:', mediaItem.url);
+            // console.log('Media URL:', mediaItem.url);
             img.src = mediaItem.url;
 
             // console.log(img.src);
