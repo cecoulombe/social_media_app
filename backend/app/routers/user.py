@@ -147,11 +147,11 @@ def delete_user(id: int, current_user: int = Depends(oauth2.get_current_user)):
                     detail=f"user with id: {id} was not found")
     
     # get associated media prior to deleting the user
-    cursor.execute("""SELECT filepath FROM profile_pictures WHERE user_id = %s""", (str(id),))
+    cursor.execute("""SELECT filename FROM profile_pictures WHERE user_id = %s""", (str(id),))
     profile_pic = cursor.fetchone()
 
     # get media associated with the users posts
-    cursor.execute("""SELECT filepath FROM files 
+    cursor.execute("""SELECT filename FROM files 
                    JOIN posts ON files.post_id = posts.id
                    JOIN users ON posts.user_id = users.id
                    WHERE users.id = %s""", (str(id),))
@@ -167,22 +167,23 @@ def delete_user(id: int, current_user: int = Depends(oauth2.get_current_user)):
 
     # remove profile picture
     if profile_pic:
-        pp_filepath = profile_pic["filepath"]
-        if pp_filepath and os.path.exists(pp_filepath):
-            try: 
-                os.remove(pp_filepath)
+        pp_filename = str(profile_pic["filename"]) if profile_pic["filename"] is not None else None
+
+        if pp_filename:
+            try:
+                utils.delete_s3_object(pp_filename)
             except Exception as e:
-                print(f"Warning: Failed to delete file {pp_filepath} : {e}")
+                print(f"Error deleting S3 file {pp_filename}: {e}")
 
     # remove associated media
     if media_paths:
         for media in media_paths:
-            m_filepath = media["filepath"]
-            if m_filepath and os.path.exists(m_filepath):
-                try: 
-                    os.remove(m_filepath)
+            m_filename = str(media["filename"]) if media["filename"] is not None else None
+            if m_filename:
+                try:
+                    utils.delete_s3_object(m_filename)
                 except Exception as e:
-                    print(f"Warning: Failed to delete file {m_filepath} : {e}")
+                    print(f"Error deleting S3 file {m_filename}: {e}")
 
     cursor.close()
     conn.close()

@@ -37,7 +37,10 @@ document.getElementById("newPostForm").addEventListener("submit", async function
     // UNCOMMENT THIS TO ACTUALLY MAKE THE POST
     const data = await createPost();
     // add media
-    const media = await uploadMedia(data.id);
+
+    if(medias) {
+        const media = await uploadMedia(data.id);
+    }
 
     window.location.href = "home.html";
 

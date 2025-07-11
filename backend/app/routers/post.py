@@ -8,16 +8,21 @@ from typing import Optional
 from fastapi import Body, Depends, FastAPI, Response, status, HTTPException, APIRouter
 from app import schema as sch
 from app import oauth2
+from app import utils
 from app.database import get_db
+import boto3
 
 router = APIRouter(
     tags=['Posts']
 )
 
+s3_client = boto3.client("s3", region_name=os.getenv("AWS_REGION"))
+BUCKET_NAME = os.getenv("AWS_S3_BUCKET")
+
 # TODO: right now the limit is set to 100, but you'll want to keep that a bit lower out of developement and then use pagination to get more posts
 # path operation to get all of the posts
 @router.get("/")
-def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int = 100, skip: int = 0, search: Optional[str] = None):
+def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int = 100, skip: int = 0, published: bool = True, search: Optional[str] = None):
     conn, cursor = get_db()
 
     if search:
@@ -41,10 +46,10 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
                             COUNT(*) AS comment_count 
                             FROM comments 
                             GROUP BY post_id) AS comment_counts ON posts.id = comment_counts.post_id 
-                    WHERE posts.content ILIKE %s
+                    WHERE posts.published = %s AND posts.content ILIKE %s
                     GROUP BY posts.id, users.id, users.email, users.created_at
                     ORDER BY posts.created_at DESC
-                    LIMIT %s OFFSET %s""", (f"%{search}%", limit, skip,))
+                    LIMIT %s OFFSET %s""", (published, f"%{search}%", limit, skip,))
     else:
         cursor.execute("""SELECT posts.*, 
                        users.id AS author_id, 
@@ -65,8 +70,9 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
                             COUNT(*) AS comment_count 
                             FROM comments 
                             GROUP BY post_id) AS comment_counts ON posts.id = comment_counts.post_id 
+                       WHERE posts.published = %s
                        ORDER BY posts.id DESC 
-                       LIMIT %s OFFSET %s""", (limit, skip,))
+                       LIMIT %s OFFSET %s""", (published, limit, skip,))
         
     posts = cursor.fetchall()
 
@@ -122,7 +128,7 @@ def get_posts(current_user: int = Depends(oauth2.get_current_user), limit: int =
 
 # path operation to get all of the posts for the current user
 @router.get("/get-user/{user_id}")
-def get_posts(user_id: int, current_user: int = Depends(oauth2.get_current_user), limit: int = 100, skip: int = 0):
+def get_posts(user_id: int, current_user: int = Depends(oauth2.get_current_user), limit: int = 100, skip: int = 0, published: bool = True):
     conn, cursor = get_db()
 
     # check that the user exists
@@ -151,9 +157,9 @@ def get_posts(user_id: int, current_user: int = Depends(oauth2.get_current_user)
                 COUNT(*) AS comment_count 
                 FROM comments 
                 GROUP BY post_id) AS comment_counts ON posts.id = comment_counts.post_id 
-            WHERE posts.user_id = %s
+            WHERE posts.user_id = %s AND posts.published = %s 
             ORDER BY posts.id DESC 
-            LIMIT %s OFFSET %s""", (str(user_id), limit, skip,))
+            LIMIT %s OFFSET %s""", (str(user_id), published, limit, skip,))
         
     posts = cursor.fetchall()
 
@@ -318,7 +324,7 @@ def delete_post(id:int, current_user: int = Depends(oauth2.get_current_user)):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not authorized to perform requested action.")
     
     #  get associated media prior to deleting the post
-    cursor.execute("""SELECT filepath FROM files WHERE post_id = %s""", (str(id),))
+    cursor.execute("""SELECT filename FROM files WHERE post_id = %s""", (str(id),))
     media_files = cursor.fetchall()
 
     #  delete the post
@@ -330,13 +336,17 @@ def delete_post(id:int, current_user: int = Depends(oauth2.get_current_user)):
     conn.commit()   # deletion changes the database so it needs to be committed
 
     # remove associated media from the disk
+    print("media_files from DB:", media_files)
+
     for media in media_files:
-        filepath = media["filepath"]
-        if filepath and os.path.exists(filepath):
+        # filename = media["filename"]
+        filename = str(media["filename"]) if media["filename"] is not None else None
+
+        if filename:
             try:
-                os.remove(filepath)
+                utils.delete_s3_object(filename)
             except Exception as e:
-                print(f"Warning: Failed to delete file {filepath} : {e}")
+                print(f"posts: Error deleting S3 file {filename}: {e}")
     
     cursor.close()
     conn.close()
@@ -357,7 +367,7 @@ def update_post(id: int, post: sch.PostCreate, current_user: int = Depends(oauth
     if user_id["user_id"] != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, 
                             detail=f"Not authorized to perform requested action.")
-    
+   
     cursor.execute("""UPDATE posts SET content = %s, published = %s WHERE id = %s RETURNING *""", (post.content, post.published, str(id),))
     updated = cursor.fetchone()
     if not updated:

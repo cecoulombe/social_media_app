@@ -9,7 +9,12 @@
 
 "use strict";
 
+// LOCAL
 const mediaPrefix = "http://localhost:9000/api/media"
+
+// RENDER
+// const mediaPrefix = "https://social-media-backend-z6jf.onrender.com/api/media"
+
 /**
  * Handles the logic for uploading any media to the database, including either a single media or a series
  * Sends a POST request to the /uploads/{id} endpoint containing the file as a form submission
@@ -38,7 +43,7 @@ async function uploadMedia(post_id) {
 
     console.log("Uploading formData: ", formData);
 
-    const url = mediaPrefix + `/upload/${post_id}`;
+    const url = mediaPrefix + `/upload-s3/${post_id}`;
 
     try {
         const response = await fetch(url, {

@@ -22,7 +22,7 @@ app.include_router(media.router, prefix="/api/media")
 app.include_router(comment.router, prefix="/api/comment")
 
 # Mount media files (optional)
-app.mount("/media", StaticFiles(directory="media"), name="media")
+# app.mount("/media", StaticFiles(directory="media"), name="media")
 
 
 # Then mount frontend static files at root "/"

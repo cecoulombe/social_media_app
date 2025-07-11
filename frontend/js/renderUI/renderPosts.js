@@ -38,6 +38,21 @@ async function renderMultiplePosts(posts) {
     // clear any old posts
     container.innerHTML = "";
 
+    // add warning for demo users
+    if(current_user === "demo@example.com") {
+        console.log("This is the demo user");
+        const demoWarningMsg = `
+            Welcome to my social media application!<br>
+            Feel free to explore, interact with posts, and create your own.<br>
+            <strong>Note:</strong> All demo users share the same credentials and can view anything posted from the demo account.<br>
+            The demo account has full access to the app's features, except for updating or deleting the user profile.
+            `;
+        const demoWarningContainer = document.createElement("p");
+        demoWarningContainer.id = "demoWarningContainer"
+        demoWarningContainer.innerHTML = demoWarningMsg;
+        container.appendChild(demoWarningContainer);
+    }
+
     for (const post of posts) {
         // clone the template
         const clone = postTemplate.content.cloneNode(true);
@@ -52,7 +67,9 @@ async function renderMultiplePosts(posts) {
         const profilePic = postElement.querySelector(".profilePic");
         if(post.author.profile_pic) {
             // console.log("Has a profile pic: " + post.author.profile_pic.url)
-            profilePic.src = "http://localhost:9000/" + post.author.profile_pic.url;
+            
+            profilePic.src = post.author.profile_pic.url;
+
             profilePic.alt = post.author.profile_pic.filename;
         } else {
             profilePic.src = "../res/img/default_icon.png";
@@ -217,7 +234,10 @@ async function renderPost_media(post, postElement) {
             const img = document.createElement("img");
             img.classList.add("slides");
             // console.log(mediaItem.url);
-            img.src = "http://localhost:9000/" + mediaItem.url;
+            
+            console.log('Media URL:', mediaItem.url);
+            img.src = mediaItem.url;
+
             // console.log(img.src);
             img.alt = mediaItem.filename;
             imageContainer.appendChild(img);
@@ -299,7 +319,7 @@ async function renderPost_comments(post, postElement, commentCount) {
             }
             
             if(commentCount > 3) {
-                loadCommentsButton.textContent = "See more comments";
+                loadCommentsButton.textContent = "See all comments";
                 commentContainer.appendChild(loadCommentsButton);
             } else {
                 loadCommentsButton.textContent = "Add comment";

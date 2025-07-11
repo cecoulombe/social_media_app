@@ -46,7 +46,7 @@ async function renderUserPage(user_id) {
     if (profilePic) {
         if(user.data.profile_pic && user.data.profile_pic.url) {
             console.log("There is a profile pic for the user");
-            profilePic.src = "http://localhost:9000/" + user.data.profile_pic.url;
+            profilePic.src = user.data.profile_pic.url;
             profilePic.alt = user.data.profile_pic.filename;
         } else {
             profilePic.src = "../res/img/default_icon.png";

@@ -11,7 +11,11 @@
 
 console.log("Posts.js loaded");
 
+// LOCAL
 const postPrefix = "http://localhost:9000/api/posts"
+
+// RENDER
+// const postPrefix = "https://social-media-backend-z6jf.onrender.com/api/posts"
 
 /**
  * Handles logic for retrieving all posts.
@@ -28,8 +32,10 @@ async function getPosts() {
     const limit = 100;  
     const skip = 0;
     const search = "";
+    let published = current_user !== "demo@example.com"
 
-    const url = postPrefix + "?limit=" + limit + "&skip=" + skip + "&search=" + search;
+    // const url = postPrefix + "?limit=" + limit + "&skip=" + skip + "&search=" + search + "&published=" + published;
+    const url = `${postPrefix}/?limit=${limit}&skip=${skip}&published=${published}&search=${search}`;
 
     try {
         const response = await fetch(url, {
@@ -102,8 +108,11 @@ async function getUserPosts(user_id) {
     // TODO: Update limit/skip to support pagination dynamically
     const limit = 100;  
     const skip = 0;
+    const published = current_user !== "demo@example.com"
 
-    const url = postPrefix + "/get-user/" + user_id + "?limit=" + limit + "&skip=" + skip;
+    const url = `${postPrefix}/get-user/${user_id}?limit=${limit}&skip=${skip}&published=${published}`;
+
+    // const url = postPrefix + "/get-user/" + user_id + "?limit=" + limit + "&skip=" + skip;
 
     try {
         const response = await fetch(url, {
@@ -139,11 +148,12 @@ async function getUserPosts(user_id) {
 async function createPost() {
     event.preventDefault();
     const url = postPrefix;
-
+    
     const content = document.getElementById("newContent").value;
+    const published = current_user !== "demo@example.com"
 
     console.log("in CreatePost()");
-    console.log(JSON.stringify({content}));
+    console.log(JSON.stringify({content, published}));
 
     try {
         const response = await fetch(url, {
@@ -152,7 +162,7 @@ async function createPost() {
                 "Authorization": `Bearer ${access_token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify ({content})
+            body: JSON.stringify ({content, published})
         });
 
         if(!response.ok) {
@@ -183,8 +193,10 @@ async function updatePost(newContent, post_id) {
     const url = postPrefix + "/" + post_id;
     
     const content = newContent;
+    const published = current_user !== "demo@example.com"
 
-    console.log(JSON.stringify({content}));
+    console.log("in updatePost()");
+    console.log(JSON.stringify({content, published}));
 
     try {
         const response = await fetch(url, {
@@ -193,7 +205,7 @@ async function updatePost(newContent, post_id) {
                 "Authorization": `Bearer ${access_token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify ({content})
+            body: JSON.stringify ({content, published})
         });
 
         if(!response.ok) {
