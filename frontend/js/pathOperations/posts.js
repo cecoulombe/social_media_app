@@ -46,7 +46,7 @@ async function getPosts() {
         });
 
         if(!response.ok) {
-            throw new Error('Reponse status: ${response.status}');
+            throw new Error(`Reponse status: ${response.status}`);
         }
 
         const json = await response.json();
