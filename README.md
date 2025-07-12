@@ -2,28 +2,56 @@
 
 A small social media web application for users to interact with each other. This project is focused on deepening my understanding of database management and APIs while creating a platform for users to post content, comment, and connect with friends.
 
-### **Table of Contents**
+## Table of Contents
 - [Project Overview](#project-overview)
+- [Hosted Demo](#hosted-demo)
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Documentation](#api-documentation)
 - [Technologies Used](#technologies-used)
+- [Hosting Services](#hosting-services)
 
 ---
 
-## **Project Overview**
-This web application will allow users to:
-- Create posts, view, update, and delete posts created by themselves and others
-- Comment on posts and reply to other comments
-- Like posts
+## Project Overview
+
+This web application allows users to:
+
+- Create, view, update, and delete posts
+- Comment on posts and reply to other comments (nested comments)
+- Like and unlike posts
 - Update their display name and profile picture
 
-Both the frontend and backend have the functionality described above using the path operations described below.
+Both the frontend and backend are implemented with full CRUD functionality.
 
 ---
 
-## **Installation**
-To get started with this project, follow the steps below:
+## Hosted Demo
+
+You can now try out the demo version of the app without installing anything.
+
+**Access the hosted version here:**  
+[https://demo.d3hhdjdcpgfljz.amplifyapp.com](https://demo.d3hhdjdcpgfljz.amplifyapp.com)
+
+Use the following credentials to sign in:
+
+- **Email:** `demo@example.com`
+- **Password:** `pass123`
+
+Anyone can log in with this account to explore the app's features.
+
+**Performance Notes**
+
+- The backend is hosted on a free instance of Render, which enters sleep mode after periods of inactivity. As a result, the **first request (such as logging in)** may take **up to 50 seconds** to respond while the server spins back up. Subsequent interactions will be much faster.
+
+- The database is running on a cost-optimized AWS RDS instance. This may cause **slightly longer load times** when fetching or submitting data.  
+  When submitting a new post or comment, please **click the Submit button once** and allow a few seconds for the action to complete to avoid duplicate entries.
+
+---
+
+## Installation
+
+To get started with this project locally:
 
 1. Clone this repository:
    ```bash
@@ -31,98 +59,170 @@ To get started with this project, follow the steps below:
 2. Navigate to the project directory:
    ```bash
    cd social_media_app
-3. (If needed) Create and activate a virtual environment:
+3. (Optional) Create and activate a virtual environment:
    ```bash
    python3 -m venv .venv
-   source .venv/bin/activate   # On Windows: .venv\Scripts\activate
+   source .venv/bin.activate   # On Windows: .venv/Scripts/activate
 4. Install the required dependencies:
    ```bash
    pip install -r requirements.txt
 5. Start the FastAPI server using uvicorn:
    ```bash
    uvicorn app.main:app --reload
-6. The API will be available at
+6. The API will be availabe at:
    http://127.0.0.1:9000
 
 ---
 
-## **Usage**
-You can test the backend API by using Postman or by visiting the interactive API docs provided by FastAPI:
-* Swagger UI: http://127.0.0.1:9000/docs
-* ReDoc: http://127.0.0.1:9000/redoc
+## Usage
+
+You can test the backend API using:
+
+- **Swagger UI:** [http://127.0.0.1:9000/docs](http://127.0.0.1:9000/docs)  
+- **ReDoc:** [http://127.0.0.1:9000/redoc](http://127.0.0.1:9000/redoc)
 
 ---
 
-## **API Documentation**
-The backend exposes several endpoints to manage posts and users. Other functionality will be added in the future (i.e. commentting on posts, liking posts, friendships with other users)
+## API Documentation
 
-### Base URL:
-http://127.0.0.1:9000
+### Base URL
 
-### Endpoints:
-- Posts
-   1. GET /posts
-      * Fetches a list of all posts
-   2. GET /posts/get-user/{id}
-      * Fetches a list of all posts from a specific user
-   3. GET /posts/{id}
-      * Fetches a specific post by its ID
-   4. POST /posts
-      * Creates a new post. Requires a JSON payload with post content
-   5. DELETE /posts/{id}
-      * Deletes a specific post by its ID
-   6. PUT /posts/{id}
-      * Updates a single post by its ID. Uses PUT functionality and replaces the entire database entry with a new entry
-- Users
-  1. POST /users
-      * Creates a new user. Requires a JSON payload with user content. Hashes the password before inserting it into the database 
-  2. GET /users/get-user/{email}
-      * Fetches a single user by its email, retutning all fields except the password
-  3. GET /users/{id}
-      * Fetches a single user by its ID, retutning all fields except the password
-  4. PUT /users/update-name/{id}
-      * Updates the user's stored display name
-  5. POST /users/verify-password/{id}
-      * Compares a password attempt to the stored password in the database to determine if the user has entered it correctly (used for deleting the user)
-  6. DELETE /users/{id}
-      * Deletes the user from the database based on ID
-- Auth
-  1. POST /login
-      * Verifies the attempted username and password and generates a JWT token on a successful attempt, granting the user access.
-- Like
-  1. POST /like
-      * Allows the user to add a like to a post they have not previously liked or to remove a like from a post they have already liked.
-  2. GET /like/{id}
-      * Returns 1 if the post has been liked by the current user (used to determine which heart icon to use, filled for liked and empty for not).
-- Media
-  1. POST /media/upload/{post_id}
-      * Allows the user to add up to 9 posts (limited on the front end). The images are stored in the directory backent/media.
-  2. GET /media/by-id/{post_id}
-      * Retrieves all of the media related to a single post
-  3. POST /media/profile/upload/{user_id}
-      * Adds a profile picture to the user. Only a single profile picture can exist per user. This is called during new user creation and is filled with the default icon.
-  4. GET /media/by-user/{user_id}
-      * Gets the profile picture associated with the user id
-  4. PUT /media/profile/update/{user_id}
-      * Replaces the current profile picture for a user with a new one.
-- Comment
-   1. GET /comment/{post_id}
-      * Fetches a list of all comments for a single post specified by id
-   2. GET /comment/parent/{post_id}
-      * Gets all of the parent comments for a post specified by id. Usually limited to 3 and used on the home page/user page
-   3. POST /comment/{post_id}
-      * Creates a new parent comment for a post
-   4. POST /comment/{post_id}/{parent_id}
-      * Creates a new child comment for a post. The parent of the comment is specified by id
-   5. PUT /comment/{comment_id}
-      * Updates a single comment based on its id
-   6. DELETE /comment/{comment_id}
-      * Deletes a specific comment by its id
+- **Local:** `http://127.0.0.1:9000`  
+- **Hosted:** `https://demo.d3hhdjdcpgfljz.amplifyapp.com`
+
 ---
 
-## **Technologies Used**
-- Frontend: (to be added)
-- Backend: FastAPI, Uvicorn
-- Database: PostgreSQL
+### Endpoints
 
- ## *Last updated: June 29, 2025*
+#### Authentication
+
+- `POST /login`  
+  Log in and receive an access token.
+
+- `POST /register`  
+  Create a new user account.
+
+---
+
+#### Users
+
+- `POST /users`  
+  Create a new user.
+
+- `GET /users/get-user/{email}`  
+  Fetch user by email.
+
+- `GET /users/{id}`  
+  Fetch user by ID.
+
+- `PUT /users/update-name/{id}`  
+  Update a user's display name.
+
+- `POST /users/verify-password/{id}`  
+  Verify a password before deletion.
+
+- `DELETE /users/{id}`  
+  Delete a user account.
+
+---
+
+#### Posts
+
+- `GET /posts`  
+  Fetch all posts. Supports the following optional query parameters:  
+  `?limit=<int>&skip=<int>&search=<str>&published=<bool>`
+
+- `GET /posts/{id}`  
+  Fetch a specific post by ID.
+
+- `GET /posts/get-user/{id}`  
+  Fetch posts by a specific user.
+
+- `POST /posts`  
+  Create a new post.
+
+- `PUT /posts/{id}`  
+  Update a post.
+
+- `DELETE /posts/{id}`  
+  Delete a post.
+
+---
+
+#### Likes
+
+- `POST /like`  
+  Like or unlike a post.
+
+- `GET /like/{id}`  
+  Return like status of a post for the current user.
+
+---
+
+#### Comments
+
+- `GET /comment/{post_id}`  
+  Fetch all comments for a post.
+
+- `GET /comment/parent/{post_id}`  
+  Fetch parent comments (used on homepage).
+
+- `POST /comment/{post_id}`  
+  Create a new parent comment.
+
+- `POST /comment/{post_id}/{parent_id}`  
+  Create a reply to a comment.
+
+- `PUT /comment/{comment_id}`  
+  Update a comment.
+
+- `DELETE /comment/{comment_id}`  
+  Delete a comment.
+
+---
+
+#### Media
+
+- `POST /media/upload/{post_id}`  
+  Upload up to 9 media files for a post.
+
+- `GET /media/by-id/{post_id}`  
+  Get all media for a post.
+
+- `POST /media/profile/upload/{user_id}`  
+  Upload a profile picture (default if new).
+
+- `GET /media/by-user/{user_id}`  
+  Get a user's profile picture.
+
+- `PUT /media/profile/update/{user_id}`  
+  Update a user's profile picture.
+
+---
+
+## Technologies Used
+
+- **Frontend:** HTML, CSS, JS
+- **Backend:** FastAPI, Uvicorn
+- **Database:** PostgreSQL
+
+---
+
+## Hosting Services
+
+This project is deployed using a combination of cloud services to handle different parts of the application stack:
+
+- **Frontend:**  
+  Hosted with [AWS Amplify](https://aws.amazon.com/amplify/)  
+  URL: [https://demo.d3hhdjdcpgfljz.amplifyapp.com](https://demo.d3hhdjdcpgfljz.amplifyapp.com)
+
+- **Backend (FastAPI):**  
+  Deployed on [Render](https://render.com/) for automatic builds and scalable API hosting
+
+- **Database:**  
+  Hosted on [AWS RDS](https://aws.amazon.com/rds/) using PostgreSQL
+
+- **Media Storage:**  
+  Uploaded images and profile pictures are stored in [AWS S3](https://aws.amazon.com/s3/) buckets
+
+_Last updated: July 11, 2025_
