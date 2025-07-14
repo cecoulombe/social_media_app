@@ -29,7 +29,7 @@ app.include_router(comment.router, prefix="/api/comment")
 app.mount("/frontend", StaticFiles(directory=frontend_path, html=True), name="frontend")
 
 # determines which domains can access the api (currently set to all but will change to the website domain when published)
-origins = ["http://localhost:8000", "https://main.d3hhdjdcpgfljz.amplifyapp.com", "https://demo.d3hhdjdcpgfljz.amplifyapp.com"]
+origins = ["http://localhost:8000", "www.createabuzz.ca", "createabuzz.ca", "demo.createabuzz.ca", "www.demo.createabuzz.ca"]
 
 app.add_middleware(
     CORSMiddleware,

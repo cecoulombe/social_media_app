@@ -9,11 +9,7 @@
 
 "use strict";
 
-// LOCAL
-// const mediaPrefix = "http://localhost:9000/api/media"
-
-// RENDER
-const mediaPrefix = "https://social-media-backend-z6jf.onrender.com/api/media"
+const mediaPrefix = base_url + "media"
 
 /**
  * Handles the logic for uploading any media to the database, including either a single media or a series

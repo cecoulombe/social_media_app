@@ -9,11 +9,7 @@
 
 "use strict";
 
-// local
-// const commentPrefix = "http://localhost:9000/api/comment"
-
-// RENDER
-const commentPrefix = "https://social-media-backend-z6jf.onrender.com/api/comment"
+const commentPrefix = base_url + "comment"
 
 /**
  * Retrieves the 3 most recent parent comments (no children for the home page)

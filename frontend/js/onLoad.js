@@ -8,10 +8,18 @@
 
 "use strict";
 
+// Global variables
+
 let access_token;
 let current_user;
 let user_id;
 const token_type = "bearer";
+
+// localhost
+// const base_url= "http://localhost:9000/api/"
+
+// Render
+const base_url= "https://social-media-backend-z6jf.onrender.com/api/"
 
 /**
  * when the dom is loaded, retrieve the access token from storage
