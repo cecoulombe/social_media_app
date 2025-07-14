@@ -11,11 +11,7 @@
 
 console.log("Posts.js loaded");
 
-// LOCAL
-// const postPrefix = "http://localhost:9000/api/posts"
-
-// RENDER
-const postPrefix = "https://social-media-backend-z6jf.onrender.com/api/posts"
+const postPrefix = base_url + "posts"
 
 /**
  * Handles logic for retrieving all posts.
