@@ -11,11 +11,11 @@
 let access_token;
 const token_type = "bearer";
 
-
 // localhost
 // const loginPrefix= "http://localhost:9000/api/login"
 
 // Render
+
 const loginPrefix = "https://social-media-backend-z6jf.onrender.com/api/login"
 
 /**
@@ -63,8 +63,8 @@ async function loginUser(email, password) {
         window.location.href = "home.html";
     }
     catch (error) {
-        window.alert("Invalid login attempt. Please verify email and password then try again.");
         console.error(error.message)
+        window.alert("Invalid login attempt. Please verify email and password then try again.");
     }
 }
 

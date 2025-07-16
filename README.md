@@ -26,12 +26,19 @@ Both the frontend and backend are implemented with full CRUD functionality.
 
 ---
 
-## Hosted Main Version
+## Hosted Demo
 
 You can now try out the demo version of the app without installing anything.
 
 **Access the hosted version here:**  
-[https://main.d3hhdjdcpgfljz.amplifyapp.com]([https://main.d3hhdjdcpgfljz.amplifyapp.com])
+[https://demo.createabuzz.ca]([https://demo.createabuzz.ca])
+
+Use the following credentials to sign in:
+
+- **Email:** `demo@example.com`
+- **Password:** `pass123`
+
+Anyone can log in with this account to explore the app's features.
 
 **Performance Notes**
 
