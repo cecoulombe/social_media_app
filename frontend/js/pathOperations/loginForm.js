@@ -11,7 +11,12 @@
 let access_token;
 const token_type = "bearer";
 
-const loginPrefix = "https://social-media-backend-z6jf.onrender.com/api/login"
+
+// localhost
+const loginPrefix= "http://localhost:9000/api/login"
+
+// Render
+// const loginPrefix = "https://social-media-backend-z6jf.onrender.com/api/login"
 
 /**
  * Handles login form submission.
