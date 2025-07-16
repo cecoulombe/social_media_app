@@ -9,6 +9,7 @@
 "use strict";
 
 // Global variables
+
 let access_token;
 let current_user;
 let user_id;
@@ -76,7 +77,7 @@ async function reloadPage() {
     const user_id = params.get("user_id");
     const pathname = window.location.pathname;
 
-    const newPost = "/newPost.html"
+    const newPost = "/../../newPost.html"
 
     // console.log("user_id", user_id);
     // console.log("pathname", pathname);

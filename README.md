@@ -31,7 +31,7 @@ Both the frontend and backend are implemented with full CRUD functionality.
 You can now try out the demo version of the app without installing anything.
 
 **Access the hosted version here:**  
-[https://demo.d3hhdjdcpgfljz.amplifyapp.com](https://demo.d3hhdjdcpgfljz.amplifyapp.com)
+[https://demo.createabuzz.ca]([https://demo.createabuzz.ca])
 
 Use the following credentials to sign in:
 
