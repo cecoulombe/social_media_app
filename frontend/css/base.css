@@ -19,25 +19,28 @@ body {
 /* ------------------------ VARIABLES ------------------------ */
 :root {
     /* COLOURS */
-    --colour-background: #e0e3f1;
+    --colour-background: rgb(242, 240, 235);;
+    --colour-background-translucent: rgba(224, 227, 241, 0.5);
     --colour-background-alt: #000000;
     --colour-background-user: #cecece;
     --colour-background-post: #ffffff;
     --colour-background-commentContainer: #ffffff;
     --colour-background-submit: #f0f0f0;
-    --colour-background-submit-hover: #cacaca;
-    --colour-background-navigation: #a8b5ee;
-    --colour-background-navItem: #92a2ea;
-    --colour-background-navItem-hover: #637cec;
-    --colour-background-navItem-active: #7589e6;
+    --colour-background-submit-hover: #d9d9d9;
+    --colour-background-submit-active: #cacaca;
+
+    --colour-background-navigation: rgb(235, 233, 223);
+    --colour-background-navItem: rgb(241, 219, 139);
+    --colour-background-navItem-hover: rgb(219, 184, 71);
+    --colour-background-navItem-active: rgb(224, 196, 94);
     --colour-background-tooltip: #a4a4a4;
-    --colour-background-updateButton: #92a2ea;
-    --colour-background-updateButton-hover: #7589e6;
+    --colour-background-updateButton: rgb(219, 184, 71);
+    --colour-background-updateButton-hover: rgb(224, 196, 94);
     --colour-background-deleteButton: #ea9292;
     --colour-background-deleteButton-hover: #e67575;
     --colour-background-loadComments-hover: #dfdfdf;
     --colour-background-image: #ffffff;
-    --colour-background-userBanner: #a8b5ee;
+    --colour-background-userBanner: rgb(226, 223, 212);
     --colour-background-input: #a4a4a4;
     /* --colour-background-imageContainer: #c3c3c3;
     --colour-background-content: #f4f4f4;
@@ -127,7 +130,18 @@ input.submit {
     padding: var(--spacing-sm);
     border: var(--border-base) solid var(--colour-border);
     border-radius: var(--radius-sm);
+    background-color: var(--colour-background-submit);
 }
+
+input.submit:hover {
+    background-color: var(--colour-background-submit-hover);
+}
+
+input.submit:active {
+    background-color: var(--colour-background-submit-active);
+}
+
+
 
 input:not(:placeholder-shown):invalid {
     background-color: var(--colour-invalid);
@@ -222,11 +236,6 @@ ul li {
     max-width: fit-content;
     padding: 0 var(--spacing-xs);
     margin: var(--spacing-xs) var(--spacing-xs) var(--spacing-xs) 0;
-    background-color: var(--colour-background-submit);
-}
-
-#searchSubmit:hover {
-    background-color: var(--colour-background-submit-hover);
 }
 
 #logoutButton {

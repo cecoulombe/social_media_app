@@ -18,5 +18,5 @@ function logoutUser() {
     localStorage.removeItem("access_token");
     localStorage.removeItem("current_user");
 
-    window.location.href="../index.html"
+    window.location.href="/frontend/index.html"
 }

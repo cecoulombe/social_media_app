@@ -9,7 +9,11 @@
 
 "use strict";
 
-const likePrefix = base_url + "likes"
+// localhost
+// const likePrefix= "http://localhost:9000/api/likes"
+
+// Render
+const likePrefix= "https://social-media-backend-z6jf.onrender.com/api/likes"
 
 /**
  * Determines if a like is to be added to or removed from the post.
