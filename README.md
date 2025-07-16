@@ -31,7 +31,7 @@ Both the frontend and backend are implemented with full CRUD functionality.
 You can now try out the demo version of the app without installing anything.
 
 **Access the hosted version here:**  
-[https://demo.d3hhdjdcpgfljz.amplifyapp.com](https://demo.d3hhdjdcpgfljz.amplifyapp.com)
+[https://demo.createabuzz.ca](https://demo.createabuzz.ca)
 
 Use the following credentials to sign in:
 
@@ -213,11 +213,12 @@ You can test the backend API using:
 This project is deployed using a combination of cloud services to handle different parts of the application stack:
 
 - **Frontend:**  
-  Hosted with [AWS Amplify](https://aws.amazon.com/amplify/)  
-  URL: [https://demo.d3hhdjdcpgfljz.amplifyapp.com](https://demo.d3hhdjdcpgfljz.amplifyapp.com)
+  Hosted with [AWS S3](https://aws.amazon.com/s3/)  
+  URL: [https://demo.createabuzz.ca](https://demo.createabuzz.ca)
 
 - **Backend (FastAPI):**  
   Deployed on [Render](https://render.com/) for automatic builds and scalable API hosting
+  In the process of migrating backend from Render to AWS Lambda as of July 16, 2025
 
 - **Database:**  
   Hosted on [AWS RDS](https://aws.amazon.com/rds/) using PostgreSQL
@@ -225,4 +226,4 @@ This project is deployed using a combination of cloud services to handle differe
 - **Media Storage:**  
   Uploaded images and profile pictures are stored in [AWS S3](https://aws.amazon.com/s3/) buckets
 
-_Last updated: July 11, 2025_
+_Last updated: July 16, 2025_
