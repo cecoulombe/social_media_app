@@ -10,10 +10,10 @@
 "use strict";
 
 // localhost
-const mediaPrefix= "http://localhost:9000/api/media"
+// const mediaPrefix= "http://localhost:9000/api/media"
 
 // Render
-// const mediaPrefix= "https://social-media-backend-z6jf.onrender.com/api/media"
+const mediaPrefix= "https://social-media-backend-z6jf.onrender.com/api/media"
 
 /**
  * Handles the logic for uploading any media to the database, including either a single media or a series

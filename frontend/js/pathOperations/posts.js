@@ -12,10 +12,10 @@
 console.log("Posts.js loaded");
 
 // localhost
-const postPrefix= "http://localhost:9000/api/posts"
+// const postPrefix= "http://localhost:9000/api/posts"
 
 // Render
-// const postPrefix= "https://social-media-backend-z6jf.onrender.com/api/posts"
+const postPrefix= "https://social-media-backend-z6jf.onrender.com/api/posts"
 
 /**
  * Handles logic for retrieving all posts.

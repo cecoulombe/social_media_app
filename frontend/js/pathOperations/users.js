@@ -9,10 +9,10 @@
 "use strict";
 
 // localhost
-const userPrefix= "http://localhost:9000/api/users"
+// const userPrefix= "http://localhost:9000/api/users"
 
 // Render
-// const userPrefix= "https://social-media-backend-z6jf.onrender.com/api/users"
+const userPrefix= "https://social-media-backend-z6jf.onrender.com/api/users"
 
 // TODO add a username/display name field when creating a user - keep the sign on as the email but give a display name option
 
