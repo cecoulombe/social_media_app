@@ -16,19 +16,14 @@
 
 .flex-item {
     flex: 1;
+    /* padding: 0;
+    margin: 0; */
     padding: var(--spacing-xl);
     margin: var(--spacing-xl) 0;
 }
 
 /* -------------- FORMS -------------- */
-#login {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-right: var(--border-thin) solid #000000;
-}
-
+#login,
 #createNewAccount {
     display: flex;
     flex-direction: column;
@@ -36,9 +31,19 @@
     align-items: center;
 }
 
+.formContainer {
+    background-color: var(--colour-background-translucent);
+    border-radius: var(--radius-md);
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 #loginForm,
 #newAccountForm {
     max-width: 80%; 
+    align-items: center;
 }
 
 input {
@@ -59,8 +64,16 @@ label {
 
 .matching {
     display: none;
-    color: red;
+    color: var(--colour-invalid);
     justify-self: end;
+}
+
+/* -------------- BACKGROUND AND CONTAINERS -------------- */
+.background {
+    background-image: url("../res/img/Backgrounds/title_background.jpg");
+    background-repeat: no-repeat;
+    background-position: start;
+    background-size: cover;
 }
 
 /* later on - add media queries for mobile? as or right now, everything is for desktop */

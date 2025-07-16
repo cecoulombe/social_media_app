@@ -14,7 +14,7 @@ let commentTemplate_Child = null;
 // load the template from commentTemplate_parent.html
 async function loadParentCommentTemplate() {
     if(!commentTemplate_Parent) {
-        const res = await fetch(`../../commentTemplate_parent.html?nocache=${Date.now()}`);
+        const res = await fetch(`/frontend/commentTemplate_parent.html?nocache=${Date.now()}`);
         const html = await res.text();
         const container = document.createElement('div');
         container.innerHTML = html;
@@ -25,7 +25,7 @@ async function loadParentCommentTemplate() {
 // load the template from commentTemplate_child.html
 async function loadChildCommentTemplate() {
     if(!commentTemplate_Child) {
-        const res = await fetch(`../../commentTemplate_child.html?nocache=${Date.now()}`);
+        const res = await fetch(`/frontend/commentTemplate_child.html?nocache=${Date.now()}`);
         const html = await res.text();
         const container = document.createElement('div');
         container.innerHTML = html;

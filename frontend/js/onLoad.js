@@ -15,12 +15,6 @@ let current_user;
 let user_id;
 const token_type = "bearer";
 
-// localhost
-// const base_url= "http://localhost:9000/api/"
-
-// Render
-const base_url= "https://social-media-backend-z6jf.onrender.com/api/"
-
 /**
  * when the dom is loaded, retrieve the access token from storage
  */
@@ -77,7 +71,7 @@ async function reloadPage() {
     const user_id = params.get("user_id");
     const pathname = window.location.pathname;
 
-    const newPost = "/newPost.html"
+    const newPost = "/frontend/newPost.html"
 
     // console.log("user_id", user_id);
     // console.log("pathname", pathname);
