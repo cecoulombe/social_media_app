@@ -32,14 +32,7 @@ Both the frontend and backend are implemented with full CRUD functionality.
 You can now try out the demo version of the app without installing anything.
 
 **Access the hosted version here:**  
-[https://demo.createabuzz.ca](https://demo.createabuzz.ca)
-
-Use the following credentials to sign in:
-
-- **Email:** `demo@example.com`
-- **Password:** `pass123`
-
-Anyone can log in with this account to explore the app's features.
+[https://createabuzz.ca](https://createabuzz.ca)
 
 **Performance Notes**
 
@@ -215,7 +208,7 @@ This project is deployed using a combination of cloud services to handle differe
 
 - **Frontend:**  
   Hosted with [AWS S3](https://aws.amazon.com/s3/)  
-  URL: [https://demo.createabuzz.ca](https://demo.createabuzz.ca)
+  URL: [https://createabuzz.ca](https://createabuzz.ca)
 
 - **Backend (FastAPI):**  
   Deployed on [Render](https://render.com/) for automatic builds and scalable API hosting
